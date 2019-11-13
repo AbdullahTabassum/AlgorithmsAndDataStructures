@@ -4,11 +4,17 @@ import Graphs.DepthFirstSearch;
 import LinkedList.CreateLinkList;
 import LinkedList.ReverseLinkedList;
 import LinkedList.Sift;
+import Miscelanious.MoveZeros;
+import Miscelanious.Permutations;
+import Miscelanious.Subsets;
 import Sorting.BinarySearch;
 import Strings.Substrings;
 import Trees.PrintRows;
 import Trees.Traversals;
 import Trees.TreeFactory;
+import Trees.TreeSerialization;
+
+import java.util.List;
 
 public class Testing {
 
@@ -34,6 +40,22 @@ public class Testing {
 
         //CreateLinkList.printList(ReverseLinkedList.reverse(CreateLinkList.createSingly()));
 
-        Substrings.generate("hello");
+
+        //Substrings.generate("hello");
+
+//        List<Integer> list = TreeSerialization.serialize(TreeFactory.create());
+//        for(int i : list) {
+//            System.out.print(i + ",");
+//        }
+
+//        int[] test = {0,0,1,0,0,0,4,6,7,0,7,0,};
+//        MoveZeros.move(test);
+//        for(int i: test) {
+//            System.out.print(i + ",");
+//        }
+        int[] test = {1,2,3};
+        //Permutations.permute(test);
+        Subsets.subsets(test);
+
     }
 }
