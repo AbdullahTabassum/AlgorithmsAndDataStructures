@@ -5,6 +5,7 @@ import LinkedList.CreateLinkList;
 import LinkedList.ReverseLinkedList;
 import LinkedList.Sift;
 import Sorting.BinarySearch;
+import Strings.Substrings;
 import Trees.PrintRows;
 import Trees.Traversals;
 import Trees.TreeFactory;
@@ -31,6 +32,8 @@ public class Testing {
 
         //Sift.sift(CreateLinkList.createSingly012());
 
-        CreateLinkList.printList(ReverseLinkedList.reverse(CreateLinkList.createSingly()));
+        //CreateLinkList.printList(ReverseLinkedList.reverse(CreateLinkList.createSingly()));
+
+        Substrings.generate("hello");
     }
 }
