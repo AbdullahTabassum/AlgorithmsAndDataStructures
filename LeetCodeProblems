@@ -1,0 +1,2128 @@
+LeetCode problems:
+ Longest Substring Without Repeating Characters
+	 Given a string, find the length of the longest substring without repeating characters.
+
+	Example 1:
+
+	Input: "abcabcbb"
+	Output: 3 
+	Explanation: The answer is "abc", with the length of 3. 
+	Example 2:
+
+	Input: "bbbbb"
+	Output: 1
+	Explanation: The answer is "b", with the length of 1.
+	Example 3:
+
+	Input: "pwwkew"
+	Output: 3
+	Explanation: The answer is "wke", with the length of 3. 
+	             Note that the answer must be a substring, "pwke" is a subsequence and not a substring.
+
+	Approach: Use the sliding window approach. Have a beginning pointer and an ending pointer. Beginning starts from 0 and End starts from 0. Grow the window by moving the ending by one. if a new character is found increase the size, else if a repeated character is found record the max height and increase beginning pointer; the current array will have the invariant of being having unique characters. If a new character is added and it already exists in the current window then we move the left index up one which basically remove the left item from the current window and adds the new item on the right to the window. But what if the new item is not the same as the left most one i.e.
+		"adcrd"
+		in this case we have a problem. when the left pointer is at 'a' and we increase right pointer to the second 'd', then moving the left pointer up by one does not solve the issue of duplicate, as there is still duplicates 'd' and 'd'
+	- For this problem, note, that when we find that the new item is a duplicate of some item in the array, we don't increase the right window pointer, only the left pointer. we will continue to move the left pointer and remove characters from the set until we don't have a duplicate with the new character
+
+	public class Solution {
+	    public int lengthOfLongestSubstring(String s) {
+	        int n = s.length();
+	        Set<Character> set = new HashSet<>();
+	        int ans = 0, i = 0, j = 0;
+	        while (i < n && j < n) {
+	            // try to extend the range [i, j]
+	            if (!set.contains(s.charAt(j))){
+	                set.add(s.charAt(j++));
+	                ans = Math.max(ans, j - i);
+	            }
+	            else {
+	            	// don't increase right window pointer
+	                set.remove(s.charAt(i++));
+	            }
+	        }
+	        return ans;
+	    }
+	} 		
+	Roman to Integer: Roman numerals are represented by seven different symbols: I, V, X, L, C, D and M.
+
+				Symbol       Value
+				I             1
+				V             5
+				X             10
+				L             50
+				C             100
+				D             500
+				M             1000
+				For example, two is written as II in Roman numeral, just two one's added together. Twelve is written as, XII, which is simply X + II. The number twenty seven is written as XXVII, which is XX + V + II.
+
+				Roman numerals are usually written largest to smallest from left to right. However, the numeral for four is not IIII. Instead, the number four is written as IV. Because the one is before the five we subtract it making four. The same principle applies to the number nine, which is written as IX. There are six instances where subtraction is used:
+
+				I can be placed before V (5) and X (10) to make 4 and 9. 
+				X can be placed before L (50) and C (100) to make 40 and 90. 
+				C can be placed before D (500) and M (1000) to make 400 and 900.
+				Given a roman numeral, convert it to an integer. Input is guaranteed to be within the range from 1 to 3999.
+
+				Example 1:
+
+				Input: "III"
+				Output: 3
+				Example 2:
+
+				Input: "IV"
+				Output: 4
+				Example 3:
+
+				Input: "IX"
+				Output: 9
+				Example 4:
+
+				Input: "LVIII"
+				Output: 58
+				Explanation: L = 50, V= 5, III = 3.
+				Approach: 	
+				public static int romanToInt(String s) *{
+					if (s == null || s.length() == 0)
+						return -1;
+					HashMap<Character, Integer> map = new HashMap<Character, Integer>();
+					map.put('I', 1);
+					map.put('V', 5);
+					map.put('X', 10);
+					map.put('L', 50);
+					map.put('C', 100);
+					map.put('D', 500);
+					map.put('M', 1000);
+					int len = s.length(), result = map.get(s.charAt(len - 1));
+					for (int i = len - 2; i >= 0; i--) {
+						if (map.get(s.charAt(i)) >= map.get(s.charAt(i + 1)))
+							result += map.get(s.charAt(i));
+						else
+							result -= map.get(s.charAt(i));
+					}
+					return result;
+				}
+
+				Another possibly cleaner solution:
+				class Solution 
+				{
+				    public int romanToInt(String s)
+				    {
+				        HashMap<Character, Integer> map = new HashMap<Character, Integer>()
+				        {{
+				            put('I', 1);
+				            put('V', 5);
+				            put('X', 10);
+				            put('L', 50);
+				            put('C', 100);
+				            put('D', 500);
+				            put('M', 1000);
+				        }};
+				        
+				        int sum = map.get(s.charAt(s.length() - 1));
+				        
+				        for(int i = s.length() - 2; i >= 0; i--)
+				        {
+				            if(map.get(s.charAt(i)) < map.get(s.charAt(i + 1)))
+				                sum -= map.get(s.charAt(i));
+				            else
+				                sum += map.get(s.charAt(i));
+				        }
+				        return sum;
+				    }
+				}
+
+	1. Atoi: convert a string to an integer
+		-> - remove white spaces, ".trim()"
+	       - first check the first position for its sign str.charAt(0)
+	       		- store it in an int as -1 or +1
+	       - then go throught the rest, letter by letter
+	       - at each letter, check if its a valid digit
+	       		-> Character.isDigit()
+	       		-> convert digit to number if possible: int digit = (int)(str.charAt(i) - '0')
+	       		-> check for overflow (num < Integer.MAX_VALUE - digit)
+	       		-> if alls good, then add it to the current number -> num = num*10 + digit
+
+
+
+			public int myAtoi(String str) {
+			    str = str.trim();
+			    if (str.isEmpty()) 
+			    	return 0;
+			    int sign = 1; int i = 0;
+			    if (str.charAt(0) == '-' || str.charAt(0) == '+'){
+			    	sign = (str.charAt(0) == '-')? -1 : 1;
+			    	if (str.length() < 2 || !Character.isDigit(str.charAt(1))) {
+			    		return 0;
+			    	}
+			    	i++;
+			     }
+			    int n = 0;
+			    while (i < str.length()) {
+			    	if (Character.isDigit(str.charAt(i))) {
+			    		int d = str.charAt(i) - '0';
+			    		if (n > (Integer.MAX_VALUE - d) / 10) { //Detect the integer overflow.
+			    			n = (sign == -1)? Integer.MIN_VALUE : Integer.MAX_VALUE;
+			    			return n;
+			    		}
+			    		n = n*10 + d;
+			    	} else {
+			    		break;
+			    	}
+			    	i++;
+			    }
+			    return sign * n;
+			}
+	2. 3 sum - find three numbers in the array which add to give you zero
+		- iterate through the array with variable 'i' from 0 - arr.length - 2
+			- this is because for each iteration we have three vars, one is i, one is b = i+1 (starts at) and one starts at i+2
+		- the other two variables are low = i+1 and hi = arr.length - 1
+		- sort the array
+
+		Approach: iterate with i thorugh the array. 2 extra indices for each iteration m,n. m starts right after i and n starts at end of array. if the sum of all positions is equal to zero, return the 3 indices. if too big decrease n by one. if too small increase m by one. now inorder to avoid duplicates you need to skip iteration of m and n by increasing or decreasing them and not checking sum.
+
+		- while(lo < hi) <--- this is in an outer for loop
+			if(-1*arr[i] = arr[lo] + arr[hi])
+				- lo++, hi--
+				- add the three numbers to the return set
+				- then keep incrementing and decrrementing hi and lo till all duplicates are skipped
+					i.e while(arr[lo+1] == arr[lo] && lo < hi) lo++
+
+			- if the 2 numbers are too big then decrement hi
+			- if they are too small then incrmenent lo
+			public List<List<Integer>> threeSum(int[] nums) {
+			    List<List<Integer>> res = new ArrayList<>();
+			    Arrays.sort(nums);
+			    for (int i = 0; i + 2 < nums.length; i++) {
+			        if (i > 0 && nums[i] == nums[i - 1]) {              // skip same result
+			            continue;
+			        }
+			        int j = i + 1, k = nums.length - 1;  
+			        int target = -nums[i];
+			        while (j < k) {
+			            if (nums[j] + nums[k] == target) {
+			                res.add(Arrays.asList(nums[i], nums[j], nums[k]));
+			                j++;
+			                k--;
+			                while (j < k && nums[j] == nums[j - 1]) j++;  // skip same result
+			                while (j < k && nums[k] == nums[k + 1]) k--;  // skip same result
+			            } else if (nums[j] + nums[k] > target) {
+			                k--;
+			            } else {
+			                j++;
+			            }
+			        }
+			    }
+			    return res;
+			}
+	3. Remove duplicates from sorted array
+		- go through the array and hold 2 indices
+			- one that holds the last position of the final array (i.e. all elements before it are non-duplicate): End-of-non-dup array = eond
+			- the other index scans (scanner )the array for unique elements one by until the end of the array
+			- increment eond only when there is a non-duplicate (i.e. when arr[eond] != arr[scanner])
+				int set = 0;
+				while(j < arr.length) {
+				
+					while(arr[j] == arr[j+1]) {
+						j++;
+					}
+					// add the item to the end of the result array
+					set++;
+					arr[set] = arr[j];
+					j++;
+				}
+
+				from leet code:
+				- i is the position of the last element of the subarray that is sorted.
+				- j is the index we use to scan the array
+				- whenever arr[j] != arr[i], then we increment i and put arr[j] over there
+				public int removeDuplicates(int[] nums) {
+				    if (nums.length == 0) return 0;
+				    int i = 0;
+				    for (int j = 1; j < nums.length; j++) {
+				        if (nums[j] != nums[i]) {
+				            i++;
+				            nums[i] = nums[j];
+				        }
+				    }
+				    return i + 1;
+				}
+
+	4. next permutation: get the next greater number <--- return to this to understand it better
+		1,2,3 → 1,3,2
+		3,2,1 → 1,2,3
+		1,1,5 → 1,5,1
+		Approach: A Permutation is like a recursive problem. The first permutation for a slot will have all available items after it in ascending order (1,2,3,4).The last permutation for a slot will have all items after it in descending order (4,3,2,1). There is always a slot i.e. sub array, that is at its last permutation (this is a very important this to understand), i.e. all elements after that element are in decreasing order. So in order to find this slot, all we need to do is start from the right and iterate until we find the item that is not increasing from the left (..,..,..,3,4,2,1). In this case it is 3. So this means that the item '3' is at its last permutation. So we hold the position of 3, i.e. its index. Then find the next element that would come after 3; this would be the right most element (looking to the right from 3) whose value is more than 3. That is 4 in this case. Then we would swap the 3 and 4(..,..,..,4,3,2,1). Then we would simply reverse the array after the 4 i.e. ->  ..,..,..,4,1,2,3. And viola, we are done
+
+		0,1,2,5,3,3,0
+
+		public class Solution {
+
+		    boolean nextPermutation(int[] array) {
+			    // Find longest non-increasing suffix
+			    int i = array.length - 1;
+			    while (i > 0 && array[i - 1] >= array[i])
+			        i--;
+			    // Now i is the head index of the suffix
+			    
+			    // Are we at the last permutation already?
+			    if (i <= 0)
+			        return false;
+			    
+			    // Let array[i - 1] be the pivot
+			    // Find rightmost element that exceeds the pivot
+			    int j = array.length - 1;
+			    while (array[j] <= array[i - 1])
+			        j--;
+			    // Now the value array[j] will become the new pivot
+			    // Assertion: j >= i
+			    
+			    // Swap the pivot with j
+			    int temp = array[i - 1];
+			    array[i - 1] = array[j];
+			    array[j] = temp;
+			    
+			    // Reverse the suffix
+			    j = array.length - 1;
+			    while (i < j) {
+			        temp = array[i];
+			        array[i] = array[j];
+			        array[j] = temp;
+			        i++;
+			        j--;
+			    }
+			    
+			    // Successfully computed the next permutation
+			    return true;
+			}
+		}
+
+	5. Multiply Strings - Given two non-negative integers num1 and num2 represented as strings, return the product of num1 and num2, also represented as a string.
+
+			Example 1:
+
+			Input: num1 = "2", num2 = "3"
+			Output: "6"
+			Example 2:
+
+			Input: num1 = "123", num2 = "456"
+			Output: "56088"
+			Note:
+
+			The length of both num1 and num2 is < 110.
+			Both num1 and num2 contain only digits 0-9.
+			Both num1 and num2 do not contain any leading zero, except the number 0 itself.
+			You must not use any built-in BigInteger library or convert the inputs to integer directly.
+
+			public String multiply(String num1, String num2) {
+			    int m = num1.length(), n = num2.length();
+			    int[] pos = new int[m + n];
+			   
+			    for(int i = m - 1; i >= 0; i--) {
+			        for(int j = n - 1; j >= 0; j--) {
+			            int mul = (num1.charAt(i) - '0') * (num2.charAt(j) - '0'); 
+			            int p1 = i + j, p2 = i + j + 1;
+			            int sum = mul + pos[p2];
+
+			            pos[p1] += sum / 10;
+			            pos[p2] = (sum) % 10;
+			        }
+			    }  
+			    
+			    StringBuilder sb = new StringBuilder();
+			    for(int p : pos) if(!(sb.length() == 0 && p == 0)) sb.append(p);
+			    return sb.length() == 0 ? "0" : sb.toString();
+			}
+
+	6. Group Anagrams: Given an array of strings, group anagrams together.
+		Input: ["eat", "tea", "tan", "ate", "nat", "bat"],
+		Output:
+		[
+		  ["ate","eat","tea"],
+		  ["nat","tan"],
+		  ["bat"]
+		]
+		- create an array of 26 items where each item represents the number of the ith alphabet
+			getSerialization(String s) {
+				int[] arr = new int[26];
+				for(char c: s.toCharArray()) {
+					if(Character.isLtter()) {
+						arr[(int)(c - 'a')]++;
+					}
+				}
+
+				// create a string from the array
+				StringBuilder sb = new StringBuilder();
+				for(int i: arr) {
+					sb.append('#');
+					sb.append(i);
+				}
+
+				return sb.toString();
+			}
+
+			// public Map<String, List<String>> createAnagramGroups(String[] strs) {
+				Map<String, List<String>> map = new HashMap<>();
+				for(String str: strs) {
+					String code = getSerialization(str);
+					// just add here the anagram to the right group
+					map.putIfAbsent(code, new ArrayList<>().add(str));
+				}
+
+				reutrn map;
+			}
+		- then, serialize the array into a string where each element is seperated by '#', i.e. abbd = 1#2#0#1
+		- then put thi=e array into a Map like this: HashMap<String, List<String>>
+		class Solution {
+		    public List<List<String>> groupAnagrams(String[] strs) {
+		        if (strs.length == 0) return new ArrayList();
+		        Map<String, List> ans = new HashMap<String, List>();
+		        int[] count = new int[26];
+		        for (String s : strs) {
+		            Arrays.fill(count, 0);
+		            for (char c : s.toCharArray()) count[c - 'a']++;
+
+		            StringBuilder sb = new StringBuilder("");
+		            for (int i = 0; i < 26; i++) {
+		                sb.append('#');
+		                sb.append(count[i]);
+		            }
+		            String key = sb.toString();
+		            if (!ans.containsKey(key)) ans.put(key, new ArrayList());
+		            ans.get(key).add(s);
+		        }
+		        return new ArrayList(ans.values());
+		    }
+		}
+	7. Add Binary: Given two binary strings, return their sum (also a binary string). - come back to this one
+
+		Input: a = "11", b = "1"
+		Output: "100"
+
+		Input: a = "1010", b = "1011"
+		Output: "10101"
+		Method 1: can convert to Binary and Decimal using built in fincitons
+				Integer.toBinaryString and Integer.parseInt(string, 2)
+			- once you have the binary representaion of the string,
+			- then go through each item
+				class Solution {
+				  public String addBinary(String a, String b) {
+				    BigInteger x = new BigInteger(a, 2);
+				    BigInteger y = new BigInteger(b, 2);
+				    BigInteger zero = new BigInteger("0", 2);
+				    BigInteger carry, answer;
+				    while (y.compareTo(zero) != 0) {
+				      answer = x.xor(y);
+				      carry = x.and(y).shiftLeft(1);
+				      x = answer;
+				      y = carry;
+				    }
+				    return x.toString(2);
+				  }
+				}
+
+		8.  Minimum Window Substring: Given a string S and a string T, find the minimum window in S which will contain all the characters in T in complexity O(n).
+
+			- use sliding window technique
+				- start with 2 indices both at the beginning, b,e
+				- keep expanding the right index until we have all of the elements accounted for
+				- save this window
+				- then move the left window more right, if this is no longer a valid window repeat second step
+				- 
+			- how to keep track of window -> 2 indices
+			- tracking the items we've we've added, use a set, when move the left item right, if the new left is not the same as the old one, we remove the item from the set
+			- check the size of the set 
+			- actually, instead of keeping a set we can keep a map, the map keeps track of the count of all found numbers, so when we move left or right, we update the count, if the count for something is zero we remove it from the map
+
+		Example:
+
+		Input: S = "ADOBECODEBANC", T = "ABC"
+		Output: "BANC"
+		class Solution {
+			  public String minWindow(String s, String t) {
+
+			      if (s.length() == 0 || t.length() == 0) {
+			          return "";
+			      }
+
+			      // Dictionary which keeps a count of all the unique characters in t.
+			      Map<Character, Integer> dictT = new HashMap<Character, Integer>();
+			      for (int i = 0; i < t.length(); i++) {
+			          int count = dictT.getOrDefault(t.charAt(i), 0);
+			          dictT.put(t.charAt(i), count + 1);
+			      }
+
+			      // Number of unique characters in t, which need to be present in the desired window.
+			      int required = dictT.size();
+
+			      // Left and Right pointer
+			      int l = 0, r = 0;
+
+			      // formed is used to keep track of how many unique characters in t
+			      // are present in the current window in its desired frequency.
+			      // e.g. if t is "AABC" then the window must have two A's, one B and one C.
+			      // Thus formed would be = 3 when all these conditions are met.
+			      int formed = 0;
+
+			      // Dictionary which keeps a count of all the unique characters in the current window.
+			      Map<Character, Integer> windowCounts = new HashMap<Character, Integer>();
+
+			      // ans list of the form (window length, left, right)
+			      int[] ans = {-1, 0, 0};
+
+			      while (r < s.length()) {
+			          // Add one character from the right to the window
+			          char c = s.charAt(r);
+			          int count = windowCounts.getOrDefault(c, 0);
+			          windowCounts.put(c, count + 1);
+
+			          // If the frequency of the current character added equals to the
+			          // desired count in t then increment the formed count by 1.
+			          if (dictT.containsKey(c) && windowCounts.get(c).intValue() == dictT.get(c).intValue()) {
+			              formed++;
+			          }
+
+			          // Try and contract the window till the point where it ceases to be 'desirable'.
+			          while (l <= r && formed == required) {
+			              c = s.charAt(l);
+			              // Save the smallest window until now.
+			              if (ans[0] == -1 || r - l + 1 < ans[0]) {
+			                  ans[0] = r - l + 1;
+			                  ans[1] = l;
+			                  ans[2] = r;
+			              }
+
+			              // The character at the position pointed by the
+			              // `Left` pointer is no longer a part of the window.
+			              windowCounts.put(c, windowCounts.get(c) - 1);
+			              if (dictT.containsKey(c) && windowCounts.get(c).intValue() < dictT.get(c).intValue()) {
+			                  formed--;
+			              }
+
+			              // Move the left pointer ahead, this would help to look for a new window.
+			              l++;
+			          }
+
+			          // Keep expanding the window once we are done contracting.
+			          r++;   
+			      }
+
+			      return ans[0] == -1 ? "" : s.substring(ans[1], ans[2] + 1);
+			  }
+			}
+
+		9. Merge Sorted arrays: Given two sorted integer arrays nums1 and nums2, merge nums2 into nums1 as one sorted array.
+
+			Input:
+			nums1 = [1,2,3,0,0,0], m = 3
+			nums2 = [2,5,6],       n = 3
+
+			Output: [1,2,2,3,5,6]elements from nums2.
+			- one index in nums1 one in nums2
+			class Solution {
+			  public void merge(int[] nums1, int m, int[] nums2, int n) {
+			    // Make a copy of nums1.
+			    int [] nums1_copy = new int[m];
+			    System.arraycopy(nums1, 0, nums1_copy, 0, m);
+
+			    // Two get pointers for nums1_copy and nums2.
+			    int p1 = 0;
+			    int p2 = 0;
+
+			    // Set pointer for nums1
+			    int p = 0;
+
+			    // Compare elements from nums1_copy and nums2
+			    // and add the smallest one into nums1.
+			    while ((p1 < m) && (p2 < n))
+			      nums1[p++] = (nums1_copy[p1] < nums2[p2]) ? nums1_copy[p1++] : nums2[p2++];
+
+			    // if there are still elements to add
+			    if (p1 < m)
+			      System.arraycopy(nums1_copy, p1, nums1, p1 + p2, m + n - p1 - p2);
+			    if (p2 < n)
+			      System.arraycopy(nums2, p2, nums1, p1 + p2, m + n - p1 - p2);
+			  }
+			}
+
+			// in place
+
+				class Solution {
+					  public void merge(int[] nums1, int m, int[] nums2, int n) {
+					    // two get pointers for nums1 and nums2
+					    int p1 = m - 1;
+					    int p2 = n - 1;
+					    // set pointer for nums1
+					    int p = m + n - 1;
+
+					    // while there are still elements to compare
+					    while ((p1 >= 0) && (p2 >= 0))
+					      // compare two elements from nums1 and nums2 
+					      // and add the largest one in nums1 
+					      nums1[p--] = (nums1[p1] < nums2[p2]) ? nums2[p2--] : nums1[p1--];
+
+					    // add missing elements from nums2
+					    System.arraycopy(nums2, 0, nums1, 0, p2 + 1);
+					  }
+					}
+
+		10 .  Valid Palindrome: Given a string, determine if it is a palindrome, considering only alphanumeric characters and ignoring cases.
+
+			Note: For the purpose of this problem, we define empty string as valid palindrome.
+
+			Example 1:
+
+			Input: "A man, a plan, a canal: Panama"
+			Output: true
+			Example 2:
+
+			Input: "race a car"
+			Output: false
+
+			while (low < high) {
+				while (low < high && !Character.isLetterOrDigit(s.charAt(low)))
+					low++;
+
+				while (low < high && !Character.isLetterOrDigit(s.charAt(high)))
+					high--;
+
+				if (s.charAt(low) != s.charAt(high))
+					return false;
+				low++;
+				high--;
+			}
+			return true;
+
+		11. Given a method read4(), create a method read(char[] buf, int n), that fills an array with n items from a file
+			- basically call read4 repeatedly, each time stoer in a temp char[4]
+			- see how much you have left to read; leftToRead
+			d	- if it is more than 4, then subtract 4 from leftToRead and copu temp buffer into return buff
+				- if read4 returned less than 4 you need to exit as that means you are at the end of the file
+				- keep reading till you don't need to read anymore
+					- if you read more than what is required i.e. you need to read 3 and not 4, then copy the first three items into the return buffer
+
+			public class Solution extends Reader4 {
+			    /**
+			     * @param buf Destination buffer
+			     * @param n   Number of characters to read
+			     * @return    The number of actual characters read
+			     */
+			    public int read(char[] buf, int n) {
+			        int readBytes = 4;
+			        char[] copyBuf = new char[4];
+			        int pos = 0;
+			        while (pos < n && readBytes == 4) {
+			            readBytes = read4(copyBuf);
+			            int expectedBytes = Math.min(readBytes, n - pos);
+			            for (int i = 0; i < expectedBytes; i++) {
+			                buf[pos + i] = copyBuf[i];
+			            }
+			            pos += expectedBytes;
+			        }
+			        return pos;
+			    }
+			}
+
+		12. One Edit Distance: Given two strings s and t, determine if they are both one edit distance apart.
+			Note: 
+
+			There are 3 possiblities to satisify one edit distance apart:
+
+				Insert a character into s to get t
+				Delete a character from s to get t
+				Replace a character of s to get t
+
+			Approach:
+				bunch of if statements
+					- first check the sizes are of by at most one
+					- then, from this we can determine if its a deletion or an insertion or a letter is wrong
+					- then based on the above,
+						- if it is a deletion go through the words letter by letter (comparing each)
+							- at the first mismatch, we will assume its a deletion, then move one of the pointer up by one (of the word which is not deleted). then up till the end of the strings,k they should be the same
+
+							class Solution {
+							  public boolean isOneEditDistance(String s, String t) {
+							    int ns = s.length();
+							    int nt = t.length();
+
+							    // Ensure that s is shorter than t.
+							    if (ns > nt)
+							      return isOneEditDistance(t, s);
+
+							    // The strings are NOT one edit away distance  
+							    // if the length diff is more than 1.
+							    if (nt - ns > 1)
+							      return false;
+
+							    for (int i = 0; i < ns; i++)
+							      if (s.charAt(i) != t.charAt(i))
+							        // if strings have the same length
+							        if (ns == nt)
+							          return s.substring(i + 1).equals(t.substring(i + 1));
+							        // if strings have different lengths
+							        else
+							          return s.substring(i).equals(t.substring(i + 1));
+
+							    // If there is no diffs on ns distance
+							    // the strings are one edit away only if
+							    // t has one more character. 
+							    return (ns + 1 == nt);
+							  }
+							}
+
+		13. Product of Array Except Self: Given an array nums of n integers where n > 1,  return an array output such that output[i] is equal to the product of all the elements of nums except nums[i].
+
+			Example:
+				Input:  [1,2,3,4]
+				Output: [24,12,8,6]
+				Note: Please solve it without division and in O(n).
+
+				Follow up:
+				Could you solve it with constant space complexity? (The output array does not count as extra space for the purpose of space complexity analysis.)
+
+		Approach: Basically, keep two arrays, LeftProduct and RightProduct. Then basically fill up the LeftArray with the product of all the numbers to the left of the i'th position. And do the same for the RightProduct but from the right.
+		Then run through the original array, and to calculate the i'th product, simply find the product of LeftProduct[i] and RightProduct[i]. This is basically multiplying all of the numbers to the left and right of the i'th item (i.e. every item except i)
+					class Solution {
+					    public int[] productExceptSelf(int[] nums) {
+
+					        // The length of the input array
+					        int length = nums.length;
+
+					        // The left and right arrays as described in the algorithm
+					        int[] L = new int[length];
+					        int[] R = new int[length];
+
+					        // Final answer array to be returned
+					        int[] answer = new int[length];
+
+					        // L[i] contains the product of all the elements to the left
+					        // Note: for the element at index '0', there are no elements to the left,
+					        // so L[0] would be 1
+					        L[0] = 1;
+					        for (int i = 1; i < length; i++) {
+
+					            // L[i - 1] already contains the product of elements to the left of 'i - 1'
+					            // Simply multiplying it with nums[i - 1] would give the product of all
+					            // elements to the left of index 'i'
+					            L[i] = nums[i - 1] * L[i - 1];
+					        }
+
+					        // R[i] contains the product of all the elements to the right
+					        // Note: for the element at index 'length - 1', there are no elements to the right,
+					        // so the R[length - 1] would be 1
+					        R[length - 1] = 1;
+					        for (int i = length - 2; i >= 0; i--) {
+
+					            // R[i + 1] already contains the product of elements to the right of 'i + 1'
+					            // Simply multiplying it with nums[i + 1] would give the product of all
+					            // elements to the right of index 'i'
+					            R[i] = nums[i + 1] * R[i + 1];
+					        }
+
+					        // Constructing the answer array
+					        for (int i = 0; i < length; i++) {
+					            // For the first element, R[i] would be product except self
+					            // For the last element of the array, product except self would be L[i]
+					            // Else, multiple product of all elements to the left and to the right
+					            answer[i] = L[i] * R[i];
+					        }
+
+					        return answer;
+					    }
+					}
+
+		14. Integer to english word: Convert a non-negative integer to its english words representation. Given input is guaranteed to be less than 231 - 1.
+			
+			Example 1:
+			Input: 123
+			Output: "One Hundred Twenty Three"
+			
+			Example 2:
+			Input: 12345
+			Output: "Twelve Thousand Three Hundred Forty Five"
+			
+			Example 3:
+			Input: 1234567
+			Output: "One Million Two Hundred Thirty Four Thousand Five Hundred Sixty Seven"
+			
+			Example 4:
+			Input: 1234567891
+			Output: "One Billion Two Hundred Thirty Four Million Five Hundred Sixty Seven Thousand 
+			Eight Hundred Ninety One"
+
+			Approach: there are multiple cases
+				- read upto three digits from the right at a time
+				- start at the right
+					- check the size
+						- if the size is 1, then just print out the number in english
+							String getSingleDigitWord(int i)
+						- if the size is two, then there get the number's mapping from the 10s digits
+							- if the number is a 1, then you need to get the teens mapping
+								String getTeenMapping(int ones)
+							- if the number is a more than one, then you need to get
+								String getTensMapping(int tens, int ones)
+						- if the size is three, get the last digit, append hundred to it
+							String get Hundred
+				From leetcode:
+
+				Let's simplify the problem by representing it as a set of simple sub-problems. One could split the initial integer 1234567890 on the groups containing not more than three digits 1.234.567.890. That results in representation 1 Billion 234 Million 567 Thousand 890 and reduces the initial problem to how to convert 3-digit integer to English word. One could split further 234 -> 2 Hundred 34 into two sub-problems : convert 1-digit integer and convert 2-digit integer. The first one is trivial. The second one could be reduced to the first one for all 2-digit integers but the ones from 10 to 19 which should be considered separately.
+
+				class Solution {
+				  public String one(int num) {
+				    switch(num) {
+				      case 1: return "One";
+				      case 2: return "Two";
+				      case 3: return "Three";
+				      case 4: return "Four";
+				      case 5: return "Five";
+				      case 6: return "Six";
+				      case 7: return "Seven";
+				      case 8: return "Eight";
+				      case 9: return "Nine";
+				    }
+				    return "";
+				  }
+
+				  public String twoLessThan20(int num) {
+				    switch(num) {
+				      case 10: return "Ten";
+				      case 11: return "Eleven";
+				      case 12: return "Twelve";
+				      case 13: return "Thirteen";
+				      case 14: return "Fourteen";
+				      case 15: return "Fifteen";
+				      case 16: return "Sixteen";
+				      case 17: return "Seventeen";
+				      case 18: return "Eighteen";
+				      case 19: return "Nineteen";
+				    }
+				    return "";
+				  }
+
+				  public String ten(int num) {
+				    switch(num) {
+				      case 2: return "Twenty";
+				      case 3: return "Thirty";
+				      case 4: return "Forty";
+				      case 5: return "Fifty";
+				      case 6: return "Sixty";
+				      case 7: return "Seventy";
+				      case 8: return "Eighty";
+				      case 9: return "Ninety";
+				    }
+				    return "";
+				  }
+
+				  public String two(int num) {
+				    if (num == 0)
+				      return "";
+				    else if (num < 10)
+				      return one(num);
+				    else if (num < 20)
+				      return twoLessThan20(num);
+				    else {
+				      int tenner = num / 10;
+				      int rest = num - tenner * 10;
+				      if (rest != 0)
+				        return ten(tenner) + " " + one(rest);
+				      else
+				        return ten(tenner);
+				    }
+				  }
+
+				  public String three(int num) {
+				    int hundred = num / 100;
+				    int rest = num - hundred * 100;
+				    String res = "";
+				    if (hundred*rest != 0)
+				      res = one(hundred) + " Hundred " + two(rest);
+				    else if ((hundred == 0) && (rest != 0))
+				      res = two(rest);
+				    else if ((hundred != 0) && (rest == 0))
+				      res = one(hundred) + " Hundred";
+				    return res;
+				  }
+
+				  public String numberToWords(int num) {
+				    if (num == 0)
+				      return "Zero";
+
+				    int billion = num / 1000000000;
+				    int million = (num - billion * 1000000000) / 1000000;
+				    int thousand = (num - billion * 1000000000 - million * 1000000) / 1000;
+				    int rest = num - billion * 1000000000 - million * 1000000 - thousand * 1000;
+
+				    String result = "";
+				    if (billion != 0)
+				      result = three(billion) + " Billion";
+				    if (million != 0) {
+				      if (! result.isEmpty())
+				        result += " ";
+				      result += three(million) + " Million";
+				    }
+				    if (thousand != 0) {
+				      if (! result.isEmpty())
+				        result += " ";
+				      result += three(thousand) + " Thousand";
+				    }
+				    if (rest != 0) {
+				      if (! result.isEmpty())
+				        result += " ";
+				      result += three(rest);
+				    }
+				    return result;
+				  }
+				}
+		15. Move zeros: move all zeros to beginnning of array
+			Approach: basically, have two pointers, one keeps track of the last non-zero number, the other keeps track of current number. If we find a non zero number we put put it in the place of last non-zero number.
+
+			void moveZeroes(vector<int>& nums) {
+			    int lastNonZeroFoundAt = 0;
+			    // If the current element is not 0, then we need to
+			    // append it just in front of last non 0 element we found. 
+			    for (int i = 0; i < nums.size(); i++) {
+			        if (nums[i] != 0) {
+			            nums[lastNonZeroFoundAt++] = nums[i];
+			        }
+			    }
+			 	// After we have finished processing new elements,
+			 	// all the non-zero elements are already at beginning of array.
+			 	// We just need to fill remaining array with 0's.
+			    for (int i = lastNonZeroFoundAt; i < nums.size(); i++) {
+			        nums[i] = 0;
+			    }
+			}
+
+			A slight imorvement would be something like this
+			void moveZeroes(vector<int>& nums) {
+			    for (int lastNonZeroFoundAt = 0, cur = 0; cur < nums.size(); cur++) {
+			        if (nums[cur] != 0) {
+			            swap(nums[lastNonZeroFoundAt++], nums[cur]);
+			        }
+			    }
+			}
+
+		16.  Longest Substring with At Most K Distinct Characters: Given a string, find the length of the longest substring T that contains at most k distinct characters.
+
+			Example 1:
+
+			Input: s = "eceba", k = 2
+			Output: 3
+			Explanation: T is "ece" which its length is 3.
+			Example 2:
+
+			Input: s = "aa", k = 1
+			Output: 2
+			Explanation: T is "aa" which its length is 2.
+
+		Approach: use two pointer, and a set to keep track of already found items
+		The idea is to set both pointers in the position 0 and then move right pointer to the right while the window contains not more than k distinct characters. If at some point we've got k + 1 distinct characters, let's move left pointer to keep not more than k + 1 distinct characters in the window. Note: we would keep the right most index of an item in the hashmap. When we are done with an item, remove it from the map. Keep a variable with max_length
+
+		class Solution {
+			  public int lengthOfLongestSubstringKDistinct(String s, int k) {
+			    int n = s.length();
+			    if (n*k == 0) return 0;
+
+			    // sliding window left and right pointers
+			    int left = 0;
+			    int right = 0;
+			    // hashmap character -> its rightmost position 
+			    // in the sliding window
+			    HashMap<Character, Integer> hashmap = new HashMap<Character, Integer>();
+
+			    int max_len = 1;
+
+			    while (right < n) {
+			      // add new character and move right pointer
+			      hashmap.put(s.charAt(right), right++);
+
+			      // slidewindow contains 3 characters
+			      if (hashmap.size() == k + 1) {
+			        // delete the leftmost character
+			        int del_idx = Collections.min(hashmap.values());
+			        hashmap.remove(s.charAt(del_idx));
+			        // move left pointer of the slidewindow
+			        left = del_idx + 1;
+			      }
+
+			      max_len = Math.max(max_len, right - left);
+			    }
+			    return max_len;
+			  }
+			}
+
+		Improvement: To improve this, notice an issue. When we increase the right pointer and if this causes out set to have more than k distinct integers, then we have to move the left pointer up and consequently remove an item from the hashmap. But what if that left value exists somewhere else in the current window? In that case, as in the above code, we look at each item in the hashmap and find which item has the left most element, then we remove that element only (then update left to one after that guys position). So we have to iterate the hashmap to find the item with left most element, this can be improved. If we use a LinkedHashMap, instead of a normal HashMap, the oldest value added/updated will always be at the front, so instead of looking for the leftmost item, we can just pop the first one from the LinkedHashMap.
+
+		class Solution {
+		  public int lengthOfLongestSubstringKDistinct(String s, int k) {
+		    int n = s.length();
+		    if (n*k == 0) return 0;
+
+		    // sliding window left and right pointers
+		    int left = 0;
+		    int right = 0;
+		    // hashmap character -> its rightmost position 
+		    // in the sliding window
+		    LinkedHashMap<Character, Integer> hashmap = new LinkedHashMap<Character, Integer>(k + 1);
+
+		    int max_len = 1;
+
+		    while (right < n) {
+		      Character character = s.charAt(right);
+		      // if character is already in the hashmap -
+		      // delete it, so that after insert it becomes
+		      // the rightmost element in the hashmap
+		      if (hashmap.containsKey(character))
+		        hashmap.remove(character);
+		      hashmap.put(character, right++);
+
+		      // slidewindow contains k + 1 characters
+		      if (hashmap.size() == k + 1) {
+		        // delete the leftmost character
+		        Map.Entry<Character, Integer> leftmost = hashmap.entrySet().iterator().next();
+		        hashmap.remove(leftmost.getKey());
+		        // move left pointer of the slidewindow
+		        left = leftmost.getValue() + 1;
+		      }
+
+		      max_len = Math.max(max_len, right - left);
+		    }
+		    return max_len;
+		  }
+		}
+
+
+
+		17. Validate IP Address: Write a function to check whether an input string is a valid IPv4 address or IPv6 address or neither.
+			Approach: Use String.split, Integer.parseInt, Character.isDigit, String.toCharArray
+
+			class Solution {
+			    private boolean isValidHexa(char a) {
+			        return (a >= 'a' && a <= 'f') || (a >= 'A' && a <= 'F');
+			    }
+			    private boolean isValidIPV4(String IP) {
+			        String[] a = IP.split("\\.");
+			        if (a.length != 4) return false;
+			        for (String p : a) {
+			            if (p.isEmpty() || p.length() > 1 && p.charAt(0) == '0' || p.length() > 3) return false;
+			            for (char c : p.toCharArray()) if (!Character.isDigit(c)) return false;
+			            int value = Integer.parseInt(p);
+			            if (value < 0 || value > 255) return false;
+			        }
+			        return IP.charAt(IP.length() - 1) != '.';
+			    }
+			    private boolean isValidIPV6(String IP) {
+			        String[] a = IP.split(":");
+			        if (a.length != 8) return false;
+			        for(String p : a) {
+			            if (p.length() > 4 || p.isEmpty()) return false;
+			            for (char c : p.toCharArray()) if (!Character.isDigit(c) && !isValidHexa(c)) return false;
+			        }
+			        return IP.charAt(IP.length() - 1) != ':';
+			    }
+			    public String validIPAddress(String IP) {
+			        return IP.contains(".") ? isValidIPV4(IP) ? "IPv4" : "Neither" : isValidIPV6(IP) ? "IPv6" : "Neither";
+			    }
+			}
+
+		18.  Subarray Sum Equals K: Given an array of integers and an integer k, you need to find the total number of continuous subarrays whose sum equals to k.
+
+			Example 1:
+			Input:nums = [1,1,1], k = 2
+			Output: 2
+			Note:
+			The length of the array is in range [1, 20,000].
+			The range of numbers in the array is [-1000, 1000] and the range of the integer k is [-1e7, 1e7].
+
+		Approach 1:
+			- we can try to compute all beginning and end pairs(i.e. using a double for loop), but thats slow. Another trick is compute the cummulative sum for each i (the sum from 0-i in the array). then if we want to calculate the sum between i and j we can do something like cummSum[j+1] - cummSum[i]. Another improvement is to not use additional space. So for each beginning index, we start a sum from 0, and for each endIndex for that beginning index we add onto 0 or the last sum for the beginning index.
+				public class Solution {
+				    public int subarraySum(int[] nums, int k) {
+				        int count = 0;
+				        for (int start = 0; start < nums.length; start++) {
+				            int sum=0;
+				            for (int end = start; end < nums.length; end++) {
+				                sum+=nums[end];
+				                if (sum == k)
+				                    count++;
+				            }
+				        }
+				        return count;
+				    }
+				}
+
+			An even better approach using a hashmap is the following. Note that if you are going through the array and keeping track of cumulative sum, if you run into the same sum that you calculated previously, that means that if you started from the first time you saw that sum and added the numbers up to the second time you saw that sum, the total sum will be zero. Using this idea, we can keep track of all different sums that we encounter in a hashmap and the index we saw them at. If you find there is a sum you previously encountered such that the (current sum - k) is equal to it, then that means that the current index to that index is a subarry whose elements sum to k.
+
+				public class Solution {
+				    public int subarraySum(int[] nums, int k) {
+				        int count = 0, sum = 0;
+				        HashMap < Integer, Integer > map = new HashMap < > ();
+				        map.put(0, 1);
+				        for (int i = 0; i < nums.length; i++) {
+				            sum += nums[i];
+				            if (map.containsKey(sum - k))
+				                count += map.get(sum - k);
+				            map.put(sum, map.getOrDefault(sum, 0) + 1);
+				        }
+				        return count;
+				    }
+				}
+
+		19.  Valid Palindrome II: Given a non-empty string s, you may delete at most one character. Judge whether you can make it a palindrome.
+
+			Example 1:
+			Input: "aba"
+			Output: True
+			Example 2:
+			Input: "abca"
+			Output: True
+			Explanation: You could delete the character 'c'.
+			Note:
+			The string will only contain lowercase characters a-z. The maximum length of the string is 50000.
+
+		Approach: Suppose we want to know whether s[i], s[i+1], ..., s[j] form a palindrome. If i >= j then we are done. If s[i] == s[j] then we may take i++; j--. Otherwise, the palindrome must be either s[i+1], s[i+2], ..., s[j] or s[i], s[i+1], ..., s[j-1], and we should check both cases.
+
+			class Solution {
+			    public boolean isPalindromeRange(String s, int i, int j) {
+			        for (int k = i; k <= i + (j - i) / 2; k++) {
+			            if (s.charAt(k) != s.charAt(j - k + i)) return false;
+			        }
+			        return true;
+			    }
+			    public boolean validPalindrome(String s) {
+			        for (int i = 0; i < s.length() / 2; i++) {
+			            if (s.charAt(i) != s.charAt(s.length() - 1 - i)) {
+			                int j = s.length() - 1 - i;
+			                return (isPalindromeRange(s, i+1, j) ||
+			                        isPalindromeRange(s, i, j-1));
+			            }
+			        }
+			        return true;
+			    }
+			}
+
+
+Linked Lists:
+	1. You are given two non-empty linked lists representing two non-negative integers. The digits are stored in reverse order and each of their nodes contain a single digit. Add the two numbers and return it as a linked list.
+
+	You may assume the two numbers do not contain any leading zero, except the number 0 itself.
+
+		Example:
+
+		Input: (2 -> 4 -> 3) + (5 -> 6 -> 4)
+		Output: 7 -> 0 -> 8
+		Explanation: 342 + 465 = 807.
+
+	Approach: just go through the linked list till the end. each iteration keep track of the carry
+
+
+		public Node sum(Node l1, Node l2) {
+
+
+			int carry = 0;
+			Node head = null;
+			Node tail = null;
+			while(l1 != null || l2 != null) {
+				// add the two numbers
+				int sum = l1.value + l2.value;
+
+				int digit = sum % 10;
+				carr = sum / 10;
+
+				if(head == null) {
+					head = new Node(digit);
+				}
+
+				if(tail == null) {
+					tail = head;
+				} else {
+					tail.next = new Node(digit);
+					tail = tail.next;
+					tail.next = null;
+				}
+
+
+				// increment
+				if(l1 != null) l1 = l1.next;
+				if(l2 != null) l2 = l2.next;
+			}
+
+			// now if there was an extra carry add it to the end
+			if(carry > 0) {
+				tail.next = new Node(carry);
+			}
+
+			return head;
+		}
+
+	2. Merge two sorted linked lists and return it as a new list. The new list should be made by splicing together the nodes of the first two lists.
+
+		Example:
+
+		Input: 1->2->4, 1->3->4
+		Output: 1->1->2->3->4->4
+
+		public Node merge(Node l, Node r) {
+			if(l1 == null && l2 null) {
+				return null;
+			} 
+
+			if(l2 == null) {
+				return l1;
+			} else {
+				return l2;
+			}
+
+			// will need to return the head of one of these nodes
+			Node head = null;
+			Node tail = null;
+			if(l1.value >= l2.value) {
+				head = l1;
+			} else {
+				head = l2;
+			}
+			tail = head;
+
+			while(l1 != null && l2 != null) {
+				// compare
+				if(l1.value >= l2) {
+					tail.next = l1;
+					l1 = l1.next;
+					tail = tail.next;
+					tail.next = null
+				} else {
+					tail.next = l2;
+					l2 = l2.next;
+					tail = tail.next;
+					tail.next = null
+				}
+
+			}
+
+			// here check if l1 or l2 is null, and if any of them are not null, then add them to the
+			// end of tail.
+
+			return head;
+		} 
+
+	3. Copy List with Random Pointer: A linked list is given such that each node contains an additional random pointer which could point to any node in the list or null.
+
+		Return a deep copy of the list.
+
+		Map<Node, Node> visited = new HashMap<>();
+
+		public Node getCopy(Node node) {
+			Node copy = visited.get(node);
+			if(copy == null) {
+				Node temp = new Node(node.value);
+				visited.put(node, temp);
+				copy = temp;
+			} 
+
+			return copy;
+		}
+		
+		public Node clone(Node n) {
+			if(head == null) {
+				return null;
+			}
+
+			Node head = getCopy(n);
+			Node tail = head;
+			tail.next = getCopy(n.next);
+			tail.random = getCopy(n.random);
+			tail.next = null;
+			n = n.next;
+
+			while(n != null) {
+				Node temp = getCopy(n);
+				tamp.next = getCopy(n.next);
+				tamp.random = getCopy(n.random);
+				n = n.next;
+
+				tail = temp;
+				tail.next = null;
+			}
+
+			return heads;
+		}
+
+	4. Given a singly linked list L: L0→L1→…→Ln-1→Ln, reorder it to: L0→Ln→L1→Ln-1→L2→Ln-2→…
+
+		You may not modify the values in the list's nodes, only nodes itself may be changed.
+
+		Example 1:
+
+		Given 1->2->3->4, reorder it to 1->4->2->3.
+		Example 2:
+
+		Given 1->2->3->4->5, reorder it to 1->5->2->4->3.
+
+		Approach: traverser to the middle of the linked list,
+
+		public class Solution {
+    
+		    public void reorderList(ListNode head) {
+			      if (head == null || head.next == null)
+			          return;
+			      
+			      // step 1. cut the list to two halves
+			      // prev will be the tail of 1st half
+			      // slow will be the head of 2nd half
+			      ListNode prev = null, slow = head, fast = head, l1 = head;
+			      
+			      while (fast != null && fast.next != null) {
+			        prev = slow;
+			        slow = slow.next;
+			        fast = fast.next.next;
+			      }
+			      
+			      prev.next = null;
+			      
+			      // step 2. reverse the 2nd half
+			      ListNode l2 = reverse(slow);
+			      
+			      // step 3. merge the two halves
+			      merge(l1, l2);
+			    }
+			    
+			    ListNode reverse(ListNode head) {
+			      ListNode prev = null, curr = head, next = null;
+			      
+			      while (curr != null) {
+			        next = curr.next;
+			        curr.next = prev;
+			        prev = curr;
+			        curr = next;
+			      }
+			      
+			      return prev;
+			    }
+			    
+			    void merge(ListNode l1, ListNode l2) {
+			      while (l1 != null) {
+			        ListNode n1 = l1.next, n2 = l2.next;
+			        l1.next = l2;
+			        
+			        if (n1 == null)
+			          break;
+			            
+			        l2.next = n1;
+			        l1 = n1;
+			        l2 = n2;
+			      }
+			    }
+
+			  }
+
+Trees/Graphs
+	1. Validate Binary Search TreeGiven a binary tree, determine if it is a valid binary search tree (BST).
+
+		Assume a BST is defined as follows:
+
+		The left subtree of a node contains only nodes with keys less than the node's key.
+		The right subtree of a node contains only nodes with keys greater than the node's key.
+		Both the left and right subtrees must also be binary search trees.
+		 
+
+		Example 1:
+
+		    2
+		   / \
+		  1   3
+
+		Input: [2,1,3]
+		Output: true
+		Example 2:
+
+		    5
+		   / \
+		  1   4
+		     / \
+		    3   6
+
+		Input: [5,1,4,null,null,3,6]
+		Output: false
+		Explanation: The root node's value is 5 but its right child's value is 4.
+
+		Approach: need to make sure that every node to the right is smaller/ greater than ALL the node node above it
+		// at each node, we pass the range the next node must be within i.e recursing to a right node, all nodes beneath it must be greater than the current node; recursing to the left node, all nodes beneath it must be less than the current node
+
+		boolean isValidBST(Node head) {
+			isValidHelper(head, Integer.MAX, Integer.MIN);
+		}
+
+		boolean isValidBST(Node head, int upperLimit, int lowerLimit) {
+			if(head == null) {
+				return true;
+			}
+
+			if(head.value >= upperLimit || head.value <= lowerLimit) {
+				return false;
+			}
+
+			return isValidBST(head.left, head.value, lowerLimit) && isValidBST(head.right, upperLimit, head.value);
+		}
+
+
+	2.Given a binary tree, flatten it to a linked list in-place.
+
+		For example, given the following tree:
+
+		    1
+		   / \
+		  2   5
+		 / \   \
+		3   4   6
+		The flattened tree should look like:
+
+		1
+		 \
+		  2
+		   \
+		    3
+		     \
+		      4
+		       \
+		        5
+		         \
+		          6
+		Approach: We will tackle this recursively. At each node what we need to do, is get the flattened left subtree of that node, append the flattened right subtree to the end of the flattened left subtree, then add the flattened left subtree to the tail of the current node. Base case is if the current node is null, return null.
+
+		public Node flatten(Node head) {
+			if(head == null) {	
+				retuen null;
+			}
+
+			Node leftList = flatten(head.left);
+			// the left list has been flattened, but now we traverse to the end of the left list so that we can attach the flatenned right list to it.
+			Node temp = head.left;
+			while(temp.right != null)
+				temp = temp.right;
+
+			// now flatten the right side of the current node
+			Node rightList = flatten(head.irght)
+
+			// add right to the left
+			leftList.right = rightList;
+			head.right = leftList;
+			head.left = null;
+
+			return head;
+
+		}
+
+		// Answer from LeetCode:
+		public void flatten(TreeNode root) {
+		    if (root != null) {
+		        flatten(root.right);
+		        if (root.left != null) {
+		            flatten(root.left);
+		            TreeNode node = root.left;
+		            while (node.right != null) {
+		                node = node.right;
+		            }
+		            node.right = root.right;
+		            root.right = root.left;
+		            root.left = null;
+		        }
+		    }
+		}
+
+	3.	Given a non-empty binary tree, find the maximum path sum.
+
+			For this problem, a path is defined as any sequence of nodes from some starting node to any node in the tree along the parent-child connections. The path must contain at least one node and does not need to go through the root.
+
+			Example 1:
+
+			Input: [1,2,3]
+
+			       1
+			      / \
+			     2   3
+
+			Output: 6
+			Example 2:
+
+			Input: [-10,9,20,null,null,15,7]
+
+			   -10
+			   / \
+			  9  20
+			    /  \
+			   15   7
+
+			Output: 42
+
+		class Solution {
+		  int max_sum = Integer.MIN_VALUE;
+
+		  public int max_gain(TreeNode node) {
+		    if (node == null) return 0;
+
+		    // max sum on the left and right sub-trees of node
+		    int left_gain = Math.max(max_gain(node.left), 0);
+		    int right_gain = Math.max(max_gain(node.right), 0);
+
+		    // the price to start a new path where `node` is a highest node
+		    int price_newpath = node.val + left_gain + right_gain;
+
+		    // update max_sum if it's better to start a new path
+		    max_sum = Math.max(max_sum, price_newpath);
+
+		    // for recursion :
+		    // return the max gain if continue the same path
+		    return node.val + Math.max(left_gain, right_gain);
+		  }
+
+		  public int maxPathSum(TreeNode root) {
+		    max_gain(root);
+		    return max_sum;
+		  }
+		}
+
+	4. Clone a graph: Given a reference of a node in a connected undirected graph, return a deep copy (clone) of the graph. Each node in the graph contains a val (int) and a list (List[Node]) of its neighbors.
+
+
+		Note:
+
+		The number of nodes will be between 1 and 100.
+		The undirected graph is a simple graph, which means no repeated edges and no self-loops in the graph.
+		Since the graph is undirected, if node p has node q as neighbor, then node q must have node p as neighbor too.
+		You must return the copy of the given node as a reference to the cloned graph.
+
+		Approach: can do this using DFS or BFS, good practice to try both.
+
+		DFS:
+			Set<Node> visited = new HasSet<Node>();
+			Map<Node, Node> map = new HashMap<Node, Node>();
+
+			public Node clone(Node node) {
+				Node n = new Node(node.value)
+				cloneHelper(node);
+				return n;
+			}
+
+			private Node cloneHelper(Node node) {
+				if(node == null) {
+					return;
+				}
+
+				visited.add(node);
+				// add this node into the map
+				Node temp = getNode(node);
+
+
+				for(Node n: node.list) {
+					temp.list.add(n);
+					if(!visited.contains(n)) {
+						cloneHelper(n);
+					}
+				}
+			}
+
+			private void createNode(Node original) {
+				if(!map.get(original)) {
+					Node temp = new Node(original.value);
+					map.put(original, temp);
+				}
+
+				return map.get(original);
+			}
+
+		BFS:
+			Set<Node> visited = new Set<>();
+			Queue<Node> queue = new LinkedList<Node>();
+
+			public Node
+
+			/// TODO: complete this later
+	5. Binary Tree Right view: Given a binary tree, imagine yourself standing on the right side of it, return the values of the nodes you can see ordered from top to bottom.
+
+		Example:
+
+		Input: [1,2,3,null,5,null,4]
+		Output: [1, 3, 4]
+		Explanation:
+
+		   1            <---
+		 /   \
+		2     3         <---
+		 \     \
+		  5     4       <---
+
+	Approach: This can be solved either with DFS or BFS. With DFS, always traverse to the right child first and keep track of the level in the binary tree. Whenever you move to a level that you have not been to before, then that node is the first node on the right to be seen. 
+
+	DFS:
+		Set<Integer> levelsDiscovered = new HashSet<>();
+		List<Node> rightNodes = new ArrayList<>();
+
+		public List<Node> helper(Node head) {
+			levelsDiscovered.add(0);
+			rightNodes.add(head);
+			rightViewHelper(head.right, 1);
+			rightViewHelper(head.left, 1);
+
+			return rightNodes;
+
+		}
+
+		private void rightViewHelper(Node head, int level) {
+			if(head == null) {
+				return null;
+			}
+
+			if(!levelsDiscovered.contains(level)) {
+				rightNodes.add(node);
+				levelsDiscovered(level);
+			}
+
+			rightViewHelper(head.right, level+1);
+			rightViewHelper(head.left, level+1)
+
+		}
+
+	BFS: // TODO: do later
+
+	6. Number of islands:
+	Given a 2d grid map of '1's (land) and '0's (water), count the number of islands. An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are all surrounded by water.
+
+		Example 1:
+
+		Input:
+		11110
+		11010
+		11000
+		00000
+
+		Output: 1
+		Example 2:
+
+		Input:
+		11000
+		11000
+		00100
+		00011
+
+		Output: 3
+
+		Can accomplish with DFS or BFS.
+		BFS:
+			Basically traverse through the entire array, and whenever you see a 1 (during traversal), start a BFS and increase the number_of_islands variable by one using a queue. Whenever you see a one, during the BFS, then add it to the queue and mark it with a 0 instead of a 1 (so we know its visited). 
+
+			public int numberOfIslands(char[][] map) {
+
+				int numIslands = 0;
+				int rows = map.length;
+				int cols = map[0].length;
+				for(int row = 0; row < rows; row++) {
+					for(int col = 0; col < cols; coll++) {
+						// if its a one then start BFS from here
+						if(map[row][col] == '1') {
+						 	++numIslands;
+						 	map[row][col] = '0';
+						 	// trick here is that we are storing the index of the 2d array as a 1d array index
+						 	// this is accomplished by imagining the 2d array is one long 1d array
+						 	// it is a long 1d array in the sense that the rows of the 2d array 
+						 	// are concatenated one after the other
+						 	// so to calculate a 1d index from a 2d index use this formula
+						 	// 1dIndex = rowImOn * lengthOfRows + colImOn;
+							Queue<Integer> q = new LinkedList<Integer>();
+							// add current position to the queue to start the BFS from their
+							int position = row*rows + col;
+							q.add(position)
+							while(!q.isEmpty()) {
+								int index2d = q.remove();
+								int curRow = index2d/rows;
+								int curCol = index2d%rows;
+								// now check all 4 directions around this point
+								// i.e.
+								if(curRow - 1 > -1 && map[curRow - 1][curCol] == '1') {
+									map[curRow - 1][curCol] = '0';
+									q.add((curRow - 1)*rows + curCol);
+								}
+								// .. 
+								// ..
+								// .. And like so for the rest of the directions
+							}
+						}
+					}
+
+				}
+
+				return numIslands;
+
+			}
+
+
+		DFS:
+			class Solution {
+			  void dfs(char[][] grid, int r, int c) {
+			    int nr = grid.length;
+			    int nc = grid[0].length;
+
+			    if (r < 0 || c < 0 || r >= nr || c >= nc || grid[r][c] == '0') {
+			      return;
+			    }
+
+			    grid[r][c] = '0';
+			    dfs(grid, r - 1, c);
+			    dfs(grid, r + 1, c);
+			    dfs(grid, r, c - 1);
+			    dfs(grid, r, c + 1);
+			  }
+
+			  public int numIslands(char[][] grid) {
+			    if (grid == null || grid.length == 0) {
+			      return 0;
+			    }
+
+			    int nr = grid.length;
+			    int nc = grid[0].length;
+			    int num_islands = 0;
+			    for (int r = 0; r < nr; ++r) {
+			      for (int c = 0; c < nc; ++c) {
+			        if (grid[r][c] == '1') {
+			          ++num_islands;
+			          dfs(grid, r, c);
+			        }
+			      }
+			    }
+
+			    return num_islands;
+			  }
+			}
+
+	7. Lowest Common Ancestor of a Binary Tree: Given a binary tree, find the lowest common ancestor (LCA) of two given nodes in the tree.
+
+	According to the definition of LCA on Wikipedia: “The lowest common ancestor is defined between two nodes p and q as the lowest node in T that has both p and q as descendants (where we allow a node to be a descendant of itself).”
+
+	Given the following binary tree:  root = [3,5,1,6,2,0,8,null,null,7,4]
+
+	Example 1:
+
+	Input: root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 1
+	Output: 3
+	Explanation: The LCA of nodes 5 and 1 is 3.
+	Example 2:
+
+	Input: root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 4
+	Output: 5
+	Explanation: The LCA of nodes 5 and 4 is 5, since a node can be a descendant of itself according to the LCA definition.
+	 
+
+	Note:
+
+	All of the nodes' values will be unique.
+	p and q are different and both values will exist in the binary tree.
+
+	Approach: Basically, traverse both the left and right subtree. If you are returned one of the given nodes, then that node where you were returned one of the desired nodes should return the node that was returned to it. If a node is returned both nodes, then that means it is the node that is the common ancester. Hereafter it will return itself. If a node does not receive any of the desired nodes, then it will simply return null.
+
+		class Solution {
+
+		    private TreeNode ans;
+
+		    public Solution() {
+		        // Variable to store LCA node.
+		        this.ans = null;
+		    }
+
+		    private boolean recurseTree(TreeNode currentNode, TreeNode p, TreeNode q) {
+
+		        // If reached the end of a branch, return false.
+		        if (currentNode == null) {
+		            return false;
+		        }
+
+		        // Left Recursion. If left recursion returns true, set left = 1 else 0
+		        int left = this.recurseTree(currentNode.left, p, q) ? 1 : 0;
+
+		        // Right Recursion
+		        int right = this.recurseTree(currentNode.right, p, q) ? 1 : 0;
+
+		        // If the current node is one of p or q
+		        int mid = (currentNode == p || currentNode == q) ? 1 : 0;
+
+
+		        // If any two of the flags left, right or mid become True
+		        if (mid + left + right >= 2) {
+		            this.ans = currentNode;
+		        }
+
+		        // Return true if any one of the three bool values is True.
+		        return (mid + left + right > 0);
+		    }
+
+		    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+		        // Traverse the tree
+		        this.recurseTree(root, p, q);
+		        return this.ans;
+		    }
+		}
+	8. Given a binary tree, return all root-to-leaf paths.
+
+		Note: A leaf is a node with no children.
+
+		Example:
+
+		Input:
+
+		   1
+		 /   \
+		2     3
+		 \
+		  5
+
+		Output: ["1->2->5", "1->3"]
+
+		Explanation: All root-to-leaf paths are: 1->2->5, 1->3
+
+		Approach: for each node, we add it to the list, when we return from both left and right iterations, then we pop the element from the list. If a node is null, then we take all elements in the list and create a deep copy and add it to a new list which will be stored in a list of lists.
+
+		List<List<Nodes>> allPaths = new ArrayList<>();
+		public List<List<Nodes>> getAllRootPaths(Node head) {
+			helper(head, new ArrayList<Node>());
+			return allPaths;
+		}
+
+		private void helper(Node node, List<Node> currentList) {
+			if(node == null) {
+				List<Node> temp = new ArrayList<Node>();
+				temp.addAll(currentList);
+				allPaths.add(temp);
+				return;
+			}
+
+			currentList.add(node);
+			helper(node, currentList);
+			helper(node, currentList);
+			currentList.remove(node);
+		}
+
+	9. Alien Dictionary: There is a new alien language which uses the latin alphabet. However, the order among letters are unknown to you. You receive a list of non-empty words from the dictionary, where words are sorted lexicographically by the rules of this new language. Derive the order of letters in this language.
+		NOTE: I don't think this will be asked on phone
+
+		Example 1:
+
+		Input:
+		[
+		  "wrt",
+		  "wrf",
+		  "er",
+		  "ett",
+		  "rftt"
+		]
+
+		Output: "wertf"
+		Example 2:
+
+		Input:
+		[
+		  "z",
+		  "x"
+		]
+
+		Output: "zx"
+		Example 3:
+
+		Input:
+		[
+		  "z",
+		  "x",
+		  "z"
+		] 
+
+		Output: "" 
+
+		Explanation: The order is invalid, so return "". 
+		Approach: There are two problems to this problem. First we need to find the orderings (i.e. which letter comes before which other letter). The end result of the orderings is a graph and a set of nodes. The other problem is that we need a way to go through the words to create the above mentioned orderings. In order to make an ordering between two letter (from a 2 different words); we need to have two words which are not the same (obviously). We need a set of words with the same prefix. Then the letters in the words after the prefix will give us the orderings (top to bottom). So we must collect words of the same prefix. The first most obvious collection of words is when we consider the zero prefix. From this we can deduce that all first letters are in order. We make a tree from this going from the bottom to top. Next, we scan the list of words, we prefix of size 1 (and the letter after the prefix of size one is not the same). The we look at this set of words and go from bottom to top to create a graph of dependency by looking at the 1th letter. We keep doing this for all prefix lengths. This will give us a bunch of dependency graphs.
+		Then we start at any node, and do a depth first search. When we get to a node that doesn't have and neighbours, then we remove that node from the graphs and set and print it out. We continue this process until all nodes are completed.
+
+		Here is a way to build a graph: goes through the list of words 2 at a time. When the first time we see a letter, that is not equal between the two words, we create a dependency.
+
+		private final int N = 26;
+		public String alienOrder(String[] words) {
+		    boolean[][] adj = new boolean[N][N];
+		    int[] visited = new int[N];
+		    buildGraph(words, adj, visited);
+		}
+
+		public void buildGraph(String[] words, boolean[][] adj, int[] visited) {
+		    Arrays.fill(visited, -1);                 // -1 = not even existed
+		    for(int i = 0; i < words.length; i++) {
+		        for(char c : words[i].toCharArray()) visited[c - 'a'] = 0;
+		        if(i > 0) {
+		            String w1 = words[i - 1], w2 = words[i];
+		            int len = Math.min(w1.length(), w2.length());
+		            for(int j = 0; j < len; j++) {
+		                char c1 = w1.charAt(j), c2 = w2.charAt(j);
+		                if(c1 != c2) {
+		                    adj[c1 - 'a'][c2 - 'a'] = true;
+		                    break;
+		                }
+		            }
+		        }
+		    }
+		}
+
+	10. Shortest Distance from All Buildings: You want to build a house on an empty land which reaches all buildings in the shortest amount of distance. You can only move up, down, left and right. You are given a 2D grid of values 0, 1 or 2, where:
+
+		Each 0 marks an empty land which you can pass by freely.
+		Each 1 marks a building which you cannot pass through.
+		Each 2 marks an obstacle which you cannot pass through.
+		Example:
+
+		Input: [[1,0,2,0,1],[0,0,0,0,0],[0,0,1,0,0]]
+
+		1 - 0 - 2 - 0 - 1
+		|   |   |   |   |
+		0 - 0 - 0 - 0 - 0
+		|   |   |   |   |
+		0 - 0 - 1 - 0 - 0
+
+		Output: 7 
+
+		Explanation: Given three buildings at (0,0), (0,4), (2,2), and an obstacle at (0,2),
+		             the point (1,2) is an ideal empty land to build a house, as the total 
+		             travel distance of 3+3+1=7 is minimal. So return 7.
+		Note:
+		There will be at least one building. If it is not possible to build such house according to the above rules, return -1.
+
+
+		Approach: Inspired by previous solution.
+			The main idea is the following:
+
+			Traverse the matrix. For each building, use BFS to compute the shortest distance from each '0' to
+			this building. After we do this for all the buildings, we can get the sum of shortest distance
+			from every '0' to all reachable buildings. This value is stored
+			in 'distance[][]'. For example, if grid[2][2] == 0, distance[2][2] is the sum of shortest distance from this block to all reachable buildings.
+			Time complexity: O(number of 1)O(number of 0) ~ O(m^2n^2)
+
+			We also count how many building each '0' can be reached. It is stored in reach[][]. This can be done during the BFS. We also need to count how many total buildings are there in the matrix, which is stored in 'buildingNum'.
+
+			Finally, we can traverse the distance[][] matrix to get the point having shortest distance to all buildings. O(m*n)
+
+			The total time complexity will be O(m^2*n^2), which is quite high!. Please let me know if I did the analysis wrong or you have better solution.
+
+			The distance matrix will be updated each iteration of BFS (on each Building). This will in effect add the distance to from each building to the cell. At the end, each empty cell will hold the sum of all distances to it from each building.
+
+
+		Solution from leet:
+			public class Solution {
+			    public int shortestDistance(int[][] grid) {
+			        if (grid == null || grid[0].length == 0) return 0;
+			        final int[] shift = new int[] {0, 1, 0, -1, 0};
+			        
+			        int row  = grid.length, col = grid[0].length;
+			        int[][] distance = new int[row][col];
+			        int[][] reach = new int[row][col];
+			        int buildingNum = 0;
+			        
+			        for (int i = 0; i < row; i++) {
+			            for (int j =0; j < col; j++) {
+			                if (grid[i][j] == 1) {
+			                    buildingNum++;
+			                    Queue<int[]> myQueue = new LinkedList<int[]>();
+			                    myQueue.offer(new int[] {i,j});
+
+			                    // this is used to demarcate for each building, whether the BFS from this build has visited this position
+			                    boolean[][] isVisited = new boolean[row][col];
+			                    // BFS grows outward radially, level can be thought of as radial distance
+			                    int level = 1;
+			                    
+			                    while (!myQueue.isEmpty()) {
+			                        int qSize = myQueue.size();
+			                        for (int q = 0; q < qSize; q++) {
+			                            int[] curr = myQueue.poll();
+			                            
+			                            for (int k = 0; k < 4; k++) {
+			                                int nextRow = curr[0] + shift[k];
+			                                int nextCol = curr[1] + shift[k + 1];
+			                                
+			                                if (nextRow >= 0 && nextRow < row && nextCol >= 0 && nextCol < col
+			                                    && grid[nextRow][nextCol] == 0 && !isVisited[nextRow][nextCol]) {
+			                                        //The shortest distance from [nextRow][nextCol] to thic building
+			                                        // is 'level'.
+			                                        distance[nextRow][nextCol] += level;
+			                                        reach[nextRow][nextCol]++;
+			                                        
+			                                        isVisited[nextRow][nextCol] = true;
+			                                        myQueue.offer(new int[] {nextRow, nextCol});
+			                                    }
+			                            }
+			                        }
+			                        level++;
+			                    }
+			                }
+			            }
+			        }
+			        
+			        int shortest = Integer.MAX_VALUE;
+			        for (int i = 0; i < row; i++) {
+			            for (int j = 0; j < col; j++) {
+			                if (grid[i][j] == 0 && reach[i][j] == buildingNum) {
+			                    shortest = Math.min(shortest, distance[i][j]);
+			                }
+			            }
+			        }
+			        
+			        return shortest == Integer.MAX_VALUE ? -1 : shortest;
+			        
+			        
+			    }
+			}
+	11. Diameter of Binary Tree: Given a binary tree, you need to compute the length of the diameter of the tree. The diameter of a binary tree is the length of the longest path between any two nodes in a tree. This path may or may not pass through the root.
+
+		Example:
+		Given a binary tree 
+		          1
+		         / \
+		        2   3
+		       / \     
+		      4   5    
+		Return 3, which is the length of the path [4,2,1,3] or [5,2,1,3].
+
+		Note: The length of path between two nodes is represented by the number of edges between them.
+
+		Approach: For each node, just get the number of nodes to the left and right and see if it is the greatest sum. 
+		class Solution {
+		    int ans;
+		    public int diameterOfBinaryTree(TreeNode root) {
+		        ans = 1;
+		        depth(root);
+		        return ans - 1;
+		    }
+		    public int depth(TreeNode node) {
+		        if (node == null) return 0;
+		        int L = depth(node.left);
+		        int R = depth(node.right);
+		        ans = Math.max(ans, L+R+1);
+		        return Math.max(L, R) + 1;
+		    }
+		}
+	12. Accounts Merge: Given a list accounts, each element accounts[i] is a list of strings, where the first element accounts[i][0] is a name, and the rest of the elements are emails representing emails of the account.
+
+		Now, we would like to merge these accounts. Two accounts definitely belong to the same person if there is some email that is common to both accounts. Note that even if two accounts have the same name, they may belong to different people as people could have the same name. A person can have any number of accounts initially, but all of their accounts definitely have the same name.
+
+		After merging the accounts, return the accounts in the following format: the first element of each account is the name, and the rest of the elements are emails in sorted order. The accounts themselves can be returned in any order.
+
+		Example 1:
+		Input: 
+		accounts = [["John", "johnsmith@mail.com", "john00@mail.com"], ["John", "johnnybravo@mail.com"], ["John", "johnsmith@mail.com", "john_newyork@mail.com"], ["Mary", "mary@mail.com"]]
+		Output: [["John", 'john00@mail.com', 'john_newyork@mail.com', 'johnsmith@mail.com'],  ["John", "johnnybravo@mail.com"], ["Mary", "mary@mail.com"]]
+		Explanation: 
+		The first and third John's are the same person as they have the common email "johnsmith@mail.com".
+		The second John and Mary are different people as none of their email addresses are used by other accounts.
+		We could return these lists in any order, for example the answer [['Mary', 'mary@mail.com'], ['John', 'johnnybravo@mail.com'], 
+		['John', 'john00@mail.com', 'john_newyork@mail.com', 'johnsmith@mail.com']] would still be accepted.
+		Note:
+
+		The length of accounts will be in the range [1, 1000].
+		The length of accounts[i] will be in the range [1, 10].
+		The length of accounts[i][j] will be in the range [1, 30].
+
+		Approach: Basically this is a disjoint set problem/ union find, but it can also be solved with dfs. The way that it works is this, we create a graph. Each item in the graph has a reference to its root node. The root node is the first email in an account. This can be implemented with a map<String, List<String>>. Every root node will have a reference to each other email in the account. So in effect, every email will have a reference to its node, and every root email will have references to all of the emails in its set. Now say we have something like this.
+
+		[set1, emailA, emailB, emailC], [set3, emailX, emailY, emailZ], [set2, emailD, emailF, emailB] 
+
+		So now we have a map that maps each email to a list of emails. A root email will map to all children emails. A non root email will map to its root email.
+
+		Now for each item in the hasmap, perform a DFS (using a stack and marking as visited).
+
+				Set<String> visited = new HasSet<>();
+				List<List<String>> returnSet = new ArrayList<>();
+				for(String root: accounts.keySet()) {
+
+					// start at root and do a DFS if it hasn't been done already
+					if(!visited.contains(root)) {
+						visited.add(root);
+						Stack<String> stack = new Stack<>();
+						stack.push(root);
+						List<String> combinedSet = new ArrayList<>();
+						combinedSet.add(root);
+						while(!stack.isEmpty()) {
+							String currEmail = stack.pop();
+							for(String email: account.get(currEmail)) {
+								// check if its visited or not
+								if(!visited.contains(email)) {
+									combinedSet.add(email);
+									visited.add(email);
+									stack.add(email);
+								}
+							}
+						}
+						// now simply add the combined set to the return set
+						returnSet.add(combinedSet);
+					}
+				}
+
+	13. Convert Binary Search Tree to Sorted Doubly Linked List: Convert a BST to a sorted circular doubly-linked list in-place. Think of the left and right pointers as synonymous to the previous and next pointers in a doubly-linked list.
+	 
+	We want to transform this BST into a circular doubly linked list. Each node in a doubly linked list has a predecessor and successor. For a circular doubly linked list, the predecessor of the first element is the last element, and the successor of the last element is the first element.
+	 
+	Specifically, we want to do the transformation in place. After the transformation, the left pointer of the tree node should point to its predecessor, and the right pointer should point to its successor. We should return the pointer to the first element of the linked list.
+
+	The figure below shows the transformed BST. The solid line indicates the successor relationship, while the dashed line means the predecessor relationship.
+
+	Approach: At each node we want to get the left subtree converted into a DLL and the right subtree converted to a DLL. and then we attach the end of the left to my left pointer and the beginning of the right to my right pointer.
+
+		public Node toDLL(Node head) {
+			if(head == null) {
+				return null;
+			}
+
+			Node leftLast = getLast(toDLL(head.left));
+			Node rightFirst = getFirst(toDLL(head.right));
+
+			head.left = leftLast;
+			head.right = rightFirst;
+			leftLast.right = head;
+			rightFirst.left = head;
+
+			return head;
+		}
+
+	Solution from LeetCode:
+		Approach: we only need to set the first pointer once, the first time we encounter a valid node i.e. last == null at that time. At each node we will make it the new last pointer node. We can do this because 
+		class Solution {
+		  // the smallest (first) and the largest (last) nodes
+		  Node first = null;
+		  Node last = null;
+
+		  public void helper(Node node) {
+		    if (node != null) {
+		      // left
+		      helper(node.left);
+		      // node 
+		      if (last != null) {
+		        // link the previous node (last)
+		        // with the current one (node)
+		        last.right = node;
+		        node.left = last;
+		      }
+		      else {
+		        // keep the smallest node
+		        // to close DLL later on
+		        first = node;
+		      }
+		      last = node;
+		      // right
+		      helper(node.right);
+		    }
+		  }
+
+		  public Node treeToDoublyList(Node root) {
+		    if (root == null) return null;
+
+		    helper(root);
+		    // close DLL
+		    last.right = first;
+		    first.left = last;
+		    return first;
+		  }
+		}
+
+
+
+
+
+
+

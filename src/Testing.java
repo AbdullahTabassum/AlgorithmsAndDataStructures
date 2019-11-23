@@ -1,3 +1,4 @@
+import Arrays.Reverse;
 import Graphs.BreadthFirstSearch;
 import Graphs.CreateGraph;
 import Graphs.DepthFirstSearch;
@@ -53,9 +54,14 @@ public class Testing {
 //        for(int i: test) {
 //            System.out.print(i + ",");
 //        }
-        int[] test = {1,2,3};
-        //Permutations.permute(test);
-        Subsets.subsets(test);
+//        int[] test = {1,2,3};
+//        //Permutations.permute(test);
+//        Subsets.subsets(test);
 
+        int[] test = {1,2,3,4,5,6};
+        Reverse.reverse(test);
+        for(int i: test) {
+            System.out.print(i);
+        }
     }
 }
