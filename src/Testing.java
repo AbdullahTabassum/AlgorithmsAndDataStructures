@@ -58,10 +58,16 @@ public class Testing {
 //        //Permutations.permute(test);
 //        Subsets.subsets(test);
 
-        int[] test = {1,2,3,4,5,6};
-        Reverse.reverse(test);
-        for(int i: test) {
-            System.out.print(i);
-        }
+//        int[] test = {1,2,3,4,5,6};
+//        Reverse.reverse(test);
+//        for(int i: test) {
+//            System.out.print(i);
+//        }
+        int i = 20;
+        testingIncrement(++i);
+    }
+
+    public static void testingIncrement(int num) {
+        System.out.println("Number: " + num);
     }
 }
