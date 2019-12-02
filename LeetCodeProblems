@@ -517,6 +517,7 @@ LeetCode problems:
 
 			Output: [1,2,2,3,5,6]elements from nums2.
 			- one index in nums1 one in nums2
+
 			class Solution {
 			  public void merge(int[] nums1, int m, int[] nums2, int n) {
 			    // Make a copy of nums1.
@@ -544,8 +545,7 @@ LeetCode problems:
 			}
 
 			// in place
-
-				class Solution {
+			- note, one may imagine that the there may be a case where the items in arr1 may get overriden; but this can't happen. Say all of the free space after the last valid element in arr1 is taken up, then that means, every item from arr2 was exhausted. thus, arr1 could not be override\			class Solution {
 					  public void merge(int[] nums1, int m, int[] nums2, int n) {
 					    // two get pointers for nums1 and nums2
 					    int p1 = m - 1;
@@ -871,7 +871,7 @@ LeetCode problems:
 				    return result;
 				  }
 				}
-		15. Move zeros: move all zeros to beginnning of array
+		15. Move zeros: move all zeros to end of array
 			Approach: basically, have two pointers, one keeps track of the last non-zero number, the other keeps track of current number. If we find a non zero number we put put it in the place of last non-zero number.
 
 			void moveZeroes(vector<int>& nums) {
@@ -1114,44 +1114,26 @@ Linked Lists:
 	Approach: just go through the linked list till the end. each iteration keep track of the carry
 
 
-		public Node sum(Node l1, Node l2) {
-
-
-			int carry = 0;
-			Node head = null;
-			Node tail = null;
-			while(l1 != null || l2 != null) {
-				// add the two numbers
-				int sum = l1.value + l2.value;
-
-				int digit = sum % 10;
-				carr = sum / 10;
-
-				if(head == null) {
-					head = new Node(digit);
-				}
-
-				if(tail == null) {
-					tail = head;
-				} else {
-					tail.next = new Node(digit);
-					tail = tail.next;
-					tail.next = null;
-				}
-
-
-				// increment
-				if(l1 != null) l1 = l1.next;
-				if(l2 != null) l2 = l2.next;
-			}
-
-			// now if there was an extra carry add it to the end
-			if(carry > 0) {
-				tail.next = new Node(carry);
-			}
-
-			return head;
-		}
+		public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+    ListNode dummyHead = new ListNode(0);
+    ListNode p = l1, q = l2, curr = dummyHead;
+    int carry = 0;
+    while (p != null || q != null) {
+        int x = (p != null) ? p.val : 0;
+        int y = (q != null) ? q.val : 0;
+        int sum = carry + x + y;
+        carry = sum / 10;
+        curr.next = new ListNode(sum % 10);
+        curr = curr.next;
+        if (p != null) p = p.next;
+        if (q != null) q = q.next;
+    }
+    if (carry > 0) {
+        curr.next = new ListNode(carry);
+    }
+    return dummyHead.next;
+}
+			
 
 	2. Merge two sorted linked lists and return it as a new list. The new list should be made by splicing together the nodes of the first two lists.
 
@@ -1312,6 +1294,57 @@ Linked Lists:
 			    }
 
 			  }
+
+			  Practie: 
+			  	reverse recursive:
+			  		publiv Node reverse(Node n, Node prev) {
+			  			if(n == null ) {
+			  				return null;
+			  			}
+
+			  			if(n.next = null) {
+			  				// this will be the new head, so we shall return it
+			  				n.next = prev;
+			  				return n;
+			  			}
+
+			  			n.next = prev;
+			  			return reverse(n, n.next);
+
+			  		}
+
+			  	another recursive way:
+			  		public Node reverse(Node n) {
+			  			if(n == null || n.next == null) {
+			  				return n;
+			  			}
+
+			  			Node head = reverse(n.next);
+
+			  			// the current nodes next node should point to the current node
+			  			n.next.next = n;
+			  			// the current node's next should point to null
+			  			n.next = null;
+
+			  			// return the new head back upto the chain
+			  			return head; 
+			  		}
+
+			  	iterative:
+			  		public Node reverse(Node n) {
+			  			Node prev = null;
+			  			Node curr = n;
+			  			Node next = n.next;
+
+			  			while(curr != null) {
+			  				curr.next = prev;
+			  				prev = curr;
+			  				curr = next;
+			  				next = next.next;
+			  			}
+
+			  			return prev;
+			  		}
 
 Trees/Graphs
 	1. Validate Binary Search TreeGiven a binary tree, determine if it is a valid binary search tree (BST).
@@ -1839,29 +1872,52 @@ Trees/Graphs
 		Here is a way to build a graph: goes through the list of words 2 at a time. When the first time we see a letter, that is not equal between the two words, we create a dependency.
 
 		private final int N = 26;
-		public String alienOrder(String[] words) {
-		    boolean[][] adj = new boolean[N][N];
-		    int[] visited = new int[N];
-		    buildGraph(words, adj, visited);
-		}
+			public String alienOrder(String[] words) {
+			    boolean[][] adj = new boolean[N][N];
+			    int[] visited = new int[N];
+			    buildGraph(words, adj, visited);
 
-		public void buildGraph(String[] words, boolean[][] adj, int[] visited) {
-		    Arrays.fill(visited, -1);                 // -1 = not even existed
-		    for(int i = 0; i < words.length; i++) {
-		        for(char c : words[i].toCharArray()) visited[c - 'a'] = 0;
-		        if(i > 0) {
-		            String w1 = words[i - 1], w2 = words[i];
-		            int len = Math.min(w1.length(), w2.length());
-		            for(int j = 0; j < len; j++) {
-		                char c1 = w1.charAt(j), c2 = w2.charAt(j);
-		                if(c1 != c2) {
-		                    adj[c1 - 'a'][c2 - 'a'] = true;
-		                    break;
-		                }
-		            }
-		        }
-		    }
-		}
+			    StringBuilder sb = new StringBuilder();
+			    for(int i = 0; i < N; i++) {
+			        if(visited[i] == 0) {                 // unvisited
+			            if(!dfs(adj, visited, sb, i)) return "";
+			        }
+			    }
+			    return sb.reverse().toString();
+			}
+
+			public boolean dfs(boolean[][] adj, int[] visited, StringBuilder sb, int i) {
+			    visited[i] = 1;                            // 1 = visiting
+			    for(int j = 0; j < N; j++) {
+			        if(adj[i][j]) {                        // connected
+			            if(visited[j] == 1) return false;  // 1 => 1, cycle   
+			            if(visited[j] == 0) {              // 0 = unvisited
+			                if(!dfs(adj, visited, sb, j)) return false;
+			            }
+			        }
+			    }
+			    visited[i] = 2;                           // 2 = visited
+			    sb.append((char) (i + 'a'));
+			    return true;
+			}
+
+			public void buildGraph(String[] words, boolean[][] adj, int[] visited) {
+			    Arrays.fill(visited, -1);                 // -1 = not even existed
+			    for(int i = 0; i < words.length; i++) {
+			        for(char c : words[i].toCharArray()) visited[c - 'a'] = 0;
+			        if(i > 0) {
+			            String w1 = words[i - 1], w2 = words[i];
+			            int len = Math.min(w1.length(), w2.length());
+			            for(int j = 0; j < len; j++) {
+			                char c1 = w1.charAt(j), c2 = w2.charAt(j);
+			                if(c1 != c2) {
+			                    adj[c1 - 'a'][c2 - 'a'] = true;
+			                    break;
+			                }
+			            }
+			        }
+			    }
+			}
 
 	10. Shortest Distance from All Buildings: You want to build a house on an empty land which reaches all buildings in the shortest amount of distance. You can only move up, down, left and right. You are given a 2D grid of values 0, 1 or 2, where:
 
@@ -2082,6 +2138,10 @@ Trees/Graphs
 
 	Solution from LeetCode:
 		Approach: we only need to set the first pointer once, the first time we encounter a valid node i.e. last == null at that time. At each node we will make it the new last pointer node. We can do this because 
+
+		To understand this code we must understand the abstraction that this is using. Namely, it is in-order traversal. The way that in order traversal works is that it starts from a root, a node, and visits the left tree. Only after it has completed visiting the left subtree for the current node, will it consider the current node 'done'. i.e. it can be printed out. In our case, we would like to attach it to the end of a linked list.
+		To attach it to the end of a linked list, we must have the last node of the linked list available. This is accomplished, by noting that whenever a node's left subtree is traversed, we can mark that node as the last node in the linked list
+
 		class Solution {
 		  // the smallest (first) and the largest (last) nodes
 		  Node first = null;
@@ -2668,9 +2728,9 @@ Trees/Graphs
 							// copy all items from current into a list and add them to the return list
 						}
 						// either include the item or not
-						subsets(arr, current.add(0, arr[i]), ++i);
+						subsets(arr, current.add(0, arr[i]), i+1);
 						current.remove(0)
-						subsets(arr, current, ++i);
+						subsets(arr, current, i+1);
 
 					}
 
@@ -3373,9 +3433,341 @@ Searching and sorting
 			}
 
 
+Others:
+	1. Expression Add Operators
+
+Given a string that contains only digits 0-9 and a target value, return all possibilities to add binary operators (not unary) +, -, or * between the digits so they evaluate to the target value.
+
+Example 1:
+
+Input: num = "123", target = 6
+Output: ["1+2+3", "1*2*3"] 
+Example 2:
+
+Input: num = "232", target = 8
+Output: ["2*3+2", "2+3*2"]
+Example 3:
+
+Input: num = "105", target = 5
+Output: ["1*0+5","10-5"]
+Example 4:
+
+Input: num = "00", target = 0
+Output: ["0+0", "0-0", "0*0"]
+Example 5:
+
+Input: num = "3456237490", target = 9191
+Output: []
+
+	Approach: we need to recurse over the number size (or as in the case of the leet code solution do a no-op), and then 
+	recurse for each operation +,- and *
+
+	class Solution {
+
+  public ArrayList<String> answer;
+  public String digits;
+  public long target;
+
+  public void recurse(
+      int index, long previousOperand, long currentOperand, long value, ArrayList<String> ops) {
+    String nums = this.digits;
+
+    // Done processing all the digits in num
+    if (index == nums.length()) {
+
+      // If the final value == target expected AND
+      // no operand is left unprocessed
+      if (value == this.target && currentOperand == 0) {
+        StringBuilder sb = new StringBuilder();
+        ops.subList(1, ops.size()).forEach(v -> sb.append(v));
+        this.answer.add(sb.toString());
+      }
+      return;
+    }
+
+    // Extending the current operand by one digit
+    currentOperand = currentOperand * 10 + Character.getNumericValue(nums.charAt(index));
+    String current_val_rep = Long.toString(currentOperand);
+    int length = nums.length();
+
+    // To avoid cases where we have 1 + 05 or 1 * 05 since 05 won't be a
+    // valid operand. Hence this check
+    if (currentOperand > 0) {
+
+      // NO OP recursion
+      recurse(index + 1, previousOperand, currentOperand, value, ops);
+    }
+
+    // ADDITION
+    ops.add("+");
+    ops.add(current_val_rep);
+    recurse(index + 1, currentOperand, 0, value + currentOperand, ops);
+    ops.remove(ops.size() - 1);
+    ops.remove(ops.size() - 1);
+
+    if (ops.size() > 0) {
+
+      // SUBTRACTION
+      ops.add("-");
+      ops.add(current_val_rep);
+      recurse(index + 1, -currentOperand, 0, value - currentOperand, ops);
+      ops.remove(ops.size() - 1);
+      ops.remove(ops.size() - 1);
+
+      // MULTIPLICATION
+      ops.add("*");
+      ops.add(current_val_rep);
+      recurse(
+          index + 1,
+          currentOperand * previousOperand,
+          0,
+          value - previousOperand + (currentOperand * previousOperand),
+          ops);
+      ops.remove(ops.size() - 1);
+      ops.remove(ops.size() - 1);
+    }
+  }
+
+  public List<String> addOperators(String num, int target) {
+
+    if (num.length() == 0) {
+      return new ArrayList<String>();
+    }
+
+    this.target = target;
+    this.digits = num;
+    this.answer = new ArrayList<String>();
+    this.recurse(0, 0, 0, 0, new ArrayList<String>());
+    return this.answer;
+  }
+}
+
+2.  Back to Chapter
+  Find All Anagrams in a String
+Given a string s and a non-empty string p, find all the start indices of p's anagrams in s.
+
+Strings consists of lowercase English letters only and the length of both strings s and p will not be larger than 20,100.
+
+The order of output does not matter.
+
+Example 1:
+
+Input:
+s: "cbaebabacd" p: "abc"
+
+Output:
+[0, 6]
+
+Explanation:
+The substring with start index = 0 is "cba", which is an anagram of "abc".
+The substring with start index = 6 is "bac", which is an anagram of "abc".
+Example 2:
+
+Input:
+s: "abab" p: "ab"
+
+Output:
+[0, 1, 2]
+Explanation:
+The substring with start index = 0 is "ab", which is an anagram of "ab".
+The substring with start index = 1 is "ba", which is an anagram of "ab".
+The substring with start index = 2 is "ab", which is an anagram of "ab".`
+
+Solution: public List<Integer> findAnagrams(String s, String p) {
+    List<Integer> list = new ArrayList<>();
+    if (s == null || s.length() == 0 || p == null || p.length() == 0) return list;
+    int[] hash = new int[256]; //character hash
+    //record each character in p to hash
+    for (char c : p.toCharArray()) {
+        hash[c]++;
+    }
+    //two points, initialize count to p's length
+    int left = 0, right = 0, count = p.length();
+    while (right < s.length()) {
+        //move right everytime, if the character exists in p's hash, decrease the count
+        //current hash value >= 1 means the character is existing in p
+        if (hash[s.charAt(right++)]-- >= 1) count--; 
+        
+        //when the count is down to 0, means we found the right anagram
+        //then add window's left to result list
+        if (count == 0) list.add(left);
+    
+        //if we find the window's size equals to p, then we have to move left (narrow the window) to find the new match window
+        //++ to reset the hash because we kicked out the left
+        //only increase the count if the character is in p
+        //the count >= 0 indicate it was original in the hash, cuz it won't go below 0
+        if (right - left == p.length() && hash[s.charAt(left++)]++ >= 0) count++;
+    }
+    return list;
+}
+
+	3. Permutation in String
+		Solution
+		Given two strings s1 and s2, write a function to return true if s2 contains the permutation of s1. In other words, one of the first string's permutations is the substring of the second string.
+
+		
+
+		Example 1:
+
+		Input: s1 = "ab" s2 = "eidbaooo"
+		Output: True
+		Explanation: s2 contains one permutation of s1 ("ba").
+		Example 2:
+
+		Input:s1= "ab" s2 = "eidboaoo"
+		Output: False
+		
+
+		Note:
+
+		The input strings only contain lower case letters.
+		The length of both given strings is in range [1, 10,000].
+
+
+	
+	Solution from leet code:
+		Explanation: Basically use an array of 26 items to store the count of each character in sMap1.
+		To acces an index use smap1[char - 'a']
+		Then, we will iterate through s2 with a window size of s1.length. until the beginnin of the window reaches
+		s2.length - s1.length. everytime you move the window, one letter from the taken out and one new letter
+		will be added to the smap2. smap2 is basicallyy a mapping of each 26 chars to their frequency. each time smap2
+		is updated, we compare the arrays smap1 and smap2.
+	public class Solution {
+    public boolean checkInclusion(String s1, String s2) {
+        if (s1.length() > s2.length())
+            return false;
+        int[] s1map = new int[26];
+        int[] s2map = new int[26];
+        for (int i = 0; i < s1.length(); i++) {
+            s1map[s1.charAt(i) - 'a']++;
+            s2map[s2.charAt(i) - 'a']++;
+        }
+        for (int i = 0; i < s2.length() - s1.length(); i++) {
+            if (matches(s1map, s2map))
+                return true;
+            s2map[s2.charAt(i + s1.length()) - 'a']++;
+            s2map[s2.charAt(i) - 'a']--;
+        }
+        return matches(s1map, s2map);
+    }
+    public boolean matches(int[] s1map, int[] s2map) {
+        for (int i = 0; i < 26; i++) {
+            if (s1map[i] != s2map[i])
+                return false;
+        }
+        return true;
+    }
+}
+
+4. Verify Alien dictionary:
+  Verifying an Alien Dictionary
+
+In an alien language, surprisingly they also use english lowercase letters, but possibly in a different order. The order of the alphabet is some permutation of lowercase letters.
+
+Given a sequence of words written in the alien language, and the order of the alphabet, return true if and only if the given words are sorted lexicographicaly in this alien language.
+
+Example 1:
+
+Input: words = ["hello","leetcode"], order = "hlabcdefgijkmnopqrstuvwxyz"
+Output: true
+Explanation: As 'h' comes before 'l' in this language, then the sequence is sorted.
+Example 2:
+
+Input: words = ["word","world","row"], order = "worldabcefghijkmnpqstuvxyz"
+Output: false
+Explanation: As 'd' comes after 'l' in this language, then words[0] > words[1], hence the sequence is unsorted.
+Example 3:
+
+Input: words = ["apple","app"], order = "abcdefghijklmnopqrstuvwxyz"
+Output: false
+Explanation: The first three characters "app" match, and the second string is shorter (in size.) According to lexicographical rules "apple" > "app", because 'l' > '∅', where '∅' is defined as the blank character which is less than any other character (More info).
+ 
+Solution: Basically compare two words at a time. If all pairs of adjacent words are in the correct order then the
+entire list of words (dictionary) is in the correct order. 
+ Also, the characts in the order list are stored in an array int[26] where the value denotes the actual order in the alien
+ dictionary. When comparing two words, we skip over all of the equal letters and just compare the first non-equal letter.
+
+
+class Solution {
+    public boolean isAlienSorted(String[] words, String order) {
+        int[] index = new int[26];
+        for (int i = 0; i < order.length(); ++i)
+            index[order.charAt(i) - 'a'] = i;
+
+        search: for (int i = 0; i < words.length - 1; ++i) {
+            String word1 = words[i];
+            String word2 = words[i+1];
+
+            // Find the first difference word1[k] != word2[k].
+            for (int k = 0; k < Math.min(word1.length(), word2.length()); ++k) {
+                if (word1.charAt(k) != word2.charAt(k)) {
+                    // If they compare badly, it's not sorted.
+                    if (index[word1.charAt(k) - 'a'] > index[word2.charAt(k) - 'a'])
+                        return false;
+                    continue search;
+                }
+            }
+
+            // If we didn't find a first difference, the
+            // words are like ("app", "apple").
+            if (word1.length() > word2.length())
+                return false;
+        }
+
+        return true;
+    }
+}
+
+5. Interval List Intersections
+
+Given two lists of closed intervals, each list of intervals is pairwise disjoint and in sorted order.
+
+Return the intersection of these two interval lists.
+
+(Formally, a closed interval [a, b] (with a <= b) denotes the set of real numbers x with a <= x <= b.  The intersection of two closed intervals is a set of real numbers that is either empty, or can be represented as a closed interval.  For example, the intersection of [1, 3] and [2, 4] is [2, 3].)
+
+ 
+
+Example 1:
 
 
 
+Input: A = [[0,2],[5,10],[13,23],[24,25]], B = [[1,5],[8,12],[15,24],[25,26]]
+Output: [[1,2],[5,5],[8,10],[15,23],[24,24],[25,25]]
+Reminder: The inputs and the desired output are lists of Interval objects, and not arrays or lists.
+ 
 
+Note:
 
+0 <= A.length < 1000
+0 <= B.length < 1000
+0 <= A[i].start, A[i].end, B[i].start, B[i].end < 10^9
+NOTE: input types have been changed on April 15, 2019. Please reset to default code definition to get new method signature.
 
+Approach: Note that intervals in the same set do not intersect. Also note, that the when comparing 
+
+Soltion from LeetCode:
+	class Solution {
+    public Interval[] intervalIntersection(Interval[] A, Interval[] B) {
+        List<Interval> ans = new ArrayList();
+        int i = 0, j = 0;
+
+        while (i < A.length && j < B.length) {
+            // Let's check if A[i] intersects B[j].
+            // lo - the startpoint of the intersection
+            // hi - the endpoint of the intersection
+            int lo = Math.max(A[i].start, B[j].start);
+            int hi = Math.min(A[i].end, B[j].end);
+            if (lo <= hi)
+                ans.add(new Interval(lo, hi));
+
+            // Remove the interval with the smallest endpoint
+            if (A[i].end < B[j].end)
+                i++;
+            else
+                j++;
+        }
+
+        return ans.toArray(new Interval[ans.size()]);
+    }
+}
