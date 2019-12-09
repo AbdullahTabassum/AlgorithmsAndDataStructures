@@ -3771,3 +3771,415 @@ Soltion from LeetCode:
         return ans.toArray(new Interval[ans.size()]);
     }
 }
+
+1. Kadanes algorithm (subarray with the largest sum):
+	the brute force way involves generating all sub arrays, which is not ideal
+	- a much better way to do this is to notice a recursive approach
+		- for each element in the array, we can make one of two decisions
+			1. should this element be the start of a new max subarray 
+			2. or should this element be added to the the previous maximum subarry
+		- we basically need to figure out the following: 
+		maxSumEndingAtIndex[i] = Math.max(arr[i], maxSumEndingAtIndex[i - 1]);
+
+	- this basically stems from the idea of making subsets, as the problem reduces to making subsets, choosing sum elements and not choosing others
+	- usually when making subsets, we would run from the first to last index recurring on whether to keep or discard the current element. the DP solution is derived here by running the iteration through the array and looking at the items before us
+
+	public int maxSubArray(int[] nums) {
+    int maxSoFar = nums[0];
+    int maxEndingHere = nums[0];
+
+    for (int i = 1; i < nums.length; i++){
+
+      maxEndingHere = Math.max(maxEndingHere + nums[i], nums[i]);
+
+      maxSoFar = Math.max(maxSoFar, maxEndingHere);  
+    }
+
+    return maxSoFar;
+  }
+
+2. Search a 2d array for an item:
+	you can have two variations:
+		 1, 2, 3, 4
+		 5, 6, 7, 8
+		 9, 10,11,12 
+
+		// here we have all of the rows sorted and the last element of each row comes before the beginning of the next row. We can think of this like a long 1D array with each subsequent row after each other. i.e.
+
+		1,2,3,4,5,6,7,8,9,10,11,12
+
+		Then we can perform a simple binary search and find the desired element.
+		Question: how do we handle boundraies between rows?
+			- for this we will have a mapping function
+			- we will work as if the 2D array is a 1d array of length rows*cols
+			- then the first item's index is 0 and the last items index is 11 (rows*cols - 1)
+				- so how do we get row and column from an index?
+					row = index / numberOfRows
+					col = index % numberOfRows
+
+		// now run bunary search
+
+		public boolean search(int[][] mat, int item) {
+			int rows = mat.length;
+			int cols = mat[0].length;
+			int low = 0;
+			int high = rows*cols -1;
+
+			while(l < h) {
+				int mid = l + (r-l)/2;
+				int current = mat[getRow(l)][getCol(l)];
+
+				if(current == item) {
+					return true;
+				}
+
+				if(current < item) { // search the right side
+					left = mid + 1;
+				} else { // search left side
+					right = mid;
+				}
+			}
+
+			return false;
+		}
+
+		// the other case is when the last item in row is not less than or equal to the next item in the next row
+		1, 4, 7, 11
+		8, 9,10, 20
+		11,12,17,30
+
+		// now we can't think of this as a 1d array
+		// notice something about the current matrix
+		// the rows are sorted and the columns are sorted
+		// this implies that if you go down or right from any position the value will increase
+		// and vice versa
+		// our goal is to narrow the search space for every iteration of the algorithm
+		// notice that if you are looking for the number 10, and you start at the top right corner of the matrix
+		// or the bottom left of the matrix you can either go to a value larger than the curren value or smaller 
+		// i.e. top,right: 11->7 and 11->20 or bottom left 11->8 or 11->12
+		// we can reduce our decision space if we started at one of these points
+		// on the contrary, if we start at the top left (1) or the bottom right, we can't decrease our decision space i.e. 1->4 or 1->8 and 30->17, or 30->20
+		// in this case we did not decrease the decision space
+
+			// so basically the algorithm would be
+			// start at the bottom left or top right
+			// (let's choose top right) while we are still in the bounds of the matrix, 
+			// if the current item is greater than the target, go left, col--
+			// if the item is less than the target move down row++
+			// keep doing this while the row,col are valid or until you have found the value
+
+3. Give a node, find all nodes from the current node that are k distance away in a binary tree
+	// First we must understand that this question is not that easy. We need to notice that nodes that are k distance away might also be up before the current node's parent
+	// so how to do we traverse a nodes parent if a node doesn't have a reference to its parent.
+	// we can do some preprocessing by going through the binary tree and creating a hashmap.
+		// each entry in the hashmap will have a key being a node, and the value being its parent node
+
+		// perhaps we can form such a tree like this:
+			//iterate through all nodes and pass its parent to each iteration
+			private Map<Node, Node> get parentMaps(Node root, Map parents, Node myParent) {
+				if(root == null) {
+					return current;
+				}
+
+				parents.set(root, myParent);
+				parentMaps(root.left,  parents, root);
+				parentMaps(root.right, parents, root);
+			}
+	// now all we need to do is perform a BFS
+	public List<Integer> distanceK(TreeNode treeRoot, TreeNode startNode, int targetDistance) {
+
+		  Map<TreeNode, TreeNode> nodeToParentMap = new HashMap();
+		  populateNodeToParentMap(nodeToParentMap, treeRoot, null);
+
+		  Queue<TreeNode> queue = new LinkedList();
+		  queue.add(startNode);
+
+		  Set<TreeNode> seen = new HashSet();
+		  seen.add(startNode);
+
+		  int currentLayer = 0;
+
+		  while (!queue.isEmpty()) {
+		    if (currentLayer == targetDistance) {
+		      return extractLayerFromQueue(queue);
+		    }
+
+		    int layerSize = queue.size();
+		    for (int i = 0; i < layerSize; i++) {
+
+		      TreeNode currentNode = queue.poll();
+
+		      if (currentNode.left != null && !seen.contains(currentNode.left)) {
+		          seen.add(currentNode.left);
+		          queue.offer(currentNode.left);
+		      }
+
+		      if (currentNode.right != null && !seen.contains(currentNode.right)) {
+		        seen.add(currentNode.right);
+		        queue.offer(currentNode.right);
+		      }
+
+		      TreeNode parentOfCurrentNode = nodeToParentMap.get(currentNode);
+		      if (parentOfCurrentNode != null && !seen.contains(parentOfCurrentNode)) {
+		        seen.add(parentOfCurrentNode);
+		        queue.offer(parentOfCurrentNode);
+		      }
+
+		    }
+
+		    currentLayer++;
+
+		  }
+
+		  return new ArrayList<Integer>();
+		}
+
+		private List<Integer> extractLayerFromQueue(Queue<TreeNode> queue) {
+		  List<Integer> extractedList = new ArrayList();
+		  for (TreeNode node: queue) {
+		    extractedList.add(node.val);
+		  }
+		  return extractedList;
+		}
+
+4. Change making problem - given a set of coins, what is the least amount of coins needed to make a given amount
+	i.e. coins = [1,2,4] 
+		 amount = 11, answer: 3 coins ==> 5,5,1
+
+	To recursively solve this problem from a top down approach, we would basically iterate over each coin and subtract that coins value from the given amount. Then we would recur for the new lesser amount
+
+
+		public int leastCoins(int[] coins, int amount) {
+			if(amount == 0) {
+				return 0;
+			}
+			int min = Integer.MAX_VALUE;
+			for(int coin : coins) {
+				if(coin <= amount) {
+					// min = Math.min(min, leastCoins(coins, amount - coin) + 1);
+					// top down DP
+					// int numberOfCoinsForAmount = leastCoins(coins, amount - coin);
+					// first check if a value exists, otherwise,compute it and add it to the list
+
+				}
+			}
+		}
+
+		// this can be made to a dynamic programming top down easily by storing the return value of an amount in an array
+		// 
+		// imagine doing this problem backwards, i.e. starting with sum = 0, and working your way up to the desired amount
+
+		public int leastCoins(int[] coins, int amount) {
+			int[] leastCoinsForAmount = new int[amount+1]; // need one for zero
+
+			leastCoinsForAmount[0] = 0;
+
+			// need to initialize each element in the array with a high value
+
+			// now just go through the array "leastCoinsForAmount",
+			// for each "amount", try each coin and reuse the array
+			for(int i = 1; i < leastCoinsForAmount; i++) {
+
+				// check for each coin
+				for(int coin: coins) {
+					// make sure that the coin is smaller than the current amount
+					if(coin <= i) {
+						leastCoinsForAmount[i] = Math.min(leastCoinsForAmount[i], leastCoinsForAmount[i - coin] + 1);
+					}
+				}
+			}
+			return leastCoinsForAmount[amount+1];
+		}
+
+5. Add two numbers without using the "+" sign
+	- notice that numbers are actually represented in the computer as bits with base 2
+	- in order to add two numbers using bits, we can do the following
+		- first find the sum of the two numbers without the carry overs by use XOR operator
+			i.e. xor = a ^ b
+			- and we will store the result in a
+		- use the "&" operator to find all of the carries
+			b = a & b
+			- but notice something very important, in order to "apply" the carryovers, the result must be shifted by one
+			i.e. b<<1
+		- in the next iteration we will do the same thing but notice that b holds the carrovers
+		- we will keep on iterating until the carry overs are zero
+
+		public int getSum(int a, int b) {
+
+		  while (b != 0) {
+		    int carry = a & b;
+
+		    a = a ^ b;
+
+		    b = carry << 1;
+		  }
+		  return a;
+		}
+
+ 6. Valid parentheses: make sure parenthesis are balanced
+ 		Approach: we keep track of all of the opening paranthesis as we encounter them in a stack. Whenever we encounter a closing paranthesis, we need to make sure that it matches the last opening paranthesis. If it doesn't, then we know that the current parenthesization is incorrect. If we reach the end of the string, and the stack is empty, then we know that the expression is balananced.
+ 			" [ () () () ] { } { [ ( ) ] } " valid
+			" { } { ) [ ] " invalid
+
+		my code:
+			public boolean inValid(String exp) {
+
+				Stack<Character> openBracketStack = new Stack<>();
+
+				for(int i = 0; i < exp.length; i++) {
+					// if open bracket then add it to the stack
+					if(openBracketStack()) {
+						openBracket.push(exp.charAt(i));
+					}
+
+					// if closed bracket then make sure the last guy on the stack is the same type but opening
+					else if(matchesLastOpening(e, openBracketStack)) {
+						openBracketStack.pop();
+					} else {
+						return false;
+					}
+
+				}
+
+				// if there is somehting in the stack return false
+				if(openBracketStack.isEmpty()) {
+					return true;
+				}
+				return false;
+			}
+
+
+7. Partition array into k subsets with equal sum.
+	- given an array, see if it can be divided up into k subsets where each subset equals the same value
+		i.e. arr = 4,3,2,3,5,2,1 k = 4
+		in this case, each bucket would have to equal 5
+
+	- Approach, this is a backtracking recursive problem
+	- we will try to add and not add each item to each bucket
+	- when a bucket reaches the expected value, we go onto to the next bucket
+	- we keep going until we covered k buckets
+
+	// base cases
+		// 1. if there is one bucket left, that means k-1 buckets were successfully portioned elements such thatthere sum equals the desired sum
+			- so that means the last bucket will automatically have the desired remaining sum, so we return true
+		// 2. this is technically not a base case, but if the current bucket sum equals the target sum for each bucket, then we recurse to the next bucket with a zeroed sum
+
+	// otherwise, we will try to put each item in the current bucket and recur
+
+	 public boolean canPartitionKSubsets(int[] arr, int k) {
+
+		  int sumOfAllArrayItems = 0;
+		  for (int num : arr) {
+		      sumOfAllArrayItems += num;
+		  }
+
+		  if (k <= 0 || k > arr.length || sumOfAllArrayItems % k != 0) {
+		    return false;
+		  }
+
+		  return canPartition(0, arr, new boolean[arr.length], k, 0, sumOfAllArrayItems / k);
+		}
+
+		boolean canPartition(int iterationStart, int[] arr, boolean[] used, int k,
+		                      int inProgressBucketSum, int targetBucketSum) {
+
+		  if (k == 1) {
+		    return true;
+		  }
+
+		  if (inProgressBucketSum == targetBucketSum) {
+		    return canPartition(0, arr, used, k - 1, 0, targetBucketSum);
+		  }
+
+		  for (int i = iterationStart; i < arr.length; i++) {
+		    if (!used[i] && inProgressBucketSum + arr[i] <= targetBucketSum) {
+		      used[i] = true;
+		      
+		      if (canPartition(i + 1, arr, used, k, inProgressBucketSum + arr[i], targetBucketSum)) {
+		        return true;
+		      }
+		      used[i] = false;
+		    }
+		  }
+
+		  return false;
+		}
+ 8. Generate all palindromic decompositions of a string:
+ 		i.e. str = "aab"
+ 			ret = [
+ 					['a', 'a', 'b']
+ 					['aa', 'b']
+ 				  ]
+ 		Approach: basically we will begin each recursion with a beginning index
+ 					- from this beginning index we iterate from this beginning index to and ending index (substring)
+ 						- we will check if this current substring is a palindrome, then we will recur, otherwise we won't recur over this substring
+ 					
+ 				public List<List<String>> genPalindromes(String str) {
+ 				 	List<List<String>> palindromeSets = new ArrayList<>()
+ 					helper(str, palindromeSets, 0);
+ 					return palindromeSets;
+ 				}
+
+ 				private void helper(String str, List<List<String>> pals, int beginning, List<String> currentSet) {
+ 					// if the beginning index is out of range then we have successfully completed generating set of strings
+ 					if(beginning >= str.length) {
+ 						pals.add(currentSet);
+ 						return;
+ 					}
+
+ 					// otherwise, we will iterate over all substrings starting from the current index
+ 					for(int i = beginning; i < str.length; i++) {
+ 						if() {
+
+ 						}
+ 					}
+ 				}
+
+
+ - Diameter of a binary tree
+ - Number of islands (present above)
+ - Meeting room 
+ - How to check if there is a path for a string in a matrix of characters (can move left, up, right and down). Can start froom any point in matrix
+ - regex expression matching
+ - balanace paranthesis for a string
+ - iterative in-order traversal
+ - infinite chess board knight pawn problem?
+ - techinterviewerclub.com
+ - longest consecutive sorted sequence
+ - find inversion of array
+ - merge two sorted arrays in place
+ - given a string like ((A9a)))()()()) <- O(n) time??? and O(1) space
+ - regex expression matching
+ - count number of occurances in an array
+ - evaluate a mathematical expression like: (+5(*78)9 10 33)
+ - given a binary tree find shortest path from given node to nearest leaf. Possible traveser backwards up tree
+ - Given a listlist of tax brackets and what taxes are for each, and an income, determine what thtat person owes in taxes
+ - Given a blank nyt crossword, output where all the clues would be
+ - Add two binary strings represented as String
+ - Design simplified instagram
+ - print all DISTINCT permutation of a string
+ - given a list of points and a number k, find k closest points to the origin
+ - number is strobgromattic
+ - Give one string to sort, and another that defines the order, sort the first string in the order the second string defines
+ - return all subsets within a set
+ - what is in-order traversal of binary tree
+ - multiply two strings together given numbers as chars in array
+ - coins problem - DP
+ - reverse linked list
+ - divide 2 numbers without useing /
+ - merge intervals
+ - expression evaluation
+ - find k closest points to the origin in 2D plane, given an array containing /n points
+ - sum of node values at each level of binary tree
+ - read4 type question
+ - given dictionary and 2 words, find shortest path between 2 words by modifying only one character at a time and using obly dictionary words
+ - find connected components in a graph
+ - print diagonals of matrix
+ - word break
+ - move zeroes
+ - Total ways to decode a string
+ There are 139 pages of questions =0
+
+
+
+	

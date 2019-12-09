@@ -1,4 +1,5 @@
 import Arrays.Reverse;
+import Arrays.Splitting;
 import Graphs.BreadthFirstSearch;
 import Graphs.CreateGraph;
 import Graphs.DepthFirstSearch;
@@ -15,6 +16,7 @@ import Trees.Traversals;
 import Trees.TreeFactory;
 import Trees.TreeSerialization;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Testing {
@@ -63,8 +65,11 @@ public class Testing {
 //        for(int i: test) {
 //            System.out.print(i);
 //        }
-        int i = 20;
-        testingIncrement(++i);
+        //int i = 20;
+        //testingIncrement(++i);
+
+        String test = "yello";
+        Splitting.parts(test, 0, new ArrayList<>());
     }
 
     public static void testingIncrement(int num) {
