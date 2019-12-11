@@ -16,9 +16,9 @@ public class Splitting {
         //iterate over all endpoints from the beginning point
         for(int i = beg; i < word.length(); i++) {
             String temp = word.substring(beg, i+1);
-            current.add(0, temp);
+            current.add(temp);
             parts(word, i + 1, current);
-            current.remove(0);
+            current.remove(temp);
         }
     }
 }

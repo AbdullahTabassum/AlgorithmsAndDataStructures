@@ -2332,6 +2332,92 @@ Trees/Graphs
 						}
 					}
 
+	16. Is Graph Bipartite?
+		Solution
+		Given an undirected graph, return true if and only if it is bipartite.
+
+		Recall that a graph is bipartite if we can split it's set of nodes into two independent subsets A and B such that every edge in the graph has one node in A and another node in B.
+
+		The graph is given in the following form: graph[i] is a list of indexes j for which the edge between nodes i and j exists.  Each node is an integer between 0 and graph.length - 1.  There are no self edges or parallel edges: graph[i] does not contain i, and it doesn't contain any element twice.
+
+		Example 1:
+		Input: [[1,3], [0,2], [1,3], [0,2]]
+		Output: true
+		Explanation: 
+		The graph looks like this:
+		0----1
+		|    |
+		|    |
+		3----2
+		We can divide the vertices into two groups: {0, 2} and {1, 3}.
+		Example 2:
+		Input: [[1,2,3], [0,2], [0,1,3], [0,2]]
+		Output: false
+		Explanation: 
+		The graph looks like this:
+		0----1
+		| \  |
+		|  \ |
+		3----2
+		We cannot find a way to divide the set of nodes into two independent subsets.
+		 
+
+		Note:
+
+		graph will have length in range [1, 100].
+		graph[i] will contain integers in range [0, graph.length - 1].
+		graph[i] will not contain i or duplicate values.
+		The graph is undirected: if any element j is in graph[i], then i will be in graph[j].
+
+		Answer:
+			Approach:
+				Use the vertex colouring algorithm:
+
+				1) Colour any one of your vertices red.
+
+				2) Identify all uncoloured vertices that are adjacent to a red vertex. Colour them blue.
+
+				3) Identify all uncoloured vertices that are adjacent to a blue vertex. Colour them red.
+
+				4) Repeat steps 2 and 3 until all the vertices are coloured red or blue.
+
+				5) If there are any two vertices adjacent of the same colour, then your graph is not bipartite, otherwise it is bipartite.
+
+				6) If the graph is bipartite, the colouring algorithm will have created the two required sets of points (one red and one blue).
+
+			Code:
+				class Solution {
+				    public boolean isBipartite(int[][] graph) {
+				        int n = graph.length;
+				        int[] color = new int[n];
+				        Arrays.fill(color, -1);
+
+				        for (int start = 0; start < n; ++start) {
+				            if (color[start] == -1) {
+				                Stack<Integer> stack = new Stack();
+				                stack.push(start);
+				                color[start] = 0;
+
+				                while (!stack.empty()) {
+				                    Integer node = stack.pop();
+				                    for (int nei: graph[node]) {
+				                        if (color[nei] == -1) {
+				                            stack.push(nei);
+				                            color[nei] = color[node] ^ 1;
+				                        } else if (color[nei] == color[node]) {
+				                            return false;
+				                        }
+				                    }
+				                }
+				            }
+				        }
+
+				        return true;
+				    }
+				}
+
+Recursion:
+
 	1. Letter Combinations of a Phone Number
 
 		Given a string containing digits from 2-9 inclusive, return all possible letter combinations that the number could represent.
@@ -2801,6 +2887,309 @@ Trees/Graphs
 		    
 		    return res;
 		}
+
+Dynamic PRogramming:
+	1. Longest Palindromic Substring
+
+	Given a string s, find the longest palindromic substring in s. You may assume that the maximum length of s is 1000.
+
+	Example 1:
+
+	Input: "babad"
+	Output: "bab"
+	Note: "aba" is also a valid answer.
+	Example 2:
+
+	Input: "cbbd"
+	Output: "bb"
+			Solution:
+			dp(i, j) represents whether s(i ... j) can form a palindromic substring, dp(i, j) is true when s(i) equals to s(j) and s(i+1 ... j-1) is a palindromic substring. When we found a palindrome, check if it's the longest one. Time complexity O(n^2).
+
+			Explanatoin of code: start at the end of the string -1 = i, and j = i. iterate j till the end of the string. i will grow backwards towards the beginning of the string. this way, when we want to verify if a substring is a valid palindrome, all we have to do is look at our values we already computed in dp. we keep track of the greatest palindrome length.
+
+					public String longestPalindrome(String s) {
+					  int n = s.length();
+					  String res = null;
+					    
+					  boolean[][] dp = new boolean[n][n];
+					    
+					  for (int i = n - 1; i >= 0; i--) {
+					    for (int j = i; j < n; j++) {
+					      dp[i][j] = s.charAt(i) == s.charAt(j) && (j - i < 3 || dp[i + 1][j - 1]);
+					            
+					      if (dp[i][j] && (res == null || j - i + 1 > res.length())) {
+					        res = s.substring(i, j + 1);
+					      }
+					    }
+					  }
+					    
+					  return res;
+					}
+
+			Approach two:
+				another way to do it is to consider every item, or every consecutive pair the middle of a possible palindromic sequence. then grow each middle till you hit a non-palindromic sequence.
+
+				public String longestPalindrome(String s) {
+				    if (s == null || s.length() < 1) return "";
+				    int start = 0, end = 0;
+				    for (int i = 0; i < s.length(); i++) {
+				        int len1 = expandAroundCenter(s, i, i);
+				        int len2 = expandAroundCenter(s, i, i + 1);
+				        int len = Math.max(len1, len2);
+				        if (len > end - start) {
+				            start = i - (len - 1) / 2;
+				            end = i + len / 2;
+				        }
+				    }
+				    return s.substring(start, end + 1);
+				}
+
+				private int expandAroundCenter(String s, int left, int right) {
+				    int L = left, R = right;
+				    while (L >= 0 && R < s.length() && s.charAt(L) == s.charAt(R)) {
+				        L--;
+				        R++;
+				    }
+				    return R - L - 1;
+				}
+
+	2. Longest Valid Parentheses
+		
+		Given a string containing just the characters '(' and ')', find the length of the longest valid (well-formed) parentheses substring.
+
+		Example 1:
+
+		Input: "(()"
+		Output: 2
+		Explanation: The longest valid parentheses substring is "()"
+		Example 2:
+
+		Input: ")()())"
+		Output: 4
+		Explanation: The longest valid parentheses substring is "()()"
+
+		Solution Explanation:
+			This problem can be solved by using Dynamic Programming. We make use of a dp array where iith element of dp represents the length of the longest valid substring ending at iith index. We initialize the complete dp array with 0's. Now, it's obvious that the valid substrings must end with ‘)’. This further leads to the conclusion that the substrings ending with ‘(’ will always contain '0' at their corresponding dp indices. Thus, we update the dp array only when ‘)’ is encountered.
+
+		To fill dp array we will check every two consecutive characters of the string and if
+
+		s[i] = ‘)’ and s[i - 1] = ‘(’, i.e. string looks like "....()"
+
+		dp[i]=dp[i−2]+2
+
+		We do so because the ending "()" portion is a valid substring anyhow and leads to an increment of 2 in the length of the just previous valid substring's length.
+
+		s[i]=‘)’ and s[i−1]=‘)’, i.e. string looks like ``.......))" 
+
+		if s[i−dp[i−1]−1]=‘(’ then
+
+		dp[i]=dp[i-1] + dp[i - dp[i-1] - 2] + 2
+
+		The reason behind this is that if the 2nd last ‘)’ was a part of a valid substring (say sub_ssub_s), for the last ‘)’ to be a part of a larger substring, there must be a corresponding starting ‘(’ which lies before the valid substring of which the 2nd last ‘)’ is a part (i.e. before sub_ssub_s ). Thus, if the character before sub_ssub_s happens to be ‘(’, we update the dp[i] as an addition 2 in the length of sub_ssub_s which is dp[i−1]. To this, we also add the length of the valid substring just before the term "(,sub_s,)" , i.e. dp[i−dp[i−1]−2].
+
+		public class Solution {
+		    public int longestValidParentheses(String s) {
+		        int maxans = 0;
+		        int dp[] = new int[s.length()];
+		        for (int i = 1; i < s.length(); i++) {
+		            if (s.charAt(i) == ')') {
+		                if (s.charAt(i - 1) == '(') {
+		                    dp[i] = (i >= 2 ? dp[i - 2] : 0) + 2;
+		                } else if (i - dp[i - 1] > 0 && s.charAt(i - dp[i - 1] - 1) == '(') {
+		                    dp[i] = dp[i - 1] + ((i - dp[i - 1]) >= 2 ? dp[i - dp[i - 1] - 2] : 0) + 2;
+		                }
+		                maxans = Math.max(maxans, dp[i]);
+		            }
+		        }
+		        return maxans;
+		    }
+		}
+
+		Another approach is to use a stack:
+
+			Explanation:
+				Instead of finding every possible string and checking its validity, we can make use of stack while scanning the given string to check if the string scanned so far is valid, and also the length of the longest valid string. In order to do so, we start by pushing −1 onto the stack.
+
+				For every ‘(’ encountered, we push its index onto the stack.
+
+				For every ‘)’ encountered, we pop the topmost element and subtract the current element's index from the top element of the stack, which gives the length of the currently encountered valid string of parentheses. If while popping the element, the stack becomes empty, we push the current element's index onto the stack. In this way, we keep on calculating the lengths of the valid substrings, and return the length of the longest valid string at the end.
+
+			// go over this later
+			public class Solution {
+
+			    public int longestValidParentheses(String s) {
+			        int maxans = 0;
+			        Stack<Integer> stack = new Stack<>();
+			        stack.push(-1);
+			        for (int i = 0; i < s.length(); i++) {
+			            if (s.charAt(i) == '(') {
+			                stack.push(i);
+			            } else {
+			                stack.pop();
+			                if (stack.empty()) {
+			                    stack.push(i);
+			                } else {
+			                    maxans = Math.max(maxans, i - stack.peek());
+			                }
+			            }
+			        }
+			        return maxans;
+			    }
+			}
+
+
+	3. Decode Ways
+		A message containing letters from A-Z is being encoded to numbers using the following mapping:
+
+		'A' -> 1
+		'B' -> 2
+		...
+		'Z' -> 26
+		Given a non-empty string containing only digits, determine the total number of ways to decode it.
+
+		Example 1:
+
+		Input: "12"
+		Output: 2
+		Explanation: It could be decoded as "AB" (1 2) or "L" (12).
+		Example 2:
+
+		Input: "226"
+		Output: 3
+		Explanation: It could be decoded as "BZ" (2 26), "VF" (22 6), or "BBF" (2 2 6).
+
+		I used a dp array of size n + 1 to save subproblem solutions. dp[0] means an empty string will have one way to decode, dp[1] means the way to decode a string of size 1. I then check one digit and two digit combination and save the results along the way. In the end, dp[n] will be the end result.
+
+		- very similar to fibonachi	
+
+		public class Solution {
+		    public int numDecodings(String s) {
+		        if(s == null || s.length() == 0) {
+		            return 0;
+		        }
+		        int n = s.length();
+		        int[] dp = new int[n+1];
+		        dp[0] = 1;
+		        dp[1] = s.charAt(0) != '0' ? 1 : 0;
+		        for(int i = 2; i <= n; i++) {
+		            int first = Integer.valueOf(s.substring(i-1, i));
+		            int second = Integer.valueOf(s.substring(i-2, i));
+		            if(first >= 1 && first <= 9) {
+		               dp[i] += dp[i-1];  
+		            }
+		            if(second >= 10 && second <= 26) {
+		                dp[i] += dp[i-2];
+		            }
+		        }
+		        return dp[n];
+		    }
+		}
+
+	4. Best Time to Buy and Sell Stock
+		
+		Say you have an array for which the ith element is the price of a given stock on day i.
+
+		If you were only permitted to complete at most one transaction (i.e., buy one and sell one share of the stock), design an algorithm to find the maximum profit.
+
+		Note that you cannot sell a stock before you buy one.
+
+		Example 1:
+
+		Input: [7,1,5,3,6,4]
+		Output: 5
+		Explanation: Buy on day 2 (price = 1) and sell on day 5 (price = 6), profit = 6-1 = 5.
+		             Not 7-1 = 6, as selling price needs to be larger than buying price.
+		Example 2:
+
+		Input: [7,6,4,3,1]
+		Output: 0
+		Explanation: In this case, no transaction is done, i.e. max profit = 0.
+
+		Solution:
+			The points of interest are the peaks and valleys in the given graph. We need to find the largest peak following the smallest valley. We can maintain two variables - minprice and maxprofit corresponding to the smallest valley and maximum profit (maximum difference between selling price and minprice) obtained so far respectively.
+
+			public class Solution {
+			    public int maxProfit(int prices[]) {
+			        int minprice = Integer.MAX_VALUE;
+			        int maxprofit = 0;
+			        for (int i = 0; i < prices.length; i++) {
+			            if (prices[i] < minprice)
+			                minprice = prices[i];
+			            else if (prices[i] - minprice > maxprofit)
+			                maxprofit = prices[i] - minprice;
+			        }
+			        return maxprofit;
+			    }
+			}
+
+	5. Word Break
+
+		Given a non-empty string s and a dictionary wordDict containing a list of non-empty words, determine if s can be segmented into a space-separated sequence of one or more dictionary words.
+
+		Note:
+
+		The same word in the dictionary may be reused multiple times in the segmentation.
+		You may assume the dictionary does not contain duplicate words.
+		Example 1:
+
+		Input: s = "leetcode", wordDict = ["leet", "code"]
+		Output: true
+		Explanation: Return true because "leetcode" can be segmented as "leet code".
+		Example 2:
+
+		Input: s = "applepenapple", wordDict = ["apple", "pen"]
+		Output: true
+		Explanation: Return true because "applepenapple" can be segmented as "apple pen apple".
+		             Note that you are allowed to reuse a dictionary word.
+		Example 3:
+
+		Input: s = "catsandog", wordDict = ["cats", "dog", "sand", "and", "cat"]
+		Output: false
+
+	6. Range Sum Query 2D - Immutable
+		
+		Given a 2D matrix matrix, find the sum of the elements inside the rectangle defined by its upper left corner (row1, col1) and lower right corner (row2, col2).
+
+		Range Sum Query 2D
+		The above rectangle (with the red border) is defined by (row1, col1) = (2, 1) and (row2, col2) = (4, 3), which contains sum = 8.
+
+		Example:
+		Given matrix = [
+		  [3, 0, 1, 4, 2],
+		  [5, 6, 3, 2, 1],
+		  [1, 2, 0, 1, 5],
+		  [4, 1, 0, 1, 7],
+		  [1, 0, 3, 0, 5]
+		]
+
+		sumRegion(2, 1, 4, 3) -> 8
+		sumRegion(1, 1, 2, 2) -> 11
+		sumRegion(1, 2, 2, 4) -> 12
+		Note:
+		You may assume that the matrix does not change.
+		There are many calls to sumRegion function.
+		You may assume that row1 ≤ row2 and col1 ≤ col2.
+
+	7. Continuous Subarray Sum
+		
+		Given a list of non-negative numbers and a target integer k, write a function to check if the array has a continuous subarray of size at least 2 that sums up to a multiple of k, that is, sums up to n*k where n is also an integer.
+
+		Example 1:
+
+		Input: [23, 2, 4, 6, 7],  k=6
+		Output: True
+		Explanation: Because [2, 4] is a continuous subarray of size 2 and sums up to 6.
+		Example 2:
+
+		Input: [23, 2, 6, 4, 7],  k=6
+		Output: True
+		Explanation: Because [23, 2, 6, 4, 7] is an continuous subarray of size 5 and sums up to 42.
+		 
+
+		Note:
+
+		The length of the array won't exceed 10,000.
+		You may assume the sum of all the numbers is in the range of a signed 32-bit integer.
 
 Searching and sorting
 	1. Divide Two Integers
@@ -4134,6 +4523,231 @@ Soltion from LeetCode:
  						}
  					}
  				}
+
+ 	9. Max sum in a 2d array:
+ 		Approach: to solve this problem we will use kadanes algorithm. we will have two pointers L and R.
+ 		L is the value of the left column and R is the value of thr right column. We will start L at 0 and R at 0. Then we will iterate R till the last column. Each iteration of R, we update the running sum of each row i.e. we have a seperate 1d array that holds the current sum for each row. After updating all of the current sums for each row, we run kadanes algorithm to find the max contiguous sum in the currentSumforRow arrays. We store the max sum and update it when a larger value is encountered.
+
+ 		public static void main(String args[]){
+
+		  int matrix[][] = {
+		    {   6, -5,  -7,  4, -4 },
+		    {  -9,  3,  -6,  5,  2 },
+		    { -10,  4,   7, -6,  3 },
+		    {  -8,  9,  -3,  3, -7 }
+		  };
+		  
+		  Rectangle maxSumRectangle = maxSum(matrix);
+		  
+		  System.out.println("Rectangle Sum: " + maxSumRectangle.interiorSum);
+
+		  System.out.println("Left Index: " + maxSumRectangle.leftBorderIndex);
+		  System.out.println("Right Index: " + maxSumRectangle.rightBorderIndex);
+		  System.out.println("Top Index: " + maxSumRectangle.topBorderIndex);
+		  System.out.println("Bottom Index: " + maxSumRectangle.bottomBorderIndex);
+		}
+
+		private Rectangle maxSum(int matrix[][]) {
+
+		  /*
+		    Record the total amount of rows and columns
+		  */
+		  int rows = matrix.length;
+		  int cols = matrix[0].length;
+
+		  /*
+		    Create an array that will be a "vertical" array and record
+		    the running sums for each row in the each iteration of the
+		    left bound
+		  */
+		  int runningRowSums[] = new int[rows];
+
+		  /*
+		    This is the max rectangle that we will update along the way
+		  */
+		  Rectangle maxRectangle = new Rectangle();
+
+		  /*
+		    We will try all left bound plantings from index 0
+		    to index cols - 1
+		  */
+		  for (int left = 0; left < cols; left++) {
+
+		    /*
+		      We will reset the running row sums all to 0 since
+		      this is a new planting of the left bound
+		    */
+		    for (int i = 0; i < rows; i++) {
+		        runningRowSums[i] = 0;
+		    }
+
+		    /*
+		      For each left bound, we will try all of the right bounds
+		      starting at the left bound we are planted at.
+		    */
+		    for (int right = left; right < cols; right++) {
+
+		      /*
+		        Add all items in column 'right' to their respective
+		        row's running sum
+		      */
+		      for (int i = 0; i < rows; i++) {
+		        runningRowSums[i] += matrix[i][right];
+		      }
+
+		      /*
+		        Perform Kadane's algorithm on the running sum array
+		        so that we can determine the best top and bottom
+		        bound to choose for the rectangle.
+		      */
+		      KadaneResult kadaneResult = kadane(runningRowSums);
+
+		      /*
+		        If we notice that this rectangle can achieve a better
+		        maxSum than the best we have done so far then we need
+		        to adjust our new best
+		      */
+		      if (kadaneResult.maxSum > maxRectangle.interiorSum) {
+
+		        /*
+		          Set a new interiorSum for our maxRectangle
+		        */
+		        maxRectangle.interiorSum = kadaneResult.maxSum;
+
+		        /*
+		          The left and the right of the maxRectangle become
+		          the 'left' and 'right' where our for loop pointers
+		          are sitting
+		        */
+		        maxRectangle.leftBorderIndex = left;
+		        maxRectangle.rightBorderIndex = right;
+
+		        /*
+		          Our top and bottom bounds for the max rectangle are
+		          going to be the startIndex and endIndex of the max
+		          subarray region in the 'runningRowSums' sum cache
+		          (respectively).
+		        */
+		        maxRectangle.topBorderIndex = kadaneResult.startIndex;
+		        maxRectangle.bottomBorderIndex = kadaneResult.endIndex;
+		      }
+
+		    }
+
+		  }
+
+		  return maxRectangle;
+		}
+
+		/*
+		  An implementation of Kadane's algorithm that remembers the
+		  start and end of the Max Contiguous Subarray Sum region
+		  in the KadaneResult object returned
+
+		  This video explains Kadane's algorithm: https://www.youtube.com/watch?v=2MmGzdiKR9Y
+		*/
+		private KadaneResult kadane(int arr[]) {
+
+		  /*
+		    The best sum achieved for a region so far
+		  */
+		  int bestMaxSoFar = 0;
+
+		  /*
+		    maxRegionStart: start index of the max sum region
+		    maxRegionEnd: end index of the max sum region
+		  */
+		  int maxRegionStart = -1;
+		  int maxRegionEnd = -1;
+
+		  int currentStart = 0;
+		  int bestMaxAtThisIndex = 0;
+
+		  /*
+		    We will process every
+		  */
+		  for (int i = 0; i < arr.length; i++) {
+
+		    /*
+		      Add this item to the best subarray achieved at
+		      index i - 1. Then we will decided what to do
+		      after this.
+		    */
+		    bestMaxAtThisIndex += arr[i];
+
+		    /*
+		      If 'bestMaxAtThisIndex' is < 0 then we will
+		      decide to not extend the best subarray at i - 1.
+
+		      We will just set the best we can achieve for subarrays
+		      ending at this index i to 0.
+
+		      The new 'currentStart' to the max subarray region becomes
+		      i + 1
+		    */
+		    if (bestMaxAtThisIndex < 0) {
+		      bestMaxAtThisIndex = 0;
+		      currentStart = i + 1;
+		    }
+
+		    /*
+		      If the best max (now the best max at this index) beats the
+		      best global max achieved so far then we need to adjust:
+
+		      'maxRegionStart' becomes the 'currentStart' we were keeping track
+		      of all along.
+
+		      'maxRegionEnd' becomes the index we are sitting at 'i'.
+
+		      The 'bestMaxSoFar' becomes the 'bestMaxAtThisIndex'.
+		    */
+		    if (bestMaxAtThisIndex > bestMaxSoFar) {
+		      maxRegionStart = currentStart;
+		      maxRegionEnd = i;
+		      bestMaxSoFar = bestMaxAtThisIndex;
+		    }
+
+		  }
+
+		  return new KadaneResult(bestMaxSoFar, maxRegionStart, maxRegionEnd);
+		}
+
+		/*
+		  Holds the result of running Kadan's algorithm
+
+		  maxSum: the actual sum of the Max Contiguous Subarray Sum region
+		  startIndex: start of Max Contiguous Subarray Sum region
+		  endIndex: end of Max Contiguous Subarray Sum region
+		*/
+		private class KadaneResult {
+
+		  int maxSum;
+		  int startIndex;
+		  int endIndex;
+
+		  public KadaneResult(int maxSum, int startIndex, int endIndex) {
+		    this.maxSum = maxSum;
+		    this.startIndex = startIndex;
+		    this.endIndex = endIndex;
+		  }
+
+		}
+
+		/*
+		  A rectangle with left, right, top, and bottom bounds. The sum
+		  of all items contained within the rectangle are also recorded
+		  in the 'interiorSum' variable.
+		*/
+		private class Rectangle {
+
+		  int interiorSum;
+
+		  int leftBorderIndex;
+		  int rightBorderIndex;
+		  int topBorderIndex;
+		  int bottomBorderIndex;
+
+		} 
 
 
  - Diameter of a binary tree
