@@ -3146,6 +3146,30 @@ Dynamic PRogramming:
 		Input: s = "catsandog", wordDict = ["cats", "dog", "sand", "and", "cat"]
 		Output: false
 
+		My try: the brute force recusrion for each stack trace would be to start at the beginning index of string as given by method, then iterate for each end point upto end of the string. For each end point in the iteration, check if the substring from the beginning index to the ending index is a valid word. if it is, then recurse and pass the index after the last index as the beginning of the new recursion.
+
+		The dynamic programming approach would be to start from the end of the string and iteratetowards the beginning of the string. For each character, check if it is a valid word, and also check (by iterating over all characters till the end of the string) if it is the beginning of a substring. for each end point, all you need to check is if the substring is a valid word and if dp[endindex + 1] also has a valid word breaking
+
+		Solution from LeetCode:
+			- basically what happens here is that similar to above 2nd paragraph, except we start from the beginning of the string. i will iterate through the string and act as the end point of the string at each pf its iteration. j will iterate inside of i from the beginning of the string (0) uptill i. at each iteration of j, we basically check if dp[0-j] is valid AND if substring(0,j). If dp[0-j] is valid then that means that there is some combination of word break from 0-j is valid such that each word is in the dictionary. Then we set dp[i] to true. dp[i] basically means string(0,1) has a valid word breaking.
+
+			public class Solution {
+			    public boolean wordBreak(String s, List<String> wordDict) {
+			        Set<String> wordDictSet=new HashSet(wordDict);
+			        boolean[] dp = new boolean[s.length() + 1];
+			        dp[0] = true;
+			        for (int i = 1; i <= s.length(); i++) {
+			            for (int j = 0; j < i; j++) {
+			                if (dp[j] && wordDictSet.contains(s.substring(j, i))) {
+			                    dp[i] = true;
+			                    break;
+			                }
+			            }
+			        }
+			        return dp[s.length()];
+			    }
+			}
+
 	6. Range Sum Query 2D - Immutable
 		
 		Given a 2D matrix matrix, find the sum of the elements inside the rectangle defined by its upper left corner (row1, col1) and lower right corner (row2, col2).
@@ -3170,6 +3194,82 @@ Dynamic PRogramming:
 		There are many calls to sumRegion function.
 		You may assume that row1 ≤ row2 and col1 ≤ col2.
 
+		Approach: there are two ways to go about doing this. one way is to store the running sum of each row. Then iterate from the first row of the desired submatrix to the last row of the desired submatrix. At each iteration we calculate the
+
+		i.e. here is how to get the running sum of each row:
+			class NumArray {
+
+			  int[] runningSumCache;
+
+			  public NumArray(int[] nums) {
+
+			    runningSumCache = new int[nums.length + 1];
+			    
+			    for (int i = 0; i < nums.length; i++) {
+			      runningSumCache[i + 1] += nums[i] + runningSumCache[i];
+			    }
+
+			  }
+			  
+
+			  public int sumRange(int i, int j) {
+			    return runningSumCache[j + 1] - runningSumCache[i];
+			  }
+
+			}
+
+			// and her is complete solution from leetcode
+			private int[][] dp;
+
+			public NumMatrix(int[][] matrix) {
+			    if (matrix.length == 0 || matrix[0].length == 0) return;
+			    dp = new int[matrix.length][matrix[0].length + 1];
+			    for (int r = 0; r < matrix.length; r++) {
+			        for (int c = 0; c < matrix[0].length; c++) {
+			            dp[r][c + 1] = dp[r][c] + matrix[r][c];
+			        }
+			    }
+			}
+
+			public int sumRegion(int row1, int col1, int row2, int col2) {
+			    int sum = 0;
+			    for (int row = row1; row <= row2; row++) {
+			        sum += dp[row][col2 + 1] - dp[row][col1];
+			    }
+			    return sum;
+			}
+
+			// the other method is a little bit more clever.
+			// for this, we keep the running sum for each index. the running sum for each index basically translates
+			// into the running sum from the top left of the matrix all the way to the current index i.e. to fille this kind of array, we will iterate through the matrix, the total sum to this current point will be
+				dp[r][c] = dp[r][c-1] + dp[r-1][c] + matrix[r][c] - dp[r - 1][c - 1]
+				// here we add the value at the current point plus the cumulative sum above and to the left of the current index. Since we added the cumulative sum above and below notice that we have an extra amount we are adding which is common to both cumulative sums. Therefore we need to subtract that amount once as it was added twice. It is the cumulative sum to the left digonal up from the current index.
+				i.e this is the dp[r - 1][c - 1] term in the above sum
+
+			// now we have a cumulative sum array for the matrix, where mat[row][col] represents the bottom right of the rectangular cumulative sum
+
+			// how do we calculate for a specific submatrix?
+			// we will need to subtract everything above the top row and every to the left of the left most column
+			// then since we subtract a common portion twice, we have to add that back in. that is namely the cumulative sum left diagonal to the top right of the matrix
+
+			// here is the code
+			private int[][] dp;
+
+			public NumMatrix(int[][] matrix) {
+			    if (matrix.length == 0 || matrix[0].length == 0) return;
+			    dp = new int[matrix.length + 1][matrix[0].length + 1];
+			    for (int r = 0; r < matrix.length; r++) {
+			        for (int c = 0; c < matrix[0].length; c++) {
+			            dp[r + 1][c + 1] = dp[r + 1][c] + dp[r][c + 1] + matrix[r][c] - dp[r][c];
+			        }
+			    }
+			}
+
+			public int sumRegion(int row1, int col1, int row2, int col2) {
+			    return dp[row2 + 1][col2 + 1] - dp[row1][col2 + 1] - dp[row2 + 1][col1] + dp[row1][col1];
+			}
+
+
 	7. Continuous Subarray Sum
 		
 		Given a list of non-negative numbers and a target integer k, write a function to check if the array has a continuous subarray of size at least 2 that sums up to a multiple of k, that is, sums up to n*k where n is also an integer.
@@ -3190,6 +3290,35 @@ Dynamic PRogramming:
 
 		The length of the array won't exceed 10,000.
 		You may assume the sum of all the numbers is in the range of a signed 32-bit integer.
+
+		Approach:
+			In this solution, we make use of a HashMap that is used to store the cumulative sums upto the ith index after some processing along with the index ii. The processing done is taking the modulus of the the sum upto the ith index with the given kk. The reasoning behind this will become clear soon.
+
+			We traverse over the given array, and keep on calculating the sum%ksum values upto the current index. Whenever we find a new sum%ksum value, which isn't present in the HashMap already, we make an entry in the HashMap of the form, (sum%k, i)(sum.
+
+			Now, assume that the given sum%ksum value at the ith index be equal to remrem. Now, if any subarray follows the ith element, which has a sum equal to the integer multiple of kk, say extending upto the j'th index, the sum value to be stored in the HashMap for the j'th index will be: (rem + n*k)%k(rem+n∗k), where nn is some integer > 0. We can observe that (rem + n*k)%k = rem(rem+n∗k), which is the same value as stored corresponding to the i'th index.
+
+			From this observation, we come to the conclusion that whenever the same sum%ksum value is obtained corresponding to two indices ii and jj, it implies that sum of elements betweeen those indices is an integer multiple of kk. Thus, if the same sum%ksum value is encountered again during the traversal, we return a True directly.
+
+			public class Solution {
+			    public boolean checkSubarraySum(int[] nums, int k) {
+			        int sum = 0;
+			        HashMap < Integer, Integer > map = new HashMap < > ();
+			        map.put(0, -1);
+			        for (int i = 0; i < nums.length; i++) {
+			            sum += nums[i];
+			            if (k != 0)
+			                sum = sum % k;
+			            if (map.containsKey(sum)) {
+			                if (i - map.get(sum) > 1)
+			                    return true;
+			            } else
+			                map.put(sum, i);
+			        }
+			        return false;
+			    }
+			}
+
 
 Searching and sorting
 	1. Divide Two Integers
@@ -4795,5 +4924,368 @@ Soltion from LeetCode:
  There are 139 pages of questions =0
 
 
+ Design questions LeetCode:
+ 	1. LRU Cache:
+ 		public class LRUCache {
 
-	
+		  class DLinkedNode {
+		    int key;
+		    int value;
+		    DLinkedNode prev;
+		    DLinkedNode next;
+		  }
+
+		  private void addNode(DLinkedNode node) {
+		    /**
+		     * Always add the new node right after head.
+		     */
+		    node.prev = head;
+		    node.next = head.next;
+
+		    head.next.prev = node;
+		    head.next = node;
+		  }
+
+		  private void removeNode(DLinkedNode node){
+		    /**
+		     * Remove an existing node from the linked list.
+		     */
+		    DLinkedNode prev = node.prev;
+		    DLinkedNode next = node.next;
+
+		    prev.next = next;
+		    next.prev = prev;
+		  }
+
+		  private void moveToHead(DLinkedNode node){
+		    /**
+		     * Move certain node in between to the head.
+		     */
+		    removeNode(node);
+		    addNode(node);
+		  }
+
+		  private DLinkedNode popTail() {
+		    /**
+		     * Pop the current tail.
+		     */
+		    DLinkedNode res = tail.prev;
+		    removeNode(res);
+		    return res;
+		  }
+
+		  private Map<Integer, DLinkedNode> cache = new HashMap<>();
+		  private int size;
+		  private int capacity;
+		  private DLinkedNode head, tail;
+
+		  public LRUCache(int capacity) {
+		    this.size = 0;
+		    this.capacity = capacity;
+
+		    head = new DLinkedNode();
+		    // head.prev = null;
+
+		    tail = new DLinkedNode();
+		    // tail.next = null;
+
+		    head.next = tail;
+		    tail.prev = head;
+		  }
+
+		  public int get(int key) {
+		    DLinkedNode node = cache.get(key);
+		    if (node == null) return -1;
+
+		    // move the accessed node to the head;
+		    moveToHead(node);
+
+		    return node.value;
+		  }
+
+		  public void put(int key, int value) {
+		    DLinkedNode node = cache.get(key);
+
+		    if(node == null) {
+		      DLinkedNode newNode = new DLinkedNode();
+		      newNode.key = key;
+		      newNode.value = value;
+
+		      cache.put(key, newNode);
+		      addNode(newNode);
+
+		      ++size;
+
+		      if(size > capacity) {
+		        // pop the tail
+		        DLinkedNode tail = popTail();
+		        cache.remove(tail.key);
+		        --size;
+		      }
+		    } else {
+		      // update the value.
+		      node.value = value;
+		      moveToHead(node);
+		    }
+		  }
+		}
+
+	2. Binary search tree iterator:
+		Implement an iterator over a binary search tree (BST). Your iterator will be initialized with the root node of a BST.
+
+		Calling next() will return the next smallest number in the BST.
+
+		 
+
+		Example:
+
+
+
+		BSTIterator iterator = new BSTIterator(root);
+		iterator.next();    // return 3
+		iterator.next();    // return 7
+		iterator.hasNext(); // return true
+		iterator.next();    // return 9
+		iterator.hasNext(); // return true
+		iterator.next();    // return 15
+		iterator.hasNext(); // return true
+		iterator.next();    // return 20
+		iterator.hasNext(); // return false
+		 
+
+		Note:
+
+		next() and hasNext() should run in average O(1) time and uses O(h) memory, where h is the height of the tree.
+		You may assume that next() call will always be valid, that is, there will be at least a next smallest number in the BST when next() is called.
+
+		Approach 2: Controlled Recursion
+		Intuition
+
+		The approach we saw earlier uses space which is linear in the number of nodes in the binary search tree. However, the reason we had to resort to such an approach was because we can control the iteration over the array. We can't really pause a recursion in between and then start it off sometime later.
+
+		However, if we could simulate a controlled recursion for an inorder traversal, we wouldn't really need to use any additional space other than the space used by the stack for our recursion simulation.
+
+		So, this approach essentially uses a custom stack to simulate the inorder traversal i.e. we will be taking an iterative approach to inorder traversal rather than going with the recursive approach and in doing so, we will be able to easily implement the two function calls without any other additional space.
+
+		Things however, do get a bit complicated as far as the time complexity of the two operations is concerned and that is where we will spend a little bit of time to understand if this approach complies with all the asymptotic complexity requirements of the question. Let's move on to the algorithm for now to look at this idea more concretely.
+
+		Algorithm
+
+		Initialize an empty stack S which will be used to simulate the inorder traversal for our binary search tree. Note that we will be following the same approach for inorder traversal as before except that now we will be using our own stack rather than the system stack. Since we are using a custom data structure, we can pause and resume the recursion at will.
+
+		Let's also consider a helper function that we will be calling again and again in the implementation. This function, called _inorder_left will essentially add all the nodes in the leftmost branch of the tree rooted at the given node root to the stack and it will keep on doing so until there is no left child of the root node. Something like the following code:
+
+		def inorder_left(root):
+		   while (root):
+		     S.append(root)
+		     root = root.left
+		For a given node root, the next smallest element will always be the leftmost element in its tree. So, for a given root node, we keep on following the leftmost branch until we reach a node which doesn't have a left child and that will be the next smallest element. For the root of our BST, this leftmost node would be the smallest node in the tree. Rest of the nodes are added to the stack because they are pending processing. Try and relate this with a dry run of a simple recursive inorder traversal and things will make a bit more sense.
+
+		The first time next() function call is made, the smallest element of the BST has to be returned and then our simulated recursion has to move one step forward i.e. move onto the next smallest element in the BST. The invariant that will be maintained in this algorithm is that the stack top always contains the element to be returned for the next() function call. However, there is additional work that needs to be done to maintain that invariant. It's very easy to implement the hasNext() function since all we need to check is if the stack is empty or not. So, we will only focus on the next() call from now.
+
+		Initially, given the root node of the BST, we call the function _inorder_left and that ensures our invariant holds. Let's see this first step with an example.
+
+		Suppose we get a call to the next() function. The node which we have to return i.e. the next smallest element in the binary search tree iterator is the one sitting at the top of our stack. So, for the example above, that node would be 2 which is the correct value. Now, there are two possibilities that we have to deal with:
+
+		One is where the node at the top of the stack is actually a leaf node. This is the best case and here we don't have to do anything. Simply pop the node off the stack and return its value. So, this would be a constant time operation.
+
+		Second is where the node has a right child. We don't need to check for the left child because of the way we have added nodes onto the stack. The topmost node either won't have a left child or would already have the left subtree processed. If it has a right child, then we call our helper function on the node's right child. This would comparatively be a costly operation depending upon the structure of the tree.
+
+		We keep on maintaining the invariant this way in the function call for next and this way we will always be able to return the next smallest element in the BST from the top of the stack. Again, it's important to understand that obtaining the next smallest element doesn't take much time. However, some time is spent in maintaining the invariant that the stack top will always have the node we are looking for.
+
+		Code:
+			/**
+			 * Definition for a binary tree node.
+			 * public class TreeNode {
+			 * int val;
+			 * TreeNode left;
+			 * TreeNode right;
+			 * TreeNode(int x) { val = x; }
+			 * }
+			 */
+			class BSTIterator {
+
+			    Stack<TreeNode> stack;
+
+			    public BSTIterator(TreeNode root) {
+			        
+			        // Stack for the recursion simulation
+			        this.stack = new Stack<TreeNode>();
+			        
+			        // Remember that the algorithm starts with a call to the helper function
+			        // with the root node as the input
+			        this._leftmostInorder(root);
+			    }
+
+			    private void _leftmostInorder(TreeNode root) {
+			      
+			        // For a given node, add all the elements in the leftmost branch of the tree
+			        // under it to the stack.
+			        while (root != null) {
+			            this.stack.push(root);
+			            root = root.left;
+			        }
+			    }
+
+			    /**
+			     * @return the next smallest number
+			     */
+			    public int next() {
+			        // Node at the top of the stack is the next smallest element
+			        TreeNode topmostNode = this.stack.pop();
+
+			        // Need to maintain the invariant. If the node has a right child, call the 
+			        // helper function for the right child
+			        if (topmostNode.right != null) {
+			            this._leftmostInorder(topmostNode.right);
+			        }
+
+			        return topmostNode.val;
+			    }
+
+			    /**
+			     * @return whether we have a next smallest number
+			     */
+			    public boolean hasNext() {
+			        return this.stack.size() > 0;
+			    }
+			}
+
+	3. Add and Search Word - Data structure design
+		Design a data structure that supports the following two operations:
+
+		void addWord(word)
+		bool search(word)
+		search(word) can search a literal word or a regular expression string containing only letters a-z or .. A . means it can represent any one letter.
+
+		Example:
+
+		addWord("bad")
+		addWord("dad")
+		addWord("mad")
+		search("pad") -> false
+		search("bad") -> true
+		search(".ad") -> true
+		search("b..") -> true
+		Note:
+		You may assume that all words are consist of lowercase letters a-z.
+
+		Approach: implement a trie
+			    class WordDictionary {
+			        TrieNode root;
+
+			        public WordDictionary() {
+			            root = new TrieNode();
+			        }
+
+			        public void addWord(String word) {
+			            TrieNode node = root;
+			            for (char c : word.toCharArray()) {
+			                int i = c - 'a';
+			                if (node.children[i] == null) node.children[i] = new TrieNode();
+			                node = node.children[i];
+			            }
+			            node.isWord = true;
+			        }
+
+			        public boolean search(String word) {
+			            return search(root, word, 0);
+			        }
+
+			        private boolean search(TrieNode node, String w, int pos) {
+			            // bug - 1 => handle all special cases at the very beginning will ease lots of burden;
+			            if (node == null) return false;
+			            if (pos == w.length()) return node.isWord;
+			            char c = w.charAt(pos);
+			            if (c == '.') {
+			                for (int i = 0; i < node.children.length; ++i) {
+			                    if (search(node.children[i], w, pos + 1)) return true;
+			                }
+			                return false; // bug - 1 => easy to forget but a must;
+			            }
+			            return search(node.children[c - 'a'], w, pos + 1);
+			        }
+
+			        static class TrieNode {
+			            boolean isWord;
+			            TrieNode[] children = new TrieNode[26];
+			        }
+			    }
+
+	4. Serialize and Deserialize Binary Tree
+		
+		Serialization is the process of converting a data structure or object into a sequence of bits so that it can be stored in a file or memory buffer, or transmitted across a network connection link to be reconstructed later in the same or another computer environment.
+
+		Design an algorithm to serialize and deserialize a binary tree. There is no restriction on how your serialization/deserialization algorithm should work. You just need to ensure that a binary tree can be serialized to a string and this string can be deserialized to the original tree structure.
+
+		Example: 
+
+		You may serialize the following tree:
+
+		    1
+		   / \
+		  2   3
+		     / \
+		    4   5
+
+		as "[1,2,3,null,null,4,5]"
+		Clarification: The above format is the same as how LeetCode serializes a binary tree. You do not necessarily need to follow this format, so please be creative and come up with different approaches yourself.
+
+		Note: Do not use class member/global/static variables to store states. Your serialize and deserialize algorithms should be stateless.
+
+		/* Definition for a binary tree node. */
+		public class TreeNode {
+		  int val;
+		  TreeNode left;
+		  TreeNode right;
+
+		  TreeNode(int x) {
+		    val = x;
+		  }
+		}
+
+		// Serialization
+		public class Codec {
+		  public String rserialize(TreeNode root, String str) {
+		    // Recursive serialization.
+		    if (root == null) {
+		      str += "null,";
+		    } else {
+		      str += str.valueOf(root.val) + ",";
+		      str = rserialize(root.left, str);
+		      str = rserialize(root.right, str);
+		    }
+		    return str;
+		  }
+
+		  // Encodes a tree to a single string.
+		  public String serialize(TreeNode root) {
+		    return rserialize(root, "");
+		  }
+		};
+
+		public class Codec {
+		  public TreeNode rdeserialize(List<String> l) {
+		    // Recursive deserialization.
+		    if (l.get(0).equals("null")) {
+		      l.remove(0);
+		      return null;
+		    }
+
+		    TreeNode root = new TreeNode(Integer.valueOf(l.get(0)));
+		    l.remove(0);
+		    root.left = rdeserialize(l);
+		    root.right = rdeserialize(l);
+
+		    return root;
+		  }
+
+		  // Decodes your encoded data to tree.
+		  public TreeNode deserialize(String data) {
+		    String[] data_array = data.split(",");
+		    List<String> data_list = new LinkedList<String>(Arrays.asList(data_array));
+		    return rdeserialize(data_list);
+		  }
+		};
+
+						
