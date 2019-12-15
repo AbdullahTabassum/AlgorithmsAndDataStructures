@@ -21,8 +21,8 @@ LeetCode problems:
 
 	Approach: Use the sliding window approach. Have a beginning pointer and an ending pointer. Beginning starts from 0 and End starts from 0. Grow the window by moving the ending by one. if a new character is found increase the size, else if a repeated character is found record the max height and increase beginning pointer; the current array will have the invariant of being having unique characters. If a new character is added and it already exists in the current window then we move the left index up one which basically remove the left item from the current window and adds the new item on the right to the window. But what if the new item is not the same as the left most one i.e.
 		"adcrd"
-		in this case we have a problem. when the left pointer is at 'a' and we increase right pointer to the second 'd', then moving the left pointer up by one does not solve the issue of duplicate, as there is still duplicates 'd' and 'd'
-	- For this problem, note, that when we find that the new item is a duplicate of some item in the array, we don't increase the right window pointer, only the left pointer. we will continue to move the left pointer and remove characters from the set until we don't have a duplicate with the new character
+		in this case we have a problem. when the left pointer is at a and we increase right pointer to the second d, then moving the left pointer up by one does not solve the issue of duplicate, as there is still duplicates d and d
+	- For this problem, note, that when we find that the new item is a duplicate of some item in the array, we dont increase the right window pointer, only the left pointer. we will continue to move the left pointer and remove characters from the set until we dont have a duplicate with the new character
 
 	public class Solution {
 	    public int lengthOfLongestSubstring(String s) {
@@ -36,7 +36,7 @@ LeetCode problems:
 	                ans = Math.max(ans, j - i);
 	            }
 	            else {
-	            	// don't increase right window pointer
+	            	// dont increase right window pointer
 	                set.remove(s.charAt(i++));
 	            }
 	        }
@@ -53,7 +53,7 @@ LeetCode problems:
 				C             100
 				D             500
 				M             1000
-				For example, two is written as II in Roman numeral, just two one's added together. Twelve is written as, XII, which is simply X + II. The number twenty seven is written as XXVII, which is XX + V + II.
+				For example, two is written as II in Roman numeral, just two ones added together. Twelve is written as, XII, which is simply X + II. The number twenty seven is written as XXVII, which is XX + V + II.
 
 				Roman numerals are usually written largest to smallest from left to right. However, the numeral for four is not IIII. Instead, the number four is written as IV. Because the one is before the five we subtract it making four. The same principle applies to the number nine, which is written as IX. There are six instances where subtraction is used:
 
@@ -84,13 +84,13 @@ LeetCode problems:
 					if (s == null || s.length() == 0)
 						return -1;
 					HashMap<Character, Integer> map = new HashMap<Character, Integer>();
-					map.put('I', 1);
-					map.put('V', 5);
-					map.put('X', 10);
-					map.put('L', 50);
-					map.put('C', 100);
-					map.put('D', 500);
-					map.put('M', 1000);
+					map.put(I, 1);
+					map.put(V, 5);
+					map.put(X, 10);
+					map.put(L, 50);
+					map.put(C, 100);
+					map.put(D, 500);
+					map.put(M, 1000);
 					int len = s.length(), result = map.get(s.charAt(len - 1));
 					for (int i = len - 2; i >= 0; i--) {
 						if (map.get(s.charAt(i)) >= map.get(s.charAt(i + 1)))
@@ -108,13 +108,13 @@ LeetCode problems:
 				    {
 				        HashMap<Character, Integer> map = new HashMap<Character, Integer>()
 				        {{
-				            put('I', 1);
-				            put('V', 5);
-				            put('X', 10);
-				            put('L', 50);
-				            put('C', 100);
-				            put('D', 500);
-				            put('M', 1000);
+				            put(I, 1);
+				            put(V, 5);
+				            put(X, 10);
+				            put(L, 50);
+				            put(C, 100);
+				            put(D, 500);
+				            put(M, 1000);
 				        }};
 				        
 				        int sum = map.get(s.charAt(s.length() - 1));
@@ -137,7 +137,7 @@ LeetCode problems:
 	       - then go throught the rest, letter by letter
 	       - at each letter, check if its a valid digit
 	       		-> Character.isDigit()
-	       		-> convert digit to number if possible: int digit = (int)(str.charAt(i) - '0')
+	       		-> convert digit to number if possible: int digit = (int)(str.charAt(i) - 0)
 	       		-> check for overflow (num < Integer.MAX_VALUE - digit)
 	       		-> if alls good, then add it to the current number -> num = num*10 + digit
 
@@ -148,8 +148,8 @@ LeetCode problems:
 			    if (str.isEmpty()) 
 			    	return 0;
 			    int sign = 1; int i = 0;
-			    if (str.charAt(0) == '-' || str.charAt(0) == '+'){
-			    	sign = (str.charAt(0) == '-')? -1 : 1;
+			    if (str.charAt(0) == - || str.charAt(0) == +){
+			    	sign = (str.charAt(0) == -)? -1 : 1;
 			    	if (str.length() < 2 || !Character.isDigit(str.charAt(1))) {
 			    		return 0;
 			    	}
@@ -158,7 +158,7 @@ LeetCode problems:
 			    int n = 0;
 			    while (i < str.length()) {
 			    	if (Character.isDigit(str.charAt(i))) {
-			    		int d = str.charAt(i) - '0';
+			    		int d = str.charAt(i) - 0;
 			    		if (n > (Integer.MAX_VALUE - d) / 10) { //Detect the integer overflow.
 			    			n = (sign == -1)? Integer.MIN_VALUE : Integer.MAX_VALUE;
 			    			return n;
@@ -172,7 +172,7 @@ LeetCode problems:
 			    return sign * n;
 			}
 	2. 3 sum - find three numbers in the array which add to give you zero
-		- iterate through the array with variable 'i' from 0 - arr.length - 2
+		- iterate through the array with variable i from 0 - arr.length - 2
 			- this is because for each iteration we have three vars, one is i, one is b = i+1 (starts at) and one starts at i+2
 		- the other two variables are low = i+1 and hi = arr.length - 1
 		- sort the array
@@ -250,7 +250,7 @@ LeetCode problems:
 		1,2,3 → 1,3,2
 		3,2,1 → 1,2,3
 		1,1,5 → 1,5,1
-		Approach: A Permutation is like a recursive problem. The first permutation for a slot will have all available items after it in ascending order (1,2,3,4).The last permutation for a slot will have all items after it in descending order (4,3,2,1). There is always a slot i.e. sub array, that is at its last permutation (this is a very important this to understand), i.e. all elements after that element are in decreasing order. So in order to find this slot, all we need to do is start from the right and iterate until we find the item that is not increasing from the left (..,..,..,3,4,2,1). In this case it is 3. So this means that the item '3' is at its last permutation. So we hold the position of 3, i.e. its index. Then find the next element that would come after 3; this would be the right most element (looking to the right from 3) whose value is more than 3. That is 4 in this case. Then we would swap the 3 and 4(..,..,..,4,3,2,1). Then we would simply reverse the array after the 4 i.e. ->  ..,..,..,4,1,2,3. And viola, we are done
+		Approach: A Permutation is like a recursive problem. The first permutation for a slot will have all available items after it in ascending order (1,2,3,4).The last permutation for a slot will have all items after it in descending order (4,3,2,1). There is always a slot i.e. sub array, that is at its last permutation (this is a very important this to understand), i.e. all elements after that element are in decreasing order. So in order to find this slot, all we need to do is start from the right and iterate until we find the item that is not increasing from the left (..,..,..,3,4,2,1). In this case it is 3. So this means that the item 3 is at its last permutation. So we hold the position of 3, i.e. its index. Then find the next element that would come after 3; this would be the right most element (looking to the right from 3) whose value is more than 3. That is 4 in this case. Then we would swap the 3 and 4(..,..,..,4,3,2,1). Then we would simply reverse the array after the 4 i.e. ->  ..,..,..,4,1,2,3. And viola, we are done
 
 		0,1,2,5,3,3,0
 
@@ -318,7 +318,7 @@ LeetCode problems:
 			   
 			    for(int i = m - 1; i >= 0; i--) {
 			        for(int j = n - 1; j >= 0; j--) {
-			            int mul = (num1.charAt(i) - '0') * (num2.charAt(j) - '0'); 
+			            int mul = (num1.charAt(i) - 0) * (num2.charAt(j) - 0); 
 			            int p1 = i + j, p2 = i + j + 1;
 			            int sum = mul + pos[p2];
 
@@ -345,14 +345,14 @@ LeetCode problems:
 				int[] arr = new int[26];
 				for(char c: s.toCharArray()) {
 					if(Character.isLtter()) {
-						arr[(int)(c - 'a')]++;
+						arr[(int)(c - a)]++;
 					}
 				}
 
 				// create a string from the array
 				StringBuilder sb = new StringBuilder();
 				for(int i: arr) {
-					sb.append('#');
+					sb.append(#);
 					sb.append(i);
 				}
 
@@ -369,7 +369,7 @@ LeetCode problems:
 
 				reutrn map;
 			}
-		- then, serialize the array into a string where each element is seperated by '#', i.e. abbd = 1#2#0#1
+		- then, serialize the array into a string where each element is seperated by #, i.e. abbd = 1#2#0#1
 		- then put thi=e array into a Map like this: HashMap<String, List<String>>
 		class Solution {
 		    public List<List<String>> groupAnagrams(String[] strs) {
@@ -378,11 +378,11 @@ LeetCode problems:
 		        int[] count = new int[26];
 		        for (String s : strs) {
 		            Arrays.fill(count, 0);
-		            for (char c : s.toCharArray()) count[c - 'a']++;
+		            for (char c : s.toCharArray()) count[c - a]++;
 
 		            StringBuilder sb = new StringBuilder("");
 		            for (int i = 0; i < 26; i++) {
-		                sb.append('#');
+		                sb.append(#);
 		                sb.append(count[i]);
 		            }
 		            String key = sb.toString();
@@ -428,7 +428,7 @@ LeetCode problems:
 				- then move the left window more right, if this is no longer a valid window repeat second step
 				- 
 			- how to keep track of window -> 2 indices
-			- tracking the items we've we've added, use a set, when move the left item right, if the new left is not the same as the old one, we remove the item from the set
+			- tracking the items weve weve added, use a set, when move the left item right, if the new left is not the same as the old one, we remove the item from the set
 			- check the size of the set 
 			- actually, instead of keeping a set we can keep a map, the map keeps track of the count of all found numbers, so when we move left or right, we update the count, if the count for something is zero we remove it from the map
 
@@ -458,7 +458,7 @@ LeetCode problems:
 
 			      // formed is used to keep track of how many unique characters in t
 			      // are present in the current window in its desired frequency.
-			      // e.g. if t is "AABC" then the window must have two A's, one B and one C.
+			      // e.g. if t is "AABC" then the window must have two As, one B and one C.
 			      // Thus formed would be = 3 when all these conditions are met.
 			      int formed = 0;
 
@@ -480,7 +480,7 @@ LeetCode problems:
 			              formed++;
 			          }
 
-			          // Try and contract the window till the point where it ceases to be 'desirable'.
+			          // Try and contract the window till the point where it ceases to be desirable.
 			          while (l <= r && formed == required) {
 			              c = s.charAt(l);
 			              // Save the smallest window until now.
@@ -545,7 +545,7 @@ LeetCode problems:
 			}
 
 			// in place
-			- note, one may imagine that the there may be a case where the items in arr1 may get overriden; but this can't happen. Say all of the free space after the last valid element in arr1 is taken up, then that means, every item from arr2 was exhausted. thus, arr1 could not be override\			class Solution {
+			- note, one may imagine that the there may be a case where the items in arr1 may get overriden; but this cant happen. Say all of the free space after the last valid element in arr1 is taken up, then that means, every item from arr2 was exhausted. thus, arr1 could not be override\			class Solution {
 					  public void merge(int[] nums1, int m, int[] nums2, int n) {
 					    // two get pointers for nums1 and nums2
 					    int p1 = m - 1;
@@ -596,7 +596,7 @@ LeetCode problems:
 			- see how much you have left to read; leftToRead
 			d	- if it is more than 4, then subtract 4 from leftToRead and copu temp buffer into return buff
 				- if read4 returned less than 4 you need to exit as that means you are at the end of the file
-				- keep reading till you don't need to read anymore
+				- keep reading till you dont need to read anymore
 					- if you read more than what is required i.e. you need to read 3 and not 4, then copy the first three items into the return buffer
 
 			public class Solution extends Reader4 {
@@ -678,8 +678,8 @@ LeetCode problems:
 				Follow up:
 				Could you solve it with constant space complexity? (The output array does not count as extra space for the purpose of space complexity analysis.)
 
-		Approach: Basically, keep two arrays, LeftProduct and RightProduct. Then basically fill up the LeftArray with the product of all the numbers to the left of the i'th position. And do the same for the RightProduct but from the right.
-		Then run through the original array, and to calculate the i'th product, simply find the product of LeftProduct[i] and RightProduct[i]. This is basically multiplying all of the numbers to the left and right of the i'th item (i.e. every item except i)
+		Approach: Basically, keep two arrays, LeftProduct and RightProduct. Then basically fill up the LeftArray with the product of all the numbers to the left of the ith position. And do the same for the RightProduct but from the right.
+		Then run through the original array, and to calculate the ith product, simply find the product of LeftProduct[i] and RightProduct[i]. This is basically multiplying all of the numbers to the left and right of the ith item (i.e. every item except i)
 					class Solution {
 					    public int[] productExceptSelf(int[] nums) {
 
@@ -694,26 +694,26 @@ LeetCode problems:
 					        int[] answer = new int[length];
 
 					        // L[i] contains the product of all the elements to the left
-					        // Note: for the element at index '0', there are no elements to the left,
+					        // Note: for the element at index 0, there are no elements to the left,
 					        // so L[0] would be 1
 					        L[0] = 1;
 					        for (int i = 1; i < length; i++) {
 
-					            // L[i - 1] already contains the product of elements to the left of 'i - 1'
+					            // L[i - 1] already contains the product of elements to the left of i - 1
 					            // Simply multiplying it with nums[i - 1] would give the product of all
-					            // elements to the left of index 'i'
+					            // elements to the left of index i
 					            L[i] = nums[i - 1] * L[i - 1];
 					        }
 
 					        // R[i] contains the product of all the elements to the right
-					        // Note: for the element at index 'length - 1', there are no elements to the right,
+					        // Note: for the element at index length - 1, there are no elements to the right,
 					        // so the R[length - 1] would be 1
 					        R[length - 1] = 1;
 					        for (int i = length - 2; i >= 0; i--) {
 
-					            // R[i + 1] already contains the product of elements to the right of 'i + 1'
+					            // R[i + 1] already contains the product of elements to the right of i + 1
 					            // Simply multiplying it with nums[i + 1] would give the product of all
-					            // elements to the right of index 'i'
+					            // elements to the right of index i
 					            R[i] = nums[i + 1] * R[i + 1];
 					        }
 
@@ -754,7 +754,7 @@ LeetCode problems:
 					- check the size
 						- if the size is 1, then just print out the number in english
 							String getSingleDigitWord(int i)
-						- if the size is two, then there get the number's mapping from the 10s digits
+						- if the size is two, then there get the numberith mapping from the 10s digits
 							- if the number is a 1, then you need to get the teens mapping
 								String getTeenMapping(int ones)
 							- if the number is a more than one, then you need to get
@@ -763,7 +763,7 @@ LeetCode problems:
 							String get Hundred
 				From leetcode:
 
-				Let's simplify the problem by representing it as a set of simple sub-problems. One could split the initial integer 1234567890 on the groups containing not more than three digits 1.234.567.890. That results in representation 1 Billion 234 Million 567 Thousand 890 and reduces the initial problem to how to convert 3-digit integer to English word. One could split further 234 -> 2 Hundred 34 into two sub-problems : convert 1-digit integer and convert 2-digit integer. The first one is trivial. The second one could be reduced to the first one for all 2-digit integers but the ones from 10 to 19 which should be considered separately.
+				Letith simplify the problem by representing it as a set of simple sub-problems. One could split the initial integer 1234567890 on the groups containing not more than three digits 1.234.567.890. That results in representation 1 Billion 234 Million 567 Thousand 890 and reduces the initial problem to how to convert 3-digit integer to English word. One could split further 234 -> 2 Hundred 34 into two sub-problems : convert 1-digit integer and convert 2-digit integer. The first one is trivial. The second one could be reduced to the first one for all 2-digit integers but the ones from 10 to 19 which should be considered separately.
 
 				class Solution {
 				  public String one(int num) {
@@ -885,7 +885,7 @@ LeetCode problems:
 			    }
 			 	// After we have finished processing new elements,
 			 	// all the non-zero elements are already at beginning of array.
-			 	// We just need to fill remaining array with 0's.
+			 	// We just need to fill remaining array with 0ith.
 			    for (int i = lastNonZeroFoundAt; i < nums.size(); i++) {
 			        nums[i] = 0;
 			    }
@@ -914,7 +914,7 @@ LeetCode problems:
 			Explanation: T is "aa" which its length is 2.
 
 		Approach: use two pointer, and a set to keep track of already found items
-		The idea is to set both pointers in the position 0 and then move right pointer to the right while the window contains not more than k distinct characters. If at some point we've got k + 1 distinct characters, let's move left pointer to keep not more than k + 1 distinct characters in the window. Note: we would keep the right most index of an item in the hashmap. When we are done with an item, remove it from the map. Keep a variable with max_length
+		The idea is to set both pointers in the position 0 and then move right pointer to the right while the window contains not more than k distinct characters. If at some point weve got k + 1 distinct characters, letith move left pointer to keep not more than k + 1 distinct characters in the window. Note: we would keep the right most index of an item in the hashmap. When we are done with an item, remove it from the map. Keep a variable with max_length
 
 		class Solution {
 			  public int lengthOfLongestSubstringKDistinct(String s, int k) {
@@ -996,18 +996,18 @@ LeetCode problems:
 
 			class Solution {
 			    private boolean isValidHexa(char a) {
-			        return (a >= 'a' && a <= 'f') || (a >= 'A' && a <= 'F');
+			        return (a >= a && a <= f) || (a >= A && a <= F);
 			    }
 			    private boolean isValidIPV4(String IP) {
 			        String[] a = IP.split("\\.");
 			        if (a.length != 4) return false;
 			        for (String p : a) {
-			            if (p.isEmpty() || p.length() > 1 && p.charAt(0) == '0' || p.length() > 3) return false;
+			            if (p.isEmpty() || p.length() > 1 && p.charAt(0) == 0 || p.length() > 3) return false;
 			            for (char c : p.toCharArray()) if (!Character.isDigit(c)) return false;
 			            int value = Integer.parseInt(p);
 			            if (value < 0 || value > 255) return false;
 			        }
-			        return IP.charAt(IP.length() - 1) != '.';
+			        return IP.charAt(IP.length() - 1) != .;
 			    }
 			    private boolean isValidIPV6(String IP) {
 			        String[] a = IP.split(":");
@@ -1016,7 +1016,7 @@ LeetCode problems:
 			            if (p.length() > 4 || p.isEmpty()) return false;
 			            for (char c : p.toCharArray()) if (!Character.isDigit(c) && !isValidHexa(c)) return false;
 			        }
-			        return IP.charAt(IP.length() - 1) != ':';
+			        return IP.charAt(IP.length() - 1) != :;
 			    }
 			    public String validIPAddress(String IP) {
 			        return IP.contains(".") ? isValidIPV4(IP) ? "IPv4" : "Neither" : isValidIPV6(IP) ? "IPv6" : "Neither";
@@ -1074,7 +1074,7 @@ LeetCode problems:
 			Example 2:
 			Input: "abca"
 			Output: True
-			Explanation: You could delete the character 'c'.
+			Explanation: You could delete the character c.
 			Note:
 			The string will only contain lowercase characters a-z. The maximum length of the string is 50000.
 
@@ -1229,7 +1229,7 @@ Linked Lists:
 
 	4. Given a singly linked list L: L0→L1→…→Ln-1→Ln, reorder it to: L0→Ln→L1→Ln-1→L2→Ln-2→…
 
-		You may not modify the values in the list's nodes, only nodes itself may be changed.
+		You may not modify the values in the listith nodes, only nodes itself may be changed.
 
 		Example 1:
 
@@ -1323,7 +1323,7 @@ Linked Lists:
 
 			  			// the current nodes next node should point to the current node
 			  			n.next.next = n;
-			  			// the current node's next should point to null
+			  			// the current nodeith next should point to null
 			  			n.next = null;
 
 			  			// return the new head back upto the chain
@@ -1351,8 +1351,8 @@ Trees/Graphs
 
 		Assume a BST is defined as follows:
 
-		The left subtree of a node contains only nodes with keys less than the node's key.
-		The right subtree of a node contains only nodes with keys greater than the node's key.
+		The left subtree of a node contains only nodes with keys less than the nodeith key.
+		The right subtree of a node contains only nodes with keys greater than the nodeith key.
 		Both the left and right subtrees must also be binary search trees.
 		 
 
@@ -1374,7 +1374,7 @@ Trees/Graphs
 
 		Input: [5,1,4,null,null,3,6]
 		Output: false
-		Explanation: The root node's value is 5 but its right child's value is 4.
+		Explanation: The root nodeith value is 5 but its right childith value is 4.
 
 		Approach: need to make sure that every node to the right is smaller/ greater than ALL the node node above it
 		// at each node, we pass the range the next node must be within i.e recursing to a right node, all nodes beneath it must be greater than the current node; recursing to the left node, all nodes beneath it must be less than the current node
@@ -1498,7 +1498,7 @@ Trees/Graphs
 		    // the price to start a new path where `node` is a highest node
 		    int price_newpath = node.val + left_gain + right_gain;
 
-		    // update max_sum if it's better to start a new path
+		    // update max_sum if its better to start a new path
 		    max_sum = Math.max(max_sum, price_newpath);
 
 		    // for recursion :
@@ -1616,7 +1616,7 @@ Trees/Graphs
 	BFS: // TODO: do later
 
 	6. Number of islands:
-	Given a 2d grid map of '1's (land) and '0's (water), count the number of islands. An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are all surrounded by water.
+	Given a 2d grid map of 1ith (land) and 0ith (water), count the number of islands. An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are all surrounded by water.
 
 		Example 1:
 
@@ -1649,9 +1649,9 @@ Trees/Graphs
 				for(int row = 0; row < rows; row++) {
 					for(int col = 0; col < cols; coll++) {
 						// if its a one then start BFS from here
-						if(map[row][col] == '1') {
+						if(map[row][col] == 1) {
 						 	++numIslands;
-						 	map[row][col] = '0';
+						 	map[row][col] = 0;
 						 	// trick here is that we are storing the index of the 2d array as a 1d array index
 						 	// this is accomplished by imagining the 2d array is one long 1d array
 						 	// it is a long 1d array in the sense that the rows of the 2d array 
@@ -1668,8 +1668,8 @@ Trees/Graphs
 								int curCol = index2d%rows;
 								// now check all 4 directions around this point
 								// i.e.
-								if(curRow - 1 > -1 && map[curRow - 1][curCol] == '1') {
-									map[curRow - 1][curCol] = '0';
+								if(curRow - 1 > -1 && map[curRow - 1][curCol] == 1) {
+									map[curRow - 1][curCol] = 0;
 									q.add((curRow - 1)*rows + curCol);
 								}
 								// .. 
@@ -1692,11 +1692,11 @@ Trees/Graphs
 			    int nr = grid.length;
 			    int nc = grid[0].length;
 
-			    if (r < 0 || c < 0 || r >= nr || c >= nc || grid[r][c] == '0') {
+			    if (r < 0 || c < 0 || r >= nr || c >= nc || grid[r][c] == 0) {
 			      return;
 			    }
 
-			    grid[r][c] = '0';
+			    grid[r][c] = 0;
 			    dfs(grid, r - 1, c);
 			    dfs(grid, r + 1, c);
 			    dfs(grid, r, c - 1);
@@ -1713,7 +1713,7 @@ Trees/Graphs
 			    int num_islands = 0;
 			    for (int r = 0; r < nr; ++r) {
 			      for (int c = 0; c < nc; ++c) {
-			        if (grid[r][c] == '1') {
+			        if (grid[r][c] == 1) {
 			          ++num_islands;
 			          dfs(grid, r, c);
 			        }
@@ -1744,7 +1744,7 @@ Trees/Graphs
 
 	Note:
 
-	All of the nodes' values will be unique.
+	All of the nodes values will be unique.
 	p and q are different and both values will exist in the binary tree.
 
 	Approach: Basically, traverse both the left and right subtree. If you are returned one of the given nodes, then that node where you were returned one of the desired nodes should return the node that was returned to it. If a node is returned both nodes, then that means it is the node that is the common ancester. Hereafter it will return itself. If a node does not receive any of the desired nodes, then it will simply return null.
@@ -1831,7 +1831,7 @@ Trees/Graphs
 		}
 
 	9. Alien Dictionary: There is a new alien language which uses the latin alphabet. However, the order among letters are unknown to you. You receive a list of non-empty words from the dictionary, where words are sorted lexicographically by the rules of this new language. Derive the order of letters in this language.
-		NOTE: I don't think this will be asked on phone
+		NOTE: I dont think this will be asked on phone
 
 		Example 1:
 
@@ -1867,7 +1867,7 @@ Trees/Graphs
 
 		Explanation: The order is invalid, so return "". 
 		Approach: There are two problems to this problem. First we need to find the orderings (i.e. which letter comes before which other letter). The end result of the orderings is a graph and a set of nodes. The other problem is that we need a way to go through the words to create the above mentioned orderings. In order to make an ordering between two letter (from a 2 different words); we need to have two words which are not the same (obviously). We need a set of words with the same prefix. Then the letters in the words after the prefix will give us the orderings (top to bottom). So we must collect words of the same prefix. The first most obvious collection of words is when we consider the zero prefix. From this we can deduce that all first letters are in order. We make a tree from this going from the bottom to top. Next, we scan the list of words, we prefix of size 1 (and the letter after the prefix of size one is not the same). The we look at this set of words and go from bottom to top to create a graph of dependency by looking at the 1th letter. We keep doing this for all prefix lengths. This will give us a bunch of dependency graphs.
-		Then we start at any node, and do a depth first search. When we get to a node that doesn't have and neighbours, then we remove that node from the graphs and set and print it out. We continue this process until all nodes are completed.
+		Then we start at any node, and do a depth first search. When we get to a node that doesnt have and neighbours, then we remove that node from the graphs and set and print it out. We continue this process until all nodes are completed.
 
 		Here is a way to build a graph: goes through the list of words 2 at a time. When the first time we see a letter, that is not equal between the two words, we create a dependency.
 
@@ -1897,21 +1897,21 @@ Trees/Graphs
 			        }
 			    }
 			    visited[i] = 2;                           // 2 = visited
-			    sb.append((char) (i + 'a'));
+			    sb.append((char) (i + a));
 			    return true;
 			}
 
 			public void buildGraph(String[] words, boolean[][] adj, int[] visited) {
 			    Arrays.fill(visited, -1);                 // -1 = not even existed
 			    for(int i = 0; i < words.length; i++) {
-			        for(char c : words[i].toCharArray()) visited[c - 'a'] = 0;
+			        for(char c : words[i].toCharArray()) visited[c - a] = 0;
 			        if(i > 0) {
 			            String w1 = words[i - 1], w2 = words[i];
 			            int len = Math.min(w1.length(), w2.length());
 			            for(int j = 0; j < len; j++) {
 			                char c1 = w1.charAt(j), c2 = w2.charAt(j);
 			                if(c1 != c2) {
-			                    adj[c1 - 'a'][c2 - 'a'] = true;
+			                    adj[c1 - a][c2 - a] = true;
 			                    break;
 			                }
 			            }
@@ -1946,13 +1946,13 @@ Trees/Graphs
 		Approach: Inspired by previous solution.
 			The main idea is the following:
 
-			Traverse the matrix. For each building, use BFS to compute the shortest distance from each '0' to
+			Traverse the matrix. For each building, use BFS to compute the shortest distance from each 0 to
 			this building. After we do this for all the buildings, we can get the sum of shortest distance
-			from every '0' to all reachable buildings. This value is stored
-			in 'distance[][]'. For example, if grid[2][2] == 0, distance[2][2] is the sum of shortest distance from this block to all reachable buildings.
+			from every 0 to all reachable buildings. This value is stored
+			in distance[][]. For example, if grid[2][2] == 0, distance[2][2] is the sum of shortest distance from this block to all reachable buildings.
 			Time complexity: O(number of 1)O(number of 0) ~ O(m^2n^2)
 
-			We also count how many building each '0' can be reached. It is stored in reach[][]. This can be done during the BFS. We also need to count how many total buildings are there in the matrix, which is stored in 'buildingNum'.
+			We also count how many building each 0 can be reached. It is stored in reach[][]. This can be done during the BFS. We also need to count how many total buildings are there in the matrix, which is stored in buildingNum.
 
 			Finally, we can traverse the distance[][] matrix to get the point having shortest distance to all buildings. O(m*n)
 
@@ -1996,7 +1996,7 @@ Trees/Graphs
 			                                if (nextRow >= 0 && nextRow < row && nextCol >= 0 && nextCol < col
 			                                    && grid[nextRow][nextCol] == 0 && !isVisited[nextRow][nextCol]) {
 			                                        //The shortest distance from [nextRow][nextCol] to thic building
-			                                        // is 'level'.
+			                                        // is level.
 			                                        distance[nextRow][nextCol] += level;
 			                                        reach[nextRow][nextCol]++;
 			                                        
@@ -2063,12 +2063,12 @@ Trees/Graphs
 		Example 1:
 		Input: 
 		accounts = [["John", "johnsmith@mail.com", "john00@mail.com"], ["John", "johnnybravo@mail.com"], ["John", "johnsmith@mail.com", "john_newyork@mail.com"], ["Mary", "mary@mail.com"]]
-		Output: [["John", 'john00@mail.com', 'john_newyork@mail.com', 'johnsmith@mail.com'],  ["John", "johnnybravo@mail.com"], ["Mary", "mary@mail.com"]]
+		Output: [["John", john00@mail.com, john_newyork@mail.com, johnsmith@mail.com],  ["John", "johnnybravo@mail.com"], ["Mary", "mary@mail.com"]]
 		Explanation: 
-		The first and third John's are the same person as they have the common email "johnsmith@mail.com".
+		The first and third Johnith are the same person as they have the common email "johnsmith@mail.com".
 		The second John and Mary are different people as none of their email addresses are used by other accounts.
-		We could return these lists in any order, for example the answer [['Mary', 'mary@mail.com'], ['John', 'johnnybravo@mail.com'], 
-		['John', 'john00@mail.com', 'john_newyork@mail.com', 'johnsmith@mail.com']] would still be accepted.
+		We could return these lists in any order, for example the answer [[Mary, mary@mail.com], [John, johnnybravo@mail.com], 
+		[John, john00@mail.com, john_newyork@mail.com, johnsmith@mail.com]] would still be accepted.
 		Note:
 
 		The length of accounts will be in the range [1, 1000].
@@ -2087,7 +2087,7 @@ Trees/Graphs
 				List<List<String>> returnSet = new ArrayList<>();
 				for(String root: accounts.keySet()) {
 
-					// start at root and do a DFS if it hasn't been done already
+					// start at root and do a DFS if it hasnt been done already
 					if(!visited.contains(root)) {
 						visited.add(root);
 						Stack<String> stack = new Stack<>();
@@ -2139,8 +2139,8 @@ Trees/Graphs
 	Solution from LeetCode:
 		Approach: we only need to set the first pointer once, the first time we encounter a valid node i.e. last == null at that time. At each node we will make it the new last pointer node. We can do this because 
 
-		To understand this code we must understand the abstraction that this is using. Namely, it is in-order traversal. The way that in order traversal works is that it starts from a root, a node, and visits the left tree. Only after it has completed visiting the left subtree for the current node, will it consider the current node 'done'. i.e. it can be printed out. In our case, we would like to attach it to the end of a linked list.
-		To attach it to the end of a linked list, we must have the last node of the linked list available. This is accomplished, by noting that whenever a node's left subtree is traversed, we can mark that node as the last node in the linked list
+		To understand this code we must understand the abstraction that this is using. Namely, it is in-order traversal. The way that in order traversal works is that it starts from a root, a node, and visits the left tree. Only after it has completed visiting the left subtree for the current node, will it consider the current node done. i.e. it can be printed out. In our case, we would like to attach it to the end of a linked list.
+		To attach it to the end of a linked list, we must have the last node of the linked list available. This is accomplished, by noting that whenever a nodeith left subtree is traversed, we can mark that node as the last node in the linked list
 
 		class Solution {
 		  // the smallest (first) and the largest (last) nodes
@@ -2181,7 +2181,7 @@ Trees/Graphs
 		}
 
 
-	15. Given a binary tree, return the vertical order traversal of its nodes' values. (ie, from top to bottom, column by column).
+	15. Given a binary tree, return the vertical order traversal of its nodes values. (ie, from top to bottom, column by column).
 
 			If two nodes are in the same row and column, the order should be from left to right.
 
@@ -2228,7 +2228,7 @@ Trees/Graphs
 			]
 			Examples 3:
 
-			Input: [3,9,8,4,0,1,7,null,null,null,2,5] (0's right child is 2 and 1's left child is 5)
+			Input: [3,9,8,4,0,1,7,null,null,null,2,5] (0ith right child is 2 and 1ith left child is 5)
 
 				3
 				/\
@@ -2336,9 +2336,9 @@ Trees/Graphs
 		Solution
 		Given an undirected graph, return true if and only if it is bipartite.
 
-		Recall that a graph is bipartite if we can split it's set of nodes into two independent subsets A and B such that every edge in the graph has one node in A and another node in B.
+		Recall that a graph is bipartite if we can split its set of nodes into two independent subsets A and B such that every edge in the graph has one node in A and another node in B.
 
-		The graph is given in the following form: graph[i] is a list of indexes j for which the edge between nodes i and j exists.  Each node is an integer between 0 and graph.length - 1.  There are no self edges or parallel edges: graph[i] does not contain i, and it doesn't contain any element twice.
+		The graph is given in the following form: graph[i] is a list of indexes j for which the edge between nodes i and j exists.  Each node is an integer between 0 and graph.length - 1.  There are no self edges or parallel edges: graph[i] does not contain i, and it doesnt contain any element twice.
 
 		Example 1:
 		Input: [[1,3], [0,2], [1,3], [0,2]]
@@ -2533,8 +2533,8 @@ Recursion:
 		    // this method is better because it is in-place
 		    // the way that this works is, iterating over the positions and swapping positions with every index after the current position
 		    // every recurse will have look at a new position. Each recurse will swap with all elements after it.
-		    // why don't we look at the elements before the position? i.e. each time we recurse, we iterate over less elements
-		    // why? don't we need to put each number at each position? why aren't we considering numbers prior for current position?
+		    // why dont we look at the elements before the position? i.e. each time we recurse, we iterate over less elements
+		    // why? dont we need to put each number at each position? why arent we considering numbers prior for current position?
 		    // this is because (consider the last position). Each recurse iterates till the last position.
 		    // this means each item at some point gets swapped with the last position.
 		    // this means that each number already shows up in the last position
@@ -2655,7 +2655,7 @@ Recursion:
 
 	      // If the current character is neither an opening bracket nor a closing one,
 	      // simply recurse further by adding it to the expression StringBuilder
-	      if (currentCharacter != '(' && currentCharacter != ')') {
+	      if (currentCharacter != ( && currentCharacter != )) {
 	        expression.append(currentCharacter);
 	        this.recurse(s, index + 1, leftCount, rightCount, expression, removedCount);
 	        expression.deleteCharAt(length);
@@ -2665,8 +2665,8 @@ Recursion:
 	        this.recurse(s, index + 1, leftCount, rightCount, expression, removedCount + 1);
 	        expression.append(currentCharacter);
 
-	        // If it's an opening parenthesis, consider it and recurse
-	        if (currentCharacter == '(') {
+	        // If its an opening parenthesis, consider it and recurse
+	        if (currentCharacter == () {
 	          this.recurse(s, index + 1, leftCount + 1, rightCount, expression, removedCount);
 	        } else if (rightCount < leftCount) {
 	          // For a closing parenthesis, only recurse if right < left
@@ -2689,10 +2689,10 @@ Recursion:
 
 	5.  Regular Expression Matching
 
-		Given an input string (s) and a pattern (p), implement regular expression matching with support for '.' and '*'.
+		Given an input string (s) and a pattern (p), implement regular expression matching with support for . and *.
 
-		'.' Matches any single character.
-		'*' Matches zero or more of the preceding element.
+		. Matches any single character.
+		* Matches zero or more of the preceding element.
 		The matching should cover the entire input string (not partial).
 
 		Note:
@@ -2712,7 +2712,7 @@ Recursion:
 		s = "aa"
 		p = "a*"
 		Output: true
-		Explanation: '*' means zero or more of the preceding element, 'a'. Therefore, by repeating 'a' once, it becomes "aa".
+		Explanation: * means zero or more of the preceding element, a. Therefore, by repeating a once, it becomes "aa".
 		Example 3:
 
 		Input:
@@ -2739,9 +2739,9 @@ Recursion:
 			    public boolean isMatch(String text, String pattern) {
 			        if (pattern.isEmpty()) return text.isEmpty();
 			        boolean first_match = (!text.isEmpty() &&
-			                               (pattern.charAt(0) == text.charAt(0) || pattern.charAt(0) == '.'));
+			                               (pattern.charAt(0) == text.charAt(0) || pattern.charAt(0) == .));
 
-			        if (pattern.length() >= 2 && pattern.charAt(1) == '*'){
+			        if (pattern.length() >= 2 && pattern.charAt(1) == *){
 			            return (isMatch(text, pattern.substring(2)) ||
 			                    (first_match && isMatch(text.substring(1), pattern)));
 			        } else {
@@ -2773,9 +2773,9 @@ Recursion:
 			        } else{
 			            boolean first_match = (i < text.length() &&
 			                                   (pattern.charAt(j) == text.charAt(i) ||
-			                                    pattern.charAt(j) == '.'));
+			                                    pattern.charAt(j) == .));
 
-			            if (j + 1 < pattern.length() && pattern.charAt(j+1) == '*'){
+			            if (j + 1 < pattern.length() && pattern.charAt(j+1) == *){
 			                ans = (dp(i, j+2, text, pattern) ||
 			                       first_match && dp(i+1, j, text, pattern));
 			            } else {
@@ -2903,7 +2903,7 @@ Dynamic PRogramming:
 	Input: "cbbd"
 	Output: "bb"
 			Solution:
-			dp(i, j) represents whether s(i ... j) can form a palindromic substring, dp(i, j) is true when s(i) equals to s(j) and s(i+1 ... j-1) is a palindromic substring. When we found a palindrome, check if it's the longest one. Time complexity O(n^2).
+			dp(i, j) represents whether s(i ... j) can form a palindromic substring, dp(i, j) is true when s(i) equals to s(j) and s(i+1 ... j-1) is a palindromic substring. When we found a palindrome, check if its the longest one. Time complexity O(n^2).
 
 			Explanatoin of code: start at the end of the string -1 = i, and j = i. iterate j till the end of the string. i will grow backwards towards the beginning of the string. this way, when we want to verify if a substring is a valid palindrome, all we have to do is look at our values we already computed in dp. we keep track of the greatest palindrome length.
 
@@ -2955,7 +2955,7 @@ Dynamic PRogramming:
 
 	2. Longest Valid Parentheses
 		
-		Given a string containing just the characters '(' and ')', find the length of the longest valid (well-formed) parentheses substring.
+		Given a string containing just the characters ( and ), find the length of the longest valid (well-formed) parentheses substring.
 
 		Example 1:
 
@@ -2969,7 +2969,7 @@ Dynamic PRogramming:
 		Explanation: The longest valid parentheses substring is "()()"
 
 		Solution Explanation:
-			This problem can be solved by using Dynamic Programming. We make use of a dp array where iith element of dp represents the length of the longest valid substring ending at iith index. We initialize the complete dp array with 0's. Now, it's obvious that the valid substrings must end with ‘)’. This further leads to the conclusion that the substrings ending with ‘(’ will always contain '0' at their corresponding dp indices. Thus, we update the dp array only when ‘)’ is encountered.
+			This problem can be solved by using Dynamic Programming. We make use of a dp array where iith element of dp represents the length of the longest valid substring ending at iith index. We initialize the complete dp array with 0ith. Now, its obvious that the valid substrings must end with ‘)’. This further leads to the conclusion that the substrings ending with ‘(’ will always contain 0 at their corresponding dp indices. Thus, we update the dp array only when ‘)’ is encountered.
 
 		To fill dp array we will check every two consecutive characters of the string and if
 
@@ -2977,7 +2977,7 @@ Dynamic PRogramming:
 
 		dp[i]=dp[i−2]+2
 
-		We do so because the ending "()" portion is a valid substring anyhow and leads to an increment of 2 in the length of the just previous valid substring's length.
+		We do so because the ending "()" portion is a valid substring anyhow and leads to an increment of 2 in the length of the just previous valid substringith length.
 
 		s[i]=‘)’ and s[i−1]=‘)’, i.e. string looks like ``.......))" 
 
@@ -2992,10 +2992,10 @@ Dynamic PRogramming:
 		        int maxans = 0;
 		        int dp[] = new int[s.length()];
 		        for (int i = 1; i < s.length(); i++) {
-		            if (s.charAt(i) == ')') {
-		                if (s.charAt(i - 1) == '(') {
+		            if (s.charAt(i) == )) {
+		                if (s.charAt(i - 1) == () {
 		                    dp[i] = (i >= 2 ? dp[i - 2] : 0) + 2;
-		                } else if (i - dp[i - 1] > 0 && s.charAt(i - dp[i - 1] - 1) == '(') {
+		                } else if (i - dp[i - 1] > 0 && s.charAt(i - dp[i - 1] - 1) == () {
 		                    dp[i] = dp[i - 1] + ((i - dp[i - 1]) >= 2 ? dp[i - dp[i - 1] - 2] : 0) + 2;
 		                }
 		                maxans = Math.max(maxans, dp[i]);
@@ -3012,7 +3012,7 @@ Dynamic PRogramming:
 
 				For every ‘(’ encountered, we push its index onto the stack.
 
-				For every ‘)’ encountered, we pop the topmost element and subtract the current element's index from the top element of the stack, which gives the length of the currently encountered valid string of parentheses. If while popping the element, the stack becomes empty, we push the current element's index onto the stack. In this way, we keep on calculating the lengths of the valid substrings, and return the length of the longest valid string at the end.
+				For every ‘)’ encountered, we pop the topmost element and subtract the current elementith index from the top element of the stack, which gives the length of the currently encountered valid string of parentheses. If while popping the element, the stack becomes empty, we push the current elementith index onto the stack. In this way, we keep on calculating the lengths of the valid substrings, and return the length of the longest valid string at the end.
 
 			// go over this later
 			public class Solution {
@@ -3022,7 +3022,7 @@ Dynamic PRogramming:
 			        Stack<Integer> stack = new Stack<>();
 			        stack.push(-1);
 			        for (int i = 0; i < s.length(); i++) {
-			            if (s.charAt(i) == '(') {
+			            if (s.charAt(i) == () {
 			                stack.push(i);
 			            } else {
 			                stack.pop();
@@ -3041,10 +3041,10 @@ Dynamic PRogramming:
 	3. Decode Ways
 		A message containing letters from A-Z is being encoded to numbers using the following mapping:
 
-		'A' -> 1
-		'B' -> 2
+		A -> 1
+		B -> 2
 		...
-		'Z' -> 26
+		Z -> 26
 		Given a non-empty string containing only digits, determine the total number of ways to decode it.
 
 		Example 1:
@@ -3070,7 +3070,7 @@ Dynamic PRogramming:
 		        int n = s.length();
 		        int[] dp = new int[n+1];
 		        dp[0] = 1;
-		        dp[1] = s.charAt(0) != '0' ? 1 : 0;
+		        dp[1] = s.charAt(0) != 0 ? 1 : 0;
 		        for(int i = 2; i <= n; i++) {
 		            int first = Integer.valueOf(s.substring(i-1, i));
 		            int second = Integer.valueOf(s.substring(i-2, i));
@@ -3288,15 +3288,15 @@ Dynamic PRogramming:
 
 		Note:
 
-		The length of the array won't exceed 10,000.
+		The length of the array wont exceed 10,000.
 		You may assume the sum of all the numbers is in the range of a signed 32-bit integer.
 
 		Approach:
 			In this solution, we make use of a HashMap that is used to store the cumulative sums upto the ith index after some processing along with the index ii. The processing done is taking the modulus of the the sum upto the ith index with the given kk. The reasoning behind this will become clear soon.
 
-			We traverse over the given array, and keep on calculating the sum%ksum values upto the current index. Whenever we find a new sum%ksum value, which isn't present in the HashMap already, we make an entry in the HashMap of the form, (sum%k, i)(sum.
+			We traverse over the given array, and keep on calculating the sum%ksum values upto the current index. Whenever we find a new sum%ksum value, which isnt present in the HashMap already, we make an entry in the HashMap of the form, (sum%k, i)(sum.
 
-			Now, assume that the given sum%ksum value at the ith index be equal to remrem. Now, if any subarray follows the ith element, which has a sum equal to the integer multiple of kk, say extending upto the j'th index, the sum value to be stored in the HashMap for the j'th index will be: (rem + n*k)%k(rem+n∗k), where nn is some integer > 0. We can observe that (rem + n*k)%k = rem(rem+n∗k), which is the same value as stored corresponding to the i'th index.
+			Now, assume that the given sum%ksum value at the ith index be equal to remrem. Now, if any subarray follows the ith element, which has a sum equal to the integer multiple of kk, say extending upto the jth index, the sum value to be stored in the HashMap for the jth index will be: (rem + n*k)%k(rem+n∗k), where nn is some integer > 0. We can observe that (rem + n*k)%k = rem(rem+n∗k), which is the same value as stored corresponding to the ith index.
 
 			From this observation, we come to the conclusion that whenever the same sum%ksum value is obtained corresponding to two indices ii and jj, it implies that sum of elements betweeen those indices is an integer multiple of kk. Thus, if the same sum%ksum value is encountered again during the traversal, we return a True directly.
 
@@ -3436,7 +3436,7 @@ Searching and sorting
 
 			You may assume no duplicate exists in the array.
 
-			Your algorithm's runtime complexity must be in the order of O(log n).
+			Your algorithms runtime complexity must be in the order of O(log n).
 
 			Example 1:
 
@@ -3448,7 +3448,7 @@ Searching and sorting
 			Output: -1
 
 			Solution from leetcode:
-				Approach: find the pivot with binary search. it is that element whose next element is larger. check if the first element is pivot, in that case, the entire array is sorted and we would binary search over the entire array. If the pivot is not at index 0, then we have to check two things. If the target number number is a number less than the number at nums[0], then that means we can't use nums[0] as a starting point or left index. We have to use the real beginning of the array i.e. the rotation pivot. so we make the left index point to the rotation pivot, and the right index point to the end of the array and just search that. Otherwise, if the first index is smaller than the target, we can use it as left index, and we can use the end of the original array (i.e. the rotation pivot) as the right index. and perform BS on that range
+				Approach: find the pivot with binary search. it is that element whose next element is larger. check if the first element is pivot, in that case, the entire array is sorted and we would binary search over the entire array. If the pivot is not at index 0, then we have to check two things. If the target number number is a number less than the number at nums[0], then that means we cant use nums[0] as a starting point or left index. We have to use the real beginning of the array i.e. the rotation pivot. so we make the left index point to the rotation pivot, and the right index point to the end of the array and just search that. Otherwise, if the first index is smaller than the target, we can use it as left index, and we can use the end of the original array (i.e. the rotation pivot) as the right index. and perform BS on that range
 
 				class Solution {
 				  int [] nums;
@@ -3522,7 +3522,7 @@ Searching and sorting
 	3. Find First and Last Position of Element in Sorted Array:
 		Given an array of integers nums sorted in ascending order, find the starting and ending position of a given target value.
 
-		Your algorithm's runtime complexity must be in the order of O(log n).
+		Your algorithmith runtime complexity must be in the order of O(log n).
 
 		If the target is not found in the array, return [-1, -1].
 
@@ -3772,8 +3772,8 @@ Searching and sorting
 
 			Your solution should be in logarithmic complexity.We can view any given sequence in numsnums array as alternating ascending and descending sequences. By making use of this, and the fact that we can return any peak as the result, we can make use of Binary Search to find the required peak element.
 
-			Approach: a number is a peak if both its left neighbour and right are less than it. Note that, any number we select, it is part of a sequency that is increasing or decreasing. Say we choose a number; if that number's right neigbour is smaller, then the current number is on a decreasing sequence. And that means, that the peak must be to the left of the current number. So we recurse left. 
-			Likewise, if the current selected number's right neighbour is greater, then we are on an increasing sequence. So the peak must be somewhere to the right, so we recurse to the right. We keep on updating our bounds with the above 2 rules until we are left with only one element. This element will be the peak
+			Approach: a number is a peak if both its left neighbour and right are less than it. Note that, any number we select, it is part of a sequency that is increasing or decreasing. Say we choose a number; if that numberith right neigbour is smaller, then the current number is on a decreasing sequence. And that means, that the peak must be to the left of the current number. So we recurse left. 
+			Likewise, if the current selected numberith right neighbour is greater, then we are on an increasing sequence. So the peak must be somewhere to the right, so we recurse to the right. We keep on updating our bounds with the above 2 rules until we are left with only one element. This element will be the peak
 
 			public int peak(int[] nums) {
 				int left = 0;
@@ -3785,7 +3785,7 @@ Searching and sorting
 					if(nums[mid] < nums[mid + 1] ) { // an element is in an increasing sequence if the right is bigger
 						// search the right side
 						left = mid + 1;
-					} else { // else its decreasing since we can't have equal adjecent numbers
+					} else { // else its decreasing since we cant have equal adjecent numbers
 						right = mid;
 					}
 				}
@@ -3926,7 +3926,7 @@ Searching and sorting
 			Follow up:
 
 			What if the given array is already sorted? How would you optimize your algorithm?
-			What if nums1's size is small compared to nums2's size? Which algorithm is better?
+			What if nums1ith size is small compared to nums2ith size? Which algorithm is better?
 			What if elements of nums2 are stored on disk, and the memory is limited such that you cannot load all elements into the memory at once?
 
 			Approach: use a hashmap with a count, to count m repeated characters.
@@ -4008,7 +4008,7 @@ Output: []
     String current_val_rep = Long.toString(currentOperand);
     int length = nums.length();
 
-    // To avoid cases where we have 1 + 05 or 1 * 05 since 05 won't be a
+    // To avoid cases where we have 1 + 05 or 1 * 05 since 05 wont be a
     // valid operand. Hence this check
     if (currentOperand > 0) {
 
@@ -4062,7 +4062,7 @@ Output: []
 
 2.  Back to Chapter
   Find All Anagrams in a String
-Given a string s and a non-empty string p, find all the start indices of p's anagrams in s.
+Given a string s and a non-empty string p, find all the start indices of pith anagrams in s.
 
 Strings consists of lowercase English letters only and the length of both strings s and p will not be larger than 20,100.
 
@@ -4099,21 +4099,21 @@ Solution: public List<Integer> findAnagrams(String s, String p) {
     for (char c : p.toCharArray()) {
         hash[c]++;
     }
-    //two points, initialize count to p's length
+    //two points, initialize count to pith length
     int left = 0, right = 0, count = p.length();
     while (right < s.length()) {
-        //move right everytime, if the character exists in p's hash, decrease the count
+        //move right everytime, if the character exists in pith hash, decrease the count
         //current hash value >= 1 means the character is existing in p
         if (hash[s.charAt(right++)]-- >= 1) count--; 
         
         //when the count is down to 0, means we found the right anagram
-        //then add window's left to result list
+        //then add windowith left to result list
         if (count == 0) list.add(left);
     
-        //if we find the window's size equals to p, then we have to move left (narrow the window) to find the new match window
+        //if we find the windowith size equals to p, then we have to move left (narrow the window) to find the new match window
         //++ to reset the hash because we kicked out the left
         //only increase the count if the character is in p
-        //the count >= 0 indicate it was original in the hash, cuz it won't go below 0
+        //the count >= 0 indicate it was original in the hash, cuz it wont go below 0
         if (right - left == p.length() && hash[s.charAt(left++)]++ >= 0) count++;
     }
     return list;
@@ -4121,7 +4121,7 @@ Solution: public List<Integer> findAnagrams(String s, String p) {
 
 	3. Permutation in String
 		Solution
-		Given two strings s1 and s2, write a function to return true if s2 contains the permutation of s1. In other words, one of the first string's permutations is the substring of the second string.
+		Given two strings s1 and s2, write a function to return true if s2 contains the permutation of s1. In other words, one of the first stringith permutations is the substring of the second string.
 
 		
 
@@ -4145,7 +4145,7 @@ Solution: public List<Integer> findAnagrams(String s, String p) {
 	
 	Solution from leet code:
 		Explanation: Basically use an array of 26 items to store the count of each character in sMap1.
-		To acces an index use smap1[char - 'a']
+		To acces an index use smap1[char - a]
 		Then, we will iterate through s2 with a window size of s1.length. until the beginnin of the window reaches
 		s2.length - s1.length. everytime you move the window, one letter from the taken out and one new letter
 		will be added to the smap2. smap2 is basicallyy a mapping of each 26 chars to their frequency. each time smap2
@@ -4157,14 +4157,14 @@ Solution: public List<Integer> findAnagrams(String s, String p) {
         int[] s1map = new int[26];
         int[] s2map = new int[26];
         for (int i = 0; i < s1.length(); i++) {
-            s1map[s1.charAt(i) - 'a']++;
-            s2map[s2.charAt(i) - 'a']++;
+            s1map[s1.charAt(i) - a]++;
+            s2map[s2.charAt(i) - a]++;
         }
         for (int i = 0; i < s2.length() - s1.length(); i++) {
             if (matches(s1map, s2map))
                 return true;
-            s2map[s2.charAt(i + s1.length()) - 'a']++;
-            s2map[s2.charAt(i) - 'a']--;
+            s2map[s2.charAt(i + s1.length()) - a]++;
+            s2map[s2.charAt(i) - a]--;
         }
         return matches(s1map, s2map);
     }
@@ -4188,17 +4188,17 @@ Example 1:
 
 Input: words = ["hello","leetcode"], order = "hlabcdefgijkmnopqrstuvwxyz"
 Output: true
-Explanation: As 'h' comes before 'l' in this language, then the sequence is sorted.
+Explanation: As h comes before l in this language, then the sequence is sorted.
 Example 2:
 
 Input: words = ["word","world","row"], order = "worldabcefghijkmnpqstuvxyz"
 Output: false
-Explanation: As 'd' comes after 'l' in this language, then words[0] > words[1], hence the sequence is unsorted.
+Explanation: As d comes after l in this language, then words[0] > words[1], hence the sequence is unsorted.
 Example 3:
 
 Input: words = ["apple","app"], order = "abcdefghijklmnopqrstuvwxyz"
 Output: false
-Explanation: The first three characters "app" match, and the second string is shorter (in size.) According to lexicographical rules "apple" > "app", because 'l' > '∅', where '∅' is defined as the blank character which is less than any other character (More info).
+Explanation: The first three characters "app" match, and the second string is shorter (in size.) According to lexicographical rules "apple" > "app", because l > ∅, where ∅ is defined as the blank character which is less than any other character (More info).
  
 Solution: Basically compare two words at a time. If all pairs of adjacent words are in the correct order then the
 entire list of words (dictionary) is in the correct order. 
@@ -4210,7 +4210,7 @@ class Solution {
     public boolean isAlienSorted(String[] words, String order) {
         int[] index = new int[26];
         for (int i = 0; i < order.length(); ++i)
-            index[order.charAt(i) - 'a'] = i;
+            index[order.charAt(i) - a] = i;
 
         search: for (int i = 0; i < words.length - 1; ++i) {
             String word1 = words[i];
@@ -4219,14 +4219,14 @@ class Solution {
             // Find the first difference word1[k] != word2[k].
             for (int k = 0; k < Math.min(word1.length(), word2.length()); ++k) {
                 if (word1.charAt(k) != word2.charAt(k)) {
-                    // If they compare badly, it's not sorted.
-                    if (index[word1.charAt(k) - 'a'] > index[word2.charAt(k) - 'a'])
+                    // If they compare badly, its not sorted.
+                    if (index[word1.charAt(k) - a] > index[word2.charAt(k) - a])
                         return false;
                     continue search;
                 }
             }
 
-            // If we didn't find a first difference, the
+            // If we didnt find a first difference, the
             // words are like ("app", "apple").
             if (word1.length() > word2.length())
                 return false;
@@ -4271,7 +4271,7 @@ Soltion from LeetCode:
         int i = 0, j = 0;
 
         while (i < A.length && j < B.length) {
-            // Let's check if A[i] intersects B[j].
+            // Letith check if A[i] intersects B[j].
             // lo - the startpoint of the intersection
             // hi - the endpoint of the intersection
             int lo = Math.max(A[i].start, B[j].start);
@@ -4330,7 +4330,7 @@ Soltion from LeetCode:
 		Question: how do we handle boundraies between rows?
 			- for this we will have a mapping function
 			- we will work as if the 2D array is a 1d array of length rows*cols
-			- then the first item's index is 0 and the last items index is 11 (rows*cols - 1)
+			- then the first itemith index is 0 and the last items index is 11 (rows*cols - 1)
 				- so how do we get row and column from an index?
 					row = index / numberOfRows
 					col = index % numberOfRows
@@ -4366,7 +4366,7 @@ Soltion from LeetCode:
 		8, 9,10, 20
 		11,12,17,30
 
-		// now we can't think of this as a 1d array
+		// now we cant think of this as a 1d array
 		// notice something about the current matrix
 		// the rows are sorted and the columns are sorted
 		// this implies that if you go down or right from any position the value will increase
@@ -4376,19 +4376,19 @@ Soltion from LeetCode:
 		// or the bottom left of the matrix you can either go to a value larger than the curren value or smaller 
 		// i.e. top,right: 11->7 and 11->20 or bottom left 11->8 or 11->12
 		// we can reduce our decision space if we started at one of these points
-		// on the contrary, if we start at the top left (1) or the bottom right, we can't decrease our decision space i.e. 1->4 or 1->8 and 30->17, or 30->20
+		// on the contrary, if we start at the top left (1) or the bottom right, we cant decrease our decision space i.e. 1->4 or 1->8 and 30->17, or 30->20
 		// in this case we did not decrease the decision space
 
 			// so basically the algorithm would be
 			// start at the bottom left or top right
-			// (let's choose top right) while we are still in the bounds of the matrix, 
+			// (letith choose top right) while we are still in the bounds of the matrix, 
 			// if the current item is greater than the target, go left, col--
 			// if the item is less than the target move down row++
 			// keep doing this while the row,col are valid or until you have found the value
 
 3. Give a node, find all nodes from the current node that are k distance away in a binary tree
-	// First we must understand that this question is not that easy. We need to notice that nodes that are k distance away might also be up before the current node's parent
-	// so how to do we traverse a nodes parent if a node doesn't have a reference to its parent.
+	// First we must understand that this question is not that easy. We need to notice that nodes that are k distance away might also be up before the current nodeith parent
+	// so how to do we traverse a nodes parent if a node doesnt have a reference to its parent.
 	// we can do some preprocessing by going through the binary tree and creating a hashmap.
 		// each entry in the hashmap will have a key being a node, and the value being its parent node
 
@@ -4535,7 +4535,7 @@ Soltion from LeetCode:
 		}
 
  6. Valid parentheses: make sure parenthesis are balanced
- 		Approach: we keep track of all of the opening paranthesis as we encounter them in a stack. Whenever we encounter a closing paranthesis, we need to make sure that it matches the last opening paranthesis. If it doesn't, then we know that the current parenthesization is incorrect. If we reach the end of the string, and the stack is empty, then we know that the expression is balananced.
+ 		Approach: we keep track of all of the opening paranthesis as we encounter them in a stack. Whenever we encounter a closing paranthesis, we need to make sure that it matches the last opening paranthesis. If it doesnt, then we know that the current parenthesization is incorrect. If we reach the end of the string, and the stack is empty, then we know that the expression is balananced.
  			" [ () () () ] { } { [ ( ) ] } " valid
 			" { } { ) [ ] " invalid
 
@@ -4625,12 +4625,12 @@ Soltion from LeetCode:
  8. Generate all palindromic decompositions of a string:
  		i.e. str = "aab"
  			ret = [
- 					['a', 'a', 'b']
- 					['aa', 'b']
+ 					[a, a, b]
+ 					[aa, b]
  				  ]
  		Approach: basically we will begin each recursion with a beginning index
  					- from this beginning index we iterate from this beginning index to and ending index (substring)
- 						- we will check if this current substring is a palindrome, then we will recur, otherwise we won't recur over this substring
+ 						- we will check if this current substring is a palindrome, then we will recur, otherwise we wont recur over this substring
  					
  				public List<List<String>> genPalindromes(String str) {
  				 	List<List<String>> palindromeSets = new ArrayList<>()
@@ -4717,15 +4717,15 @@ Soltion from LeetCode:
 		    for (int right = left; right < cols; right++) {
 
 		      /*
-		        Add all items in column 'right' to their respective
-		        row's running sum
+		        Add all items in column right to their respective
+		        rows running sum
 		      */
 		      for (int i = 0; i < rows; i++) {
 		        runningRowSums[i] += matrix[i][right];
 		      }
 
 		      /*
-		        Perform Kadane's algorithm on the running sum array
+		        Perform Kadanes algorithm on the running sum array
 		        so that we can determine the best top and bottom
 		        bound to choose for the rectangle.
 		      */
@@ -4745,7 +4745,7 @@ Soltion from LeetCode:
 
 		        /*
 		          The left and the right of the maxRectangle become
-		          the 'left' and 'right' where our for loop pointers
+		          the left and right where our for loop pointers
 		          are sitting
 		        */
 		        maxRectangle.leftBorderIndex = left;
@@ -4754,7 +4754,7 @@ Soltion from LeetCode:
 		        /*
 		          Our top and bottom bounds for the max rectangle are
 		          going to be the startIndex and endIndex of the max
-		          subarray region in the 'runningRowSums' sum cache
+		          subarray region in the runningRowSums sum cache
 		          (respectively).
 		        */
 		        maxRectangle.topBorderIndex = kadaneResult.startIndex;
@@ -4769,11 +4769,11 @@ Soltion from LeetCode:
 		}
 
 		/*
-		  An implementation of Kadane's algorithm that remembers the
+		  An implementation of Kadanes algorithm that remembers the
 		  start and end of the Max Contiguous Subarray Sum region
 		  in the KadaneResult object returned
 
-		  This video explains Kadane's algorithm: https://www.youtube.com/watch?v=2MmGzdiKR9Y
+		  This video explains Kadanes algorithm: https://www.youtube.com/watch?v=2MmGzdiKR9Y
 		*/
 		private KadaneResult kadane(int arr[]) {
 
@@ -4805,13 +4805,13 @@ Soltion from LeetCode:
 		    bestMaxAtThisIndex += arr[i];
 
 		    /*
-		      If 'bestMaxAtThisIndex' is < 0 then we will
+		      If bestMaxAtThisIndex is < 0 then we will
 		      decide to not extend the best subarray at i - 1.
 
 		      We will just set the best we can achieve for subarrays
 		      ending at this index i to 0.
 
-		      The new 'currentStart' to the max subarray region becomes
+		      The new currentStart to the max subarray region becomes
 		      i + 1
 		    */
 		    if (bestMaxAtThisIndex < 0) {
@@ -4823,12 +4823,12 @@ Soltion from LeetCode:
 		      If the best max (now the best max at this index) beats the
 		      best global max achieved so far then we need to adjust:
 
-		      'maxRegionStart' becomes the 'currentStart' we were keeping track
+		      maxRegionStart becomes the currentStart we were keeping track
 		      of all along.
 
-		      'maxRegionEnd' becomes the index we are sitting at 'i'.
+		      maxRegionEnd becomes the index we are sitting at i.
 
-		      The 'bestMaxSoFar' becomes the 'bestMaxAtThisIndex'.
+		      The bestMaxSoFar becomes the bestMaxAtThisIndex.
 		    */
 		    if (bestMaxAtThisIndex > bestMaxSoFar) {
 		      maxRegionStart = currentStart;
@@ -4842,7 +4842,7 @@ Soltion from LeetCode:
 		}
 
 		/*
-		  Holds the result of running Kadan's algorithm
+		  Holds the result of running Kadans algorithm
 
 		  maxSum: the actual sum of the Max Contiguous Subarray Sum region
 		  startIndex: start of Max Contiguous Subarray Sum region
@@ -4865,7 +4865,7 @@ Soltion from LeetCode:
 		/*
 		  A rectangle with left, right, top, and bottom bounds. The sum
 		  of all items contained within the rectangle are also recorded
-		  in the 'interiorSum' variable.
+		  in the interiorSum variable.
 		*/
 		private class Rectangle {
 
@@ -5061,37 +5061,37 @@ Soltion from LeetCode:
 		Approach 2: Controlled Recursion
 		Intuition
 
-		The approach we saw earlier uses space which is linear in the number of nodes in the binary search tree. However, the reason we had to resort to such an approach was because we can control the iteration over the array. We can't really pause a recursion in between and then start it off sometime later.
+		The approach we saw earlier uses space which is linear in the number of nodes in the binary search tree. However, the reason we had to resort to such an approach was because we can control the iteration over the array. We cant really pause a recursion in between and then start it off sometime later.
 
-		However, if we could simulate a controlled recursion for an inorder traversal, we wouldn't really need to use any additional space other than the space used by the stack for our recursion simulation.
+		However, if we could simulate a controlled recursion for an inorder traversal, we wouldnt really need to use any additional space other than the space used by the stack for our recursion simulation.
 
 		So, this approach essentially uses a custom stack to simulate the inorder traversal i.e. we will be taking an iterative approach to inorder traversal rather than going with the recursive approach and in doing so, we will be able to easily implement the two function calls without any other additional space.
 
-		Things however, do get a bit complicated as far as the time complexity of the two operations is concerned and that is where we will spend a little bit of time to understand if this approach complies with all the asymptotic complexity requirements of the question. Let's move on to the algorithm for now to look at this idea more concretely.
+		Things however, do get a bit complicated as far as the time complexity of the two operations is concerned and that is where we will spend a little bit of time to understand if this approach complies with all the asymptotic complexity requirements of the question. Lets move on to the algorithm for now to look at this idea more concretely.
 
 		Algorithm
 
 		Initialize an empty stack S which will be used to simulate the inorder traversal for our binary search tree. Note that we will be following the same approach for inorder traversal as before except that now we will be using our own stack rather than the system stack. Since we are using a custom data structure, we can pause and resume the recursion at will.
 
-		Let's also consider a helper function that we will be calling again and again in the implementation. This function, called _inorder_left will essentially add all the nodes in the leftmost branch of the tree rooted at the given node root to the stack and it will keep on doing so until there is no left child of the root node. Something like the following code:
+		Lets also consider a helper function that we will be calling again and again in the implementation. This function, called _inorder_left will essentially add all the nodes in the leftmost branch of the tree rooted at the given node root to the stack and it will keep on doing so until there is no left child of the root node. Something like the following code:
 
 		def inorder_left(root):
 		   while (root):
 		     S.append(root)
 		     root = root.left
-		For a given node root, the next smallest element will always be the leftmost element in its tree. So, for a given root node, we keep on following the leftmost branch until we reach a node which doesn't have a left child and that will be the next smallest element. For the root of our BST, this leftmost node would be the smallest node in the tree. Rest of the nodes are added to the stack because they are pending processing. Try and relate this with a dry run of a simple recursive inorder traversal and things will make a bit more sense.
+		For a given node root, the next smallest element will always be the leftmost element in its tree. So, for a given root node, we keep on following the leftmost branch until we reach a node which doesnt have a left child and that will be the next smallest element. For the root of our BST, this leftmost node would be the smallest node in the tree. Rest of the nodes are added to the stack because they are pending processing. Try and relate this with a dry run of a simple recursive inorder traversal and things will make a bit more sense.
 
-		The first time next() function call is made, the smallest element of the BST has to be returned and then our simulated recursion has to move one step forward i.e. move onto the next smallest element in the BST. The invariant that will be maintained in this algorithm is that the stack top always contains the element to be returned for the next() function call. However, there is additional work that needs to be done to maintain that invariant. It's very easy to implement the hasNext() function since all we need to check is if the stack is empty or not. So, we will only focus on the next() call from now.
+		The first time next() function call is made, the smallest element of the BST has to be returned and then our simulated recursion has to move one step forward i.e. move onto the next smallest element in the BST. The invariant that will be maintained in this algorithm is that the stack top always contains the element to be returned for the next() function call. However, there is additional work that needs to be done to maintain that invariant. its very easy to implement the hasNext() function since all we need to check is if the stack is empty or not. So, we will only focus on the next() call from now.
 
-		Initially, given the root node of the BST, we call the function _inorder_left and that ensures our invariant holds. Let's see this first step with an example.
+		Initially, given the root node of the BST, we call the function _inorder_left and that ensures our invariant holds. Letith see this first step with an example.
 
 		Suppose we get a call to the next() function. The node which we have to return i.e. the next smallest element in the binary search tree iterator is the one sitting at the top of our stack. So, for the example above, that node would be 2 which is the correct value. Now, there are two possibilities that we have to deal with:
 
-		One is where the node at the top of the stack is actually a leaf node. This is the best case and here we don't have to do anything. Simply pop the node off the stack and return its value. So, this would be a constant time operation.
+		One is where the node at the top of the stack is actually a leaf node. This is the best case and here we dont have to do anything. Simply pop the node off the stack and return its value. So, this would be a constant time operation.
 
-		Second is where the node has a right child. We don't need to check for the left child because of the way we have added nodes onto the stack. The topmost node either won't have a left child or would already have the left subtree processed. If it has a right child, then we call our helper function on the node's right child. This would comparatively be a costly operation depending upon the structure of the tree.
+		Second is where the node has a right child. We dont need to check for the left child because of the way we have added nodes onto the stack. The topmost node either wont have a left child or would already have the left subtree processed. If it has a right child, then we call our helper function on the nodeith right child. This would comparatively be a costly operation depending upon the structure of the tree.
 
-		We keep on maintaining the invariant this way in the function call for next and this way we will always be able to return the next smallest element in the BST from the top of the stack. Again, it's important to understand that obtaining the next smallest element doesn't take much time. However, some time is spent in maintaining the invariant that the stack top will always have the node we are looking for.
+		We keep on maintaining the invariant this way in the function call for next and this way we will always be able to return the next smallest element in the BST from the top of the stack. Again, its important to understand that obtaining the next smallest element doesnt take much time. However, some time is spent in maintaining the invariant that the stack top will always have the node we are looking for.
 
 		Code:
 			/**
@@ -5181,7 +5181,7 @@ Soltion from LeetCode:
 			        public void addWord(String word) {
 			            TrieNode node = root;
 			            for (char c : word.toCharArray()) {
-			                int i = c - 'a';
+			                int i = c - a;
 			                if (node.children[i] == null) node.children[i] = new TrieNode();
 			                node = node.children[i];
 			            }
@@ -5197,13 +5197,13 @@ Soltion from LeetCode:
 			            if (node == null) return false;
 			            if (pos == w.length()) return node.isWord;
 			            char c = w.charAt(pos);
-			            if (c == '.') {
+			            if (c == .) {
 			                for (int i = 0; i < node.children.length; ++i) {
 			                    if (search(node.children[i], w, pos + 1)) return true;
 			                }
 			                return false; // bug - 1 => easy to forget but a must;
 			            }
-			            return search(node.children[c - 'a'], w, pos + 1);
+			            return search(node.children[c - a], w, pos + 1);
 			        }
 
 			        static class TrieNode {
