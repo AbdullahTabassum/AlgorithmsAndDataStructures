@@ -3062,7 +3062,7 @@ Dynamic Programming:
 
 		We do so because the ending "()" portion is a valid substring anyhow and leads to an increment of 2 in the length of the just previous valid substringith length.
 
-		s[i]=‘)’ and s[i−1]=‘)’, i.e. string looks like ``.......))" 
+		s[i]=‘)’ and s[i−1]=‘)’, i.e. string looks like .......))
 
 		if s[i−dp[i−1]−1]=‘(’ then
 
