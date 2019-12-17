@@ -4324,31 +4324,26 @@ Others:
 
 		5. Interval List Intersections
 
-		Given two lists of closed intervals, each list of intervals is pairwise disjoint and in sorted order.
+			Given two lists of closed intervals, each list of intervals is pairwise disjoint and in sorted order.
 
-		Return the intersection of these two interval lists.
+			Return the intersection of these two interval lists.
 
-		(Formally, a closed interval [a, b] (with a <= b) denotes the set of real numbers x with a <= x <= b.  The intersection of two closed intervals is a set of real numbers that is either empty, or can be represented as a closed interval.  For example, the intersection of [1, 3] and [2, 4] is [2, 3].)
+			(Formally, a closed interval [a, b] (with a <= b) denotes the set of real numbers x with a <= x <= b.  The intersection of two closed intervals is a set of real numbers that is either empty, or can be represented as a closed interval.  For example, the intersection of [1, 3] and [2, 4] is [2, 3].)
 
-		 
+			Example 1:
 
-		Example 1:
+			Input: A = [[0,2],[5,10],[13,23],[24,25]], B = [[1,5],[8,12],[15,24],[25,26]]
+			Output: [[1,2],[5,5],[8,10],[15,23],[24,24],[25,25]]
+			Reminder: The inputs and the desired output are lists of Interval objects, and not arrays or lists.
+			 
+			Note:
 
+			0 <= A.length < 1000
+			0 <= B.length < 1000
+			0 <= A[i].start, A[i].end, B[i].start, B[i].end < 10^9
+			NOTE: input types have been changed on April 15, 2019. Please reset to default code definition to get new method signature.
 
-
-		Input: A = [[0,2],[5,10],[13,23],[24,25]], B = [[1,5],[8,12],[15,24],[25,26]]
-		Output: [[1,2],[5,5],[8,10],[15,23],[24,24],[25,25]]
-		Reminder: The inputs and the desired output are lists of Interval objects, and not arrays or lists.
-		 
-
-		Note:
-
-		0 <= A.length < 1000
-		0 <= B.length < 1000
-		0 <= A[i].start, A[i].end, B[i].start, B[i].end < 10^9
-		NOTE: input types have been changed on April 15, 2019. Please reset to default code definition to get new method signature.
-
-		Approach: Note that intervals in the same set do not intersect. Also note, that the when comparing 
+		Approach: Note that intervals in the same set do not intersect. Also note, that the when comparing, we can gradually get rid of intervals that need to be compared. For example, we start from the beginning of both lists A and B. Which ever one has the earlier stat date, we look at that first. Then we compare it with the first element in B, if 'a' has an endpoint less than b's, then we get the intersecion from b's start point to a's and point and add that to the list. Now we can discard 'a' because it won't intersect with anything else. What if 'a'
 
 		Soltion from LeetCode:
 			class Solution {
