@@ -4058,153 +4058,162 @@ Others:
 		Input: num = "3456237490", target = 9191
 		Output: []
 
-			Approach: we need to recurse over the number size (or as in the case of the leet code solution do a no-op), and then 
-			recurse for each operation +,- and *
+			Definitions: 
+				Operand: the number upon which a mathematical operation is performed
+				Operator: i.e. +,-,*...
+
+			Approach: we need to recurse over the number size (or as in the case of the leet code solution do a no-op), and then recurse for each operation +,- and *. at each recurse we keep track of the total for the current expression. When we recurse for multiplication, we need to look at the operand and operation that was executed before the recurse to multiplication. then we need to reverse its effect, then carry out the multiplication.
+
+			It is important to understand the no-op operation. It replaces the need to iterate over different number lengths. At each recurse we need to pass the current operand we are working with. Then at each recurse we will either do a no-op (extend the current operand), do an addition, subtraction or multiplication.
+
+			We also pass the previous operand and operator. The reaspn for this is that when we do a multiplication, we need to undo the previous operation if it was not multiplication also.
+
+			Also note, when we actually apply the current operand with a +, - or *, we need to reset the current operand to zero for the following recurances that it creates
 
 			class Solution {
 
-		  public ArrayList<String> answer;
-		  public String digits;
-		  public long target;
+			  public ArrayList<String> answer;
+			  public String digits;
+			  public long target;
 
-		  public void recurse(
-		      int index, long previousOperand, long currentOperand, long value, ArrayList<String> ops) {
-		    String nums = this.digits;
+			  public void recurse(
+			      int index, long previousOperand, long currentOperand, long value, ArrayList<String> ops) {
+			    String nums = this.digits;
 
-		    // Done processing all the digits in num
-		    if (index == nums.length()) {
+			    // Done processing all the digits in num
+			    if (index == nums.length()) {
 
-		      // If the final value == target expected AND
-		      // no operand is left unprocessed
-		      if (value == this.target && currentOperand == 0) {
-		        StringBuilder sb = new StringBuilder();
-		        ops.subList(1, ops.size()).forEach(v -> sb.append(v));
-		        this.answer.add(sb.toString());
-		      }
-		      return;
-		    }
+			      // If the final value == target expected AND
+			      // no operand is left unprocessed
+			      if (value == this.target && currentOperand == 0) {
+			        StringBuilder sb = new StringBuilder();
+			        ops.subList(1, ops.size()).forEach(v -> sb.append(v));
+			        this.answer.add(sb.toString());
+			      }
+			      return;
+			    }
 
-		    // Extending the current operand by one digit
-		    currentOperand = currentOperand * 10 + Character.getNumericValue(nums.charAt(index));
-		    String current_val_rep = Long.toString(currentOperand);
-		    int length = nums.length();
+			    // Extending the current operand by one digit
+			    currentOperand = currentOperand * 10 + Character.getNumericValue(nums.charAt(index));
+			    String current_val_rep = Long.toString(currentOperand);
+			    int length = nums.length();
 
-		    // To avoid cases where we have 1 + 05 or 1 * 05 since 05 wont be a
-		    // valid operand. Hence this check
-		    if (currentOperand > 0) {
+			    // To avoid cases where we have 1 + 05 or 1 * 05 since 05 wont be a
+			    // valid operand. Hence this check
+			    if (currentOperand > 0) {
 
-		      // NO OP recursion
-		      recurse(index + 1, previousOperand, currentOperand, value, ops);
-		    }
+			      // NO OP recursion: this is to try different length of a number starting at index
+			      recurse(index + 1, previousOperand, currentOperand, value, ops);
+			    }
 
-		    // ADDITION
-		    ops.add("+");
-		    ops.add(current_val_rep);
-		    recurse(index + 1, currentOperand, 0, value + currentOperand, ops);
-		    ops.remove(ops.size() - 1);
-		    ops.remove(ops.size() - 1);
+			    // ADDITION
+			    ops.add("+");
+			    ops.add(current_val_rep);
+			    recurse(index + 1, currentOperand, 0, value + currentOperand, ops);
+			    ops.remove(ops.size() - 1);
+			    ops.remove(ops.size() - 1);
 
-		    if (ops.size() > 0) {
+			    if (ops.size() > 0) {
 
-		      // SUBTRACTION
-		      ops.add("-");
-		      ops.add(current_val_rep);
-		      recurse(index + 1, -currentOperand, 0, value - currentOperand, ops);
-		      ops.remove(ops.size() - 1);
-		      ops.remove(ops.size() - 1);
+			      // SUBTRACTION
+			      ops.add("-");
+			      ops.add(current_val_rep);
+			      recurse(index + 1, -currentOperand, 0, value - currentOperand, ops);
+			      ops.remove(ops.size() - 1);
+			      ops.remove(ops.size() - 1);
 
-		      // MULTIPLICATION
-		      ops.add("*");
-		      ops.add(current_val_rep);
-		      recurse(
-		          index + 1,
-		          currentOperand * previousOperand,
-		          0,
-		          value - previousOperand + (currentOperand * previousOperand),
-		          ops);
-		      ops.remove(ops.size() - 1);
-		      ops.remove(ops.size() - 1);
-		    }
-		  }
+			      // MULTIPLICATION
+			      ops.add("*");
+			      ops.add(current_val_rep);
+			      recurse(
+			          index + 1,
+			          currentOperand * previousOperand,
+			          0,
+			          value - previousOperand + (currentOperand * previousOperand),
+			          ops);
+			      ops.remove(ops.size() - 1);
+			      ops.remove(ops.size() - 1);
+			    }
+			  }
 
-		  public List<String> addOperators(String num, int target) {
+			  public List<String> addOperators(String num, int target) {
 
-		    if (num.length() == 0) {
-		      return new ArrayList<String>();
-		    }
+			    if (num.length() == 0) {
+			      return new ArrayList<String>();
+			    }
 
-		    this.target = target;
-		    this.digits = num;
-		    this.answer = new ArrayList<String>();
-		    this.recurse(0, 0, 0, 0, new ArrayList<String>());
-		    return this.answer;
-		  }
+			    this.target = target;
+			    this.digits = num;
+			    this.answer = new ArrayList<String>();
+			    this.recurse(0, 0, 0, 0, new ArrayList<String>());
+			    return this.answer;
+			  }
 		}
 
-		2.  Back to Chapter
-		  Find All Anagrams in a String
-		Given a string s and a non-empty string p, find all the start indices of pith anagrams in s.
+		2. Find All Anagrams in a String
+			Given a string s and a non-empty string p, find all the start indices of p's anagrams in s.
 
-		Strings consists of lowercase English letters only and the length of both strings s and p will not be larger than 20,100.
+			Strings consists of lowercase English letters only and the length of both strings s and p will not be larger than 20,100.
 
-		The order of output does not matter.
+			The order of output does not matter.
 
-		Example 1:
+			Example 1:
 
-		Input:
-		s: "cbaebabacd" p: "abc"
+			Input:
+			s: "cbaebabacd" p: "abc"
 
-		Output:
-		[0, 6]
+			Output:
+			[0, 6]
 
-		Explanation:
-		The substring with start index = 0 is "cba", which is an anagram of "abc".
-		The substring with start index = 6 is "bac", which is an anagram of "abc".
-		Example 2:
+			Explanation:
+			The substring with start index = 0 is "cba", which is an anagram of "abc".
+			The substring with start index = 6 is "bac", which is an anagram of "abc".
+			Example 2:
 
-		Input:
-		s: "abab" p: "ab"
+			Input:
+			s: "abab" p: "ab"
 
-		Output:
-		[0, 1, 2]
-		Explanation:
-		The substring with start index = 0 is "ab", which is an anagram of "ab".
-		The substring with start index = 1 is "ba", which is an anagram of "ab".
-		The substring with start index = 2 is "ab", which is an anagram of "ab".
+			Output:
+			[0, 1, 2]
+			Explanation:
+			The substring with start index = 0 is "ab", which is an anagram of "ab".
+			The substring with start index = 1 is "ba", which is an anagram of "ab".
+			The substring with start index = 2 is "ab", which is an anagram of "ab".
 
-		Solution: public List<Integer> findAnagrams(String s, String p) {
-		    List<Integer> list = new ArrayList<>();
-		    if (s == null || s.length() == 0 || p == null || p.length() == 0) return list;
-		    int[] hash = new int[256]; //character hash
-		    //record each character in p to hash
-		    for (char c : p.toCharArray()) {
-		        hash[c]++;
-		    }
-		    //two points, initialize count to pith length
-		    int left = 0, right = 0, count = p.length();
-		    while (right < s.length()) {
-		        //move right everytime, if the character exists in pith hash, decrease the count
-		        //current hash value >= 1 means the character is existing in p
-		        if (hash[s.charAt(right++)]-- >= 1) count--; 
-		        
-		        //when the count is down to 0, means we found the right anagram
-		        //then add windowith left to result list
-		        if (count == 0) list.add(left);
-		    
-		        //if we find the windowith size equals to p, then we have to move left (narrow the window) to find the new match window
-		        //++ to reset the hash because we kicked out the left
-		        //only increase the count if the character is in p
-		        //the count >= 0 indicate it was original in the hash, cuz it wont go below 0
-		        if (right - left == p.length() && hash[s.charAt(left++)]++ >= 0) count++;
-		    }
-		    return list;
-		}
+			Solution: 
+			Approach: Initialize counter = p.length. Have two pointers, b (for beginning) and e (for ending). They both start at 0'th index. we check if e is a character that exists in p, if it does, then we subtract one from counter and increase e by one. If counter equals zero, then this means that we have found an anagram. We store b as it holds the beginning index of the anagram. Then, if b - e is equal to p.length, we increment b by one and if it was pointing to a character that was in the patter, we need to increment counter by one. 
+
+			public List<Integer> findAnagrams(String s, String p) {
+			    List<Integer> list = new ArrayList<>();
+			    if (s == null || s.length() == 0 || p == null || p.length() == 0) return list;
+			    int[] hash = new int[256]; //character hash
+			    //record each character in p to hash
+			    for (char c : p.toCharArray()) {
+			        hash[c]++;
+			    }
+			    //two points, initialize count to pith length
+			    int left = 0, right = 0, count = p.length();
+			    while (right < s.length()) {
+			        //move right everytime, if the character exists in pith hash, decrease the count
+			        //current hash value >= 1 means the character is existing in p
+			        if (hash[s.charAt(right++)]-- >= 1) count--; 
+			        
+			        //when the count is down to 0, means we found the right anagram
+			        //then add windowith left to result list
+			        if (count == 0) list.add(left);
+			    
+			        //if we find the windowith size equals to p, then we have to move left (narrow the window) to find the new match window
+			        //++ to reset the hash because we kicked out the left
+			        //only increase the count if the character is in p
+			        //the count >= 0 indicate it was original in the hash, cuz it wont go below 0
+			        if (right - left == p.length() && hash[s.charAt(left++)]++ >= 0) count++;
+			    }
+			    return list;
+			}
 
 			3. Permutation in String
 				Solution
-				Given two strings s1 and s2, write a function to return true if s2 contains the permutation of s1. In other words, one of the first stringith permutations is the substring of the second string.
-
-				
+				Given two strings s1 and s2, write a function to return true if s2 contains the permutation of s1. In other words, one of the first string's permutations is the substring of the second string.
 
 				Example 1:
 
@@ -4226,11 +4235,9 @@ Others:
 			
 			Solution from leet code:
 				Explanation: Basically use an array of 26 items to store the count of each character in sMap1.
-				To acces an index use smap1[char - a]
-				Then, we will iterate through s2 with a window size of s1.length. until the beginnin of the window reaches
-				s2.length - s1.length. everytime you move the window, one letter from the taken out and one new letter
-				will be added to the smap2. smap2 is basicallyy a mapping of each 26 chars to their frequency. each time smap2
-				is updated, we compare the arrays smap1 and smap2.
+				To acces an index use smap1[char - a] Then, we will iterate through s2 with a window size of s1.length. until the beginnin of the window reaches s2.length - s1.length. everytime you move the window, one letter from the taken out and one new letter will be added to the smap2. smap2 is basicallyy a mapping of each 26 chars to their frequency. each time smap2 is updated, we compare the arrays smap1 and smap2.
+
+			// i don't think solution will work if there are duplicates
 			public class Solution {
 		    public boolean checkInclusion(String s1, String s2) {
 		        if (s1.length() > s2.length())
@@ -4261,30 +4268,28 @@ Others:
 		4. Verify Alien dictionary:
 		  Verifying an Alien Dictionary
 
-		In an alien language, surprisingly they also use english lowercase letters, but possibly in a different order. The order of the alphabet is some permutation of lowercase letters.
+			In an alien language, surprisingly they also use english lowercase letters, but possibly in a different order. The order of the alphabet is some permutation of lowercase letters.
 
-		Given a sequence of words written in the alien language, and the order of the alphabet, return true if and only if the given words are sorted lexicographicaly in this alien language.
+			Given a sequence of words written in the alien language, and the order of the alphabet, return true if and only if the given words are sorted lexicographicaly in this alien language.
 
-		Example 1:
+			Example 1:
 
-		Input: words = ["hello","leetcode"], order = "hlabcdefgijkmnopqrstuvwxyz"
-		Output: true
-		Explanation: As h comes before l in this language, then the sequence is sorted.
-		Example 2:
+			Input: words = ["hello","leetcode"], order = "hlabcdefgijkmnopqrstuvwxyz"
+			Output: true
+			Explanation: As h comes before l in this language, then the sequence is sorted.
+			Example 2:
 
-		Input: words = ["word","world","row"], order = "worldabcefghijkmnpqstuvxyz"
-		Output: false
-		Explanation: As d comes after l in this language, then words[0] > words[1], hence the sequence is unsorted.
-		Example 3:
+			Input: words = ["word","world","row"], order = "worldabcefghijkmnpqstuvxyz"
+			Output: false
+			Explanation: As d comes after l in this language, then words[0] > words[1], hence the sequence is unsorted.
+			Example 3:
 
-		Input: words = ["apple","app"], order = "abcdefghijklmnopqrstuvwxyz"
-		Output: false
-		Explanation: The first three characters "app" match, and the second string is shorter (in size.) According to lexicographical rules "apple" > "app", because l > ∅, where ∅ is defined as the blank character which is less than any other character (More info).
-		 
-		Solution: Basically compare two words at a time. If all pairs of adjacent words are in the correct order then the
-		entire list of words (dictionary) is in the correct order. 
-		 Also, the characts in the order list are stored in an array int[26] where the value denotes the actual order in the alien
-		 dictionary. When comparing two words, we skip over all of the equal letters and just compare the first non-equal letter.
+			Input: words = ["apple","app"], order = "abcdefghijklmnopqrstuvwxyz"
+			Output: false
+			Explanation: The first three characters "app" match, and the second string is shorter (in size.) According to lexicographical rules "apple" > "app", because l > ∅, where ∅ is defined as the blank character which is less than any other character (More info).
+			 
+			Solution: Basically compare two words at a time. If all pairs of adjacent words are in the correct order then the entire list of words (dictionary) is in the correct order. 
+			 Also, the characts in the order list are stored in an array int[26] where the value denotes the actual order in the alien dictionary. When comparing two words, we skip over all of the equal letters and just compare the first non-equal letter.
 
 
 		class Solution {
