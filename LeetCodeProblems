@@ -4379,7 +4379,7 @@ Question form youtube:
 					1. should this element be the start of a new max subarray 
 					2. or should this element be added to the the previous maximum subarry
 				- we basically need to figure out the following: 
-				maxSumEndingAtIndex[i] = Math.max(arr[i], maxSumEndingAtIndex[i - 1]);
+				maxSumEndingAtIndex[i] = Math.max(arr[i], maxSumEndingAtIndex[i - 1] + arr[i]);
 
 			- this basically stems from the idea of making subsets, as the problem reduces to making subsets, choosing sum elements and not choosing others
 			- usually when making subsets, we would run from the first to last index recurring on whether to keep or discard the current element. the DP solution is derived here by running the iteration through the array and looking at the items before us
