@@ -1,7 +1,7 @@
 LeetCode problems:
 
 Longest Substring Without Repeating Characters
-		 Given a string, find the length of the longest substring without repeating characters.
+		Given a string, find the length of the longest substring without repeating characters.
 
 		Example 1:
 
@@ -1099,7 +1099,6 @@ Longest Substring Without Repeating Characters
 				        return true;
 				    }
 				}
-
 
 Linked Lists:
 	1. You are given two non-empty linked lists representing two non-negative integers. The digits are stored in reverse order and each of their nodes contain a single digit. Add the two numbers and return it as a linked list.
@@ -5029,7 +5028,6 @@ Question form youtube:
 
 		11. Merge k sorted arrays.
 
-
 Design questions LeetCode:
  	1. LRU Cache:
  		public class LRUCache {
@@ -5394,61 +5392,59 @@ Design questions LeetCode:
 		  }
 		};
 
-						
-
 Questions from Glassdoor:
-	- Diameter of a binary tree
- - Number of islands (present above)
- - Meeting room 
- - How to check if there is a path for a string in a matrix of characters (can move left, up, right and down). Can start froom any point in matrix
- - regex expression matching
- - balanace paranthesis for a string
- - iterative in-order traversal
- - infinite chess board knight pawn problem?
- - techinterviewerclub.com
- - longest consecutive sorted sequence
- - find inversion of array
- - merge two sorted arrays in place
- - given a string like ((A9a)))()()()) <- O(n) time??? and O(1) space
- - regex expression matching
- - count number of occurances in an array
- - evaluate a mathematical expression like: (+5(*78)9 10 33)
- - given a binary tree find shortest path from given node to nearest leaf. Possible traveser backwards up tree
- - Given a listlist of tax brackets and what taxes are for each, and an income, determine what thtat person owes in taxes
- - Given a blank nyt crossword, output where all the clues would be
- - Add two binary strings represented as String
- - Design simplified instagram
- - print all DISTINCT permutation of a string
- - given a list of points and a number k, find k closest points to the origin
- - number is strobgromattic
- - Give one string to sort, and another that defines the order, sort the first string in the order the second string defines
- - return all subsets within a set
- - what is in-order traversal of binary tree
- - multiply two strings together given numbers as chars in array
- - coins problem - DP
- - reverse linked list
- - divide 2 numbers without useing /
- - merge intervals
- - expression evaluation
- - find k closest points to the origin in 2D plane, given an array containing /n points
- - sum of node values at each level of binary tree
- - read4 type question
- - given dictionary and 2 words, find shortest path between 2 words by modifying only one character at a time and using obly dictionary words
- - find connected components in a graph
- - print diagonals of matrix
- - word break
- - move zeroes
- - Total ways to decode a string
- - edit distance
- - palindromes possible from string without extra space
- - given a scrabble board with scores and a series of random letters drawn, find a way to maximize the point value for a valid word and pplay it on the board if there is space and fits with the other words
- - given m*n grid, and one is allowed to move up or right, find the number of paths between two grids?
- - sort graph points???
- - given a set of objects and a funciton, pass two objects to that function and it can tell whether one object points to another one, find oneobject that is pointed by all other objects
- - compare two binar tree if they are the same
- - longest increasing sub array in array
- - egg drop question
- - print matrix in clockwise from first element to inner element
- - find the minimum depth of binary search tree
- - 
- There are 139 pages of questions =
+	 - Diameter of a binary tree
+	 - Number of islands (present above)
+	 - Meeting room 
+	 - How to check if there is a path for a string in a matrix of characters (can move left, up, right and down). Can start froom any point in matrix
+	 - regex expression matching
+	 - balanace paranthesis for a string
+	 - iterative in-order traversal
+	 - infinite chess board knight pawn problem?
+	 - techinterviewerclub.com
+	 - longest consecutive sorted sequence
+	 - find inversion of array
+	 - merge two sorted arrays in place
+	 - given a string like ((A9a)))()()()) <- O(n) time??? and O(1) space
+	 - regex expression matching
+	 - count number of occurances in an array
+	 - evaluate a mathematical expression like: (+5(*78)9 10 33)
+	 - given a binary tree find shortest path from given node to nearest leaf. Possible traveser backwards up tree
+	 - Given a listlist of tax brackets and what taxes are for each, and an income, determine what thtat person owes in taxes
+	 - Given a blank nyt crossword, output where all the clues would be
+	 - Add two binary strings represented as String
+	 - Design simplified instagram
+	 - print all DISTINCT permutation of a string
+	 - given a list of points and a number k, find k closest points to the origin
+	 - number is strobgromattic
+	 - Give one string to sort, and another that defines the order, sort the first string in the order the second string defines
+	 - return all subsets within a set
+	 - what is in-order traversal of binary tree
+	 - multiply two strings together given numbers as chars in array
+	 - coins problem - DP
+	 - reverse linked list
+	 - divide 2 numbers without useing /
+	 - merge intervals
+	 - expression evaluation
+	 - find k closest points to the origin in 2D plane, given an array containing /n points
+	 - sum of node values at each level of binary tree
+	 - read4 type question
+	 - given dictionary and 2 words, find shortest path between 2 words by modifying only one character at a time and using obly dictionary words
+	 - find connected components in a graph
+	 - print diagonals of matrix
+	 - word break
+	 - move zeroes
+	 - Total ways to decode a string
+	 - edit distance
+	 - palindromes possible from string without extra space
+	 - given a scrabble board with scores and a series of random letters drawn, find a way to maximize the point value for a valid word and pplay it on the board if there is space and fits with the other words
+	 - given m*n grid, and one is allowed to move up or right, find the number of paths between two grids?
+	 - sort graph points???
+	 - given a set of objects and a funciton, pass two objects to that function and it can tell whether one object points to another one, find oneobject that is pointed by all other objects
+	 - compare two binar tree if they are the same
+	 - longest increasing sub array in array
+	 - egg drop question
+	 - print matrix in clockwise from first element to inner element
+	 - find the minimum depth of binary search tree
+	 - 
+	 There are 139 pages of questions =
