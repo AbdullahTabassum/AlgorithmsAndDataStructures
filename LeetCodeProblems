@@ -4343,7 +4343,20 @@ Others:
 			0 <= A[i].start, A[i].end, B[i].start, B[i].end < 10^9
 			NOTE: input types have been changed on April 15, 2019. Please reset to default code definition to get new method signature.
 
-		Approach: Note that intervals in the same set do not intersect. Also note, that the when comparing, we can gradually get rid of intervals that need to be compared. For example, we start from the beginning of both lists A and B. Which ever one has the earlier stat date, we look at that first. Then we compare it with the first element in B, if 'a' has an endpoint less than b's, then we get the intersecion from b's start point to a's and point and add that to the list. Now we can discard 'a' because it won't intersect with anything else. What if 'a'
+		Approach: Note that intervals in the same set do not intersect. Also note, that the when comparing, we can gradually get rid of intervals that need to be compared. For example, we start from the beginning of both lists A and B. Which ever one has the earlier stat date, we look at that first. Then we compare it with the first element in B, if 'a' has an endpoint less than b's, then we get the intersecion from b's start point to a's and point and add that to the list. Now we can discard 'a' because it won't intersect with anything else. What if 'a' endpoint is more than bs? then this means all of b is an intersection, so we can add b to the list and don't have to consider it with any other interval in A.
+			1. compare both intervals
+			2. for the earlier beginning point, check is that interval is less than ending point of other
+				- if yes, include b.beginning to a.ending in interval list, discard a
+				- if no, then include all of b, discard b
+			3. take next 2 items available from both lists.
+
+			// NOTE: the code below has a more efficient solution although it is similar to the above
+			1. 
+
+			while(a < A.length && b < b.length) {
+				//choose smaller one
+
+			}
 
 		Soltion from LeetCode:
 			class Solution {
@@ -4578,7 +4591,7 @@ Question form youtube:
 
 					// now just go through the array "leastCoinsForAmount",
 					// for each "amount", try each coin and reuse the array
-					for(int i = 1; i < leastCoinsForAmount; i++) {
+					for(int i = 1; i < leastCoinsForAmount.length; i++) {
 
 						// check for each coin
 						for(int coin: coins) {
@@ -4714,26 +4727,75 @@ Question form youtube:
 		 					- from this beginning index we iterate from this beginning index to and ending index (substring)
 		 						- we will check if this current substring is a palindrome, then we will recur, otherwise we wont recur over this substring
 		 					
-		 				public List<List<String>> genPalindromes(String str) {
-		 				 	List<List<String>> palindromeSets = new ArrayList<>()
-		 					helper(str, palindromeSets, 0);
-		 					return palindromeSets;
-		 				}
+		 				public List<List<String>> partition(String s) {
+						  List<List<String>> decompositions = new ArrayList();
+						  decomposeString(0, s, new ArrayList<>(), decompositions);
+						  return decompositions;
+						}
 
-		 				private void helper(String str, List<List<String>> pals, int beginning, List<String> currentSet) {
-		 					// if the beginning index is out of range then we have successfully completed generating set of strings
-		 					if(beginning >= str.length) {
-		 						pals.add(currentSet);
-		 						return;
-		 					}
+						private void decomposeString(
+						  int workingIndex,
+						  String s,
+						  List<String> partialDecomposition,
+						  List<List<String>> decompositions
+						) {
+						  /*
+						    If we have decomposed the whole string then reap the
+						    'partialDecomposition', it is now complete.
+						  */
+						  if (workingIndex == s.length()) {
+						    decompositions.add(new ArrayList<>(partialDecomposition));
+						    return;
+						  }
 
-		 					// otherwise, we will iterate over all substrings starting from the current index
-		 					for(int i = beginning; i < str.length; i++) {
-		 						if() {
+						  /*
+						    Take every snippet take from the 'workingIndex' to the end of the
+						    string. This is out 'possibility space' that we can recurse into.
+						  */
+						  for (int i = workingIndex; i < s.length(); i++) {
+						    /*
+						      Only recurse if the snippet from 'workingIndex' (inclusive) to
+						      s.length() (inclusive) is a palindrome
+						    */
+						    if (isPalindrome(workingIndex, i, s)) {
 
-		 						}
-		 					}
-		 				}
+						      // 1.) Choose - Take the snippet & add it to our decomposition 'path'
+						      String palindromicSnippet = s.substring(workingIndex, i + 1);
+						      partialDecomposition.add(palindromicSnippet);
+
+						      /*
+						        2.) Explore - Recurse and advance progress 1 past right bound of 
+						        the 'palindromicSnippet' which is 'i + 1'
+						      */
+						      decomposeString(i + 1, s, partialDecomposition, decompositions);
+
+						      /*
+						        3.) Unchoose - We are done searching, remove the snippet from our
+						        'path'. Next loop iteration will try another snippet in this stack
+						        frame.
+						      */
+						      partialDecomposition.remove(partialDecomposition.size() - 1);
+						    }
+						  }
+						}
+
+						/*
+						  Checks if the region from left (inclusive) to right (inclusive) is
+						  a palindromic.
+						*/
+						public boolean isPalindrome(int left, int right, String s) {
+						  while (left < right) {
+						    if (s.charAt(left) != s.charAt(right)) {
+						      return false;
+						    }
+
+						    left++;
+						    right--;
+						  }
+
+						  return true;
+						}
+
 
 		 	9. Max sum in a 2d array:
 		 		Approach: to solve this problem we will use kadanes algorithm. we will have two pointers L and R.
@@ -4959,6 +5021,14 @@ Question form youtube:
 				  int bottomBorderIndex;
 
 				} 
+
+		10. Sort K sorted arrays. i.e. each item in the given array is at most K distance from its final/ sorted position.
+			Approach: basically, start from the beginning of the array and add all items that can possibly occupy the position (i.e. any item at most 3 indices away including the item at the current position and has not been marked as visited) to a min heap. Then choose the smallest item and mark the item you just chose as visited.
+
+			At each index we do 2K adds to a heap (that equls k*logk). And we do this for each item in the array. So our runtime is (k*logk*n). this is much better than nlogn given that k would be small.
+
+		11. Merge k sorted arrays.
+
 
 Design questions LeetCode:
  	1. LRU Cache:
@@ -5369,4 +5439,16 @@ Questions from Glassdoor:
  - word break
  - move zeroes
  - Total ways to decode a string
+ - edit distance
+ - palindromes possible from string without extra space
+ - given a scrabble board with scores and a series of random letters drawn, find a way to maximize the point value for a valid word and pplay it on the board if there is space and fits with the other words
+ - given m*n grid, and one is allowed to move up or right, find the number of paths between two grids?
+ - sort graph points???
+ - given a set of objects and a funciton, pass two objects to that function and it can tell whether one object points to another one, find oneobject that is pointed by all other objects
+ - compare two binar tree if they are the same
+ - longest increasing sub array in array
+ - egg drop question
+ - print matrix in clockwise from first element to inner element
+ - find the minimum depth of binary search tree
+ - 
  There are 139 pages of questions =
