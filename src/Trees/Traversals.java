@@ -59,4 +59,30 @@ public class Traversals {
        }
 
     }
+
+    public static void inOrderI2(TreeNode head) {
+        // create a stack
+        Stack<TreeNode> st = new Stack<>();
+
+        // put the head in the stack and mark it as current undiscovered
+        TreeNode undiscovered = head;
+        st.push(undiscovered);
+
+        while(!st.empty()) {
+            // add all left nodes coming current node to stack
+            while(undiscovered != null) {
+                st.push(undiscovered.left);
+                undiscovered = undiscovered.left;
+            }
+
+            // now undiscovered is null
+            TreeNode lastLeft = st.pop();
+
+            // last left does not have any left children so print it out
+            System.out.println("-" + lastLeft.value);
+
+            //
+            undiscovered = lastLeft.right;
+        }
+    }
 }
