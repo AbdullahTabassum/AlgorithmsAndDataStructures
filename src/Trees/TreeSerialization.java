@@ -19,7 +19,7 @@ public class TreeSerialization {
             return;
         }
 
-        current.add(0, head.value);
+        current.add(head.value);
         serializeH(head.left, current);
         serializeH(head.right, current);
     }
