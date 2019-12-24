@@ -3737,7 +3737,7 @@ Searching and sorting
 			    }
 			}
 
-	4.Pow(x, n) 
+	4. Pow(x, n) 
 				Implement pow(x, n), which calculates x raised to the power n (xn).
 
 				Example 1:
@@ -3810,7 +3810,7 @@ Searching and sorting
 					    }
 					};
 
-	5.Merge Intervals
+	5. Merge Intervals
 				Given a collection of intervals, merge all overlapping intervals.
 
 				Example 1:
@@ -4115,7 +4115,6 @@ Others:
 
 			    // Done processing all the digits in num
 			    if (index == nums.length()) {
-
 			      // If the final value == target expected AND
 			      // no operand is left unprocessed
 			      if (value == this.target && currentOperand == 0) {
@@ -4694,7 +4693,6 @@ Question form youtube:
 						return false;
 					}
 
-
 		7. Partition array into k subsets with equal sum.
 			- given an array, see if it can be divided up into k subsets where each subset equals the same value
 				i.e. arr = 4,3,2,3,5,2,1 k = 4
@@ -5061,6 +5059,8 @@ Question form youtube:
 			At each index we do 2K adds to a heap (that equls k*logk). And we do this for each item in the array. So our runtime is (k*logk*n). this is much better than nlogn given that k would be small.
 
 		11. Merge k sorted arrays.
+
+		12. Find the k most frequent items in the list
 
 Design questions LeetCode:
  	1. LRU Cache:
