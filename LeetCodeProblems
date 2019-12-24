@@ -132,7 +132,7 @@ Arrays and Strings
 					    }
 					}
 
-		1. Atoi: convert a string to an integer
+	1. Atoi: convert a string to an integer
 			-> - remove white spaces, ".trim()"
 		       - first check the first position for its sign str.charAt(0)
 		       		- store it in an int as -1 or +1
@@ -173,7 +173,8 @@ Arrays and Strings
 				    }
 				    return sign * n;
 				}
-		2. 3 sum - find three numbers in the array which add to give you zero
+	
+	2. 3 sum - find three numbers in the array which add to give you zero
 			- iterate through the array with variable i from 0 - arr.length - 2
 				- this is because for each iteration we have three vars, one is i, one is b = i+1 (starts at) and one starts at i+2
 			- the other two variables are low = i+1 and hi = arr.length - 1
@@ -215,7 +216,8 @@ Arrays and Strings
 				    }
 				    return res;
 				}
-		3. Remove duplicates from sorted array
+	
+	3. Remove duplicates from sorted array
 			- go through the array and hold 2 indices
 				- one that holds the last position of the final array (i.e. all elements before it are non-duplicate): End-of-non-dup array = eond
 				- the other index scans (scanner )the array for unique elements one by until the end of the array
@@ -248,7 +250,7 @@ Arrays and Strings
 					    return i + 1;
 					}
 
-		4. next permutation: get the next greater number <--- return to this to understand it better
+	4. next permutation: get the next greater number <--- return to this to understand it better
 			1,2,3 → 1,3,2
 			3,2,1 → 1,2,3
 			1,1,5 → 1,5,1
@@ -297,7 +299,7 @@ Arrays and Strings
 				}
 			}
 
-		5. Multiply Strings - Given two non-negative integers num1 and num2 represented as strings, return the product of num1 and num2, also represented as a string.
+	5. Multiply Strings - Given two non-negative integers num1 and num2 represented as strings, return the product of num1 and num2, also represented as a string.
 
 				Example 1:
 
@@ -334,7 +336,7 @@ Arrays and Strings
 				    return sb.length() == 0 ? "0" : sb.toString();
 				}
 
-		6. Group Anagrams: Given an array of strings, group anagrams together.
+	6. Group Anagrams: Given an array of strings, group anagrams together.
 			Input: ["eat", "tea", "tan", "ate", "nat", "bat"],
 			Output:
 			[
@@ -394,7 +396,8 @@ Arrays and Strings
 			        return new ArrayList(ans.values());
 			    }
 			}
-		7. Add Binary: Given two binary strings, return their sum (also a binary string). - come back to this one
+	
+	7. Add Binary: Given two binary strings, return their sum (also a binary string). - come back to this one
 
 			Input: a = "11", b = "1"
 			Output: "100"
@@ -421,7 +424,7 @@ Arrays and Strings
 					  }
 					}
 
-			8.  Minimum Window Substring: Given a string S and a string T, find the minimum window in S which will contain all the characters in T in complexity O(n).
+	8.  Minimum Window Substring: Given a string S and a string T, find the minimum window in S which will contain all the characters in T in complexity O(n).
 
 				- use sliding window technique
 					- start with 2 indices both at the beginning, b,e
@@ -433,9 +436,6 @@ Arrays and Strings
 				- tracking the items weve weve added, use a set, when move the left item right, if the new left is not the same as the old one, we remove the item from the set
 				- check the size of the set 
 				- actually, instead of keeping a set we can keep a map, the map keeps track of the count of all found numbers, so when we move left or right, we update the count, if the count for something is zero we remove it from the map
-
-			Example:
-
 			Input: S = "ADOBECODEBANC", T = "ABC"
 			Output: "BANC"
 			class Solution {
@@ -511,7 +511,7 @@ Arrays and Strings
 				  }
 				}
 
-			9. Merge Sorted arrays: Given two sorted integer arrays nums1 and nums2, merge nums2 into nums1 as one sorted array.
+	9. Merge Sorted arrays: Given two sorted integer arrays nums1 and nums2, merge nums2 into nums1 as one sorted array.
 
 				Input:
 				nums1 = [1,2,3,0,0,0], m = 3
@@ -566,7 +566,7 @@ Arrays and Strings
 						  }
 						}
 
-			10 .  Valid Palindrome: Given a string, determine if it is a palindrome, considering only alphanumeric characters and ignoring cases.
+	10 .  Valid Palindrome: Given a string, determine if it is a palindrome, considering only alphanumeric characters and ignoring cases.
 
 				Note: For the purpose of this problem, we define empty string as valid palindrome.
 
@@ -593,7 +593,7 @@ Arrays and Strings
 				}
 				return true;
 
-			11. Given a method read4(), create a method read(char[] buf, int n), that fills an array with n items from a file
+	11. Given a method read4(), create a method read(char[] buf, int n), that fills an array with n items from a file
 				- basically call read4 repeatedly, each time stoer in a temp char[4]
 				- see how much you have left to read; leftToRead
 				d	- if it is more than 4, then subtract 4 from leftToRead and copu temp buffer into return buff
@@ -623,7 +623,7 @@ Arrays and Strings
 				    }
 				}
 
-			12. One Edit Distance: Given two strings s and t, determine if they are both one edit distance apart.
+	12. One Edit Distance: Given two strings s and t, determine if they are both one edit distance apart.
 				Note: 
 
 				There are 3 possiblities to satisify one edit distance apart:
@@ -670,7 +670,7 @@ Arrays and Strings
 								  }
 								}
 
-			13. Product of Array Except Self: Given an array nums of n integers where n > 1,  return an array output such that output[i] is equal to the product of all the elements of nums except nums[i].
+	13. Product of Array Except Self: Given an array nums of n integers where n > 1,  return an array output such that output[i] is equal to the product of all the elements of nums except nums[i].
 
 				Example:
 					Input:  [1,2,3,4]
@@ -678,9 +678,8 @@ Arrays and Strings
 					Note: Please solve it without division and in O(n).
 
 					Follow up:
-					Could you solve it with constant space complexity? (The output array does not count as extra space for the purpose of space complexity analysis.)
-
-			Approach: Basically, keep two arrays, LeftProduct and RightProduct. Then basically fill up the LeftArray with the product of all the numbers to the left of the ith position. And do the same for the RightProduct but from the right.
+					Could you solve it with constant space complexity? (The output array does not count as extra space for the purpose of space complexity analysis.).
+			Approach- Basically, keep two arrays, LeftProduct and RightProduct. Then basically fill up the LeftArray with the product of all the numbers to the left of the ith position. And do the same for the RightProduct but from the right.
 			Then run through the original array, and to calculate the ith product, simply find the product of LeftProduct[i] and RightProduct[i]. This is basically multiplying all of the numbers to the left and right of the ith item (i.e. every item except i)
 						class Solution {
 						    public int[] productExceptSelf(int[] nums) {
@@ -731,7 +730,7 @@ Arrays and Strings
 						    }
 						}
 
-			14. Integer to english word: Convert a non-negative integer to its english words representation. Given input is guaranteed to be less than 231 - 1.
+	14. Integer to english word: Convert a non-negative integer to its english words representation. Given input is guaranteed to be less than 231 - 1.
 				
 				Example 1:
 				Input: 123
@@ -747,8 +746,7 @@ Arrays and Strings
 				
 				Example 4:
 				Input: 1234567891
-				Output: "One Billion Two Hundred Thirty Four Million Five Hundred Sixty Seven Thousand 
-				Eight Hundred Ninety One"
+				Output: "One Billion Two Hundred Thirty Four Million Five Hundred Sixty Seven Thousand Eight Hundred Ninety One"
 
 				Approach: there are multiple cases
 					- read upto three digits from the right at a time
@@ -873,7 +871,7 @@ Arrays and Strings
 					    return result;
 					  }
 					}
-			15. Move zeros: move all zeros to end of array
+	15. Move zeros: move all zeros to end of array
 				Approach: basically, have two pointers, one keeps track of the last non-zero number, the other keeps track of current number. If we find a non zero number we put put it in the place of last non-zero number.
 
 				void moveZeroes(vector<int>& nums) {
@@ -902,7 +900,7 @@ Arrays and Strings
 				    }
 				}
 
-			16.  Longest Substring with At Most K Distinct Characters: Given a string, find the length of the longest substring T that contains at most k distinct characters.
+	16.  Longest Substring with At Most K Distinct Characters: Given a string, find the length of the longest substring T that contains at most k distinct characters.
 
 				Example 1:
 
@@ -993,7 +991,7 @@ Arrays and Strings
 
 
 
-			17. Validate IP Address: Write a function to check whether an input string is a valid IPv4 address or IPv6 address or neither.
+	17. Validate IP Address: Write a function to check whether an input string is a valid IPv4 address or IPv6 address or neither.
 				Approach: Use String.split, Integer.parseInt, Character.isDigit, String.toCharArray
 
 				class Solution {
@@ -1025,7 +1023,7 @@ Arrays and Strings
 				    }
 				}
 
-			18.  Subarray Sum Equals K: Given an array of integers and an integer k, you need to find the total number of continuous subarrays whose sum equals to k.
+	18.  Subarray Sum Equals K: Given an array of integers and an integer k, you need to find the total number of continuous subarrays whose sum equals to k.
 
 				Example 1:
 				Input:nums = [1,1,1], k = 2
@@ -1068,7 +1066,7 @@ Arrays and Strings
 					    }
 					}
 
-			19.  Valid Palindrome II: Given a non-empty string s, you may delete at most one character. Judge whether you can make it a palindrome.
+	19.  Valid Palindrome II: Given a non-empty string s, you may delete at most one character. Judge whether you can make it a palindrome.
 
 				Example 1:
 				Input: "aba"
@@ -1396,7 +1394,7 @@ Trees/Graphs
 			return isValidBST(head.left, head.value, lowerLimit) && isValidBST(head.right, upperLimit, head.value);
 		}
 
-	2.Given a binary tree, flatten it to a linked list in-place.
+	2. Given a binary tree, flatten it to a linked list in-place.
 
 		For example, given the following tree:
 
@@ -1484,31 +1482,32 @@ Trees/Graphs
 			   15   7
 
 			//Output: 42
+		
 		class Solution {
-		 	int max_sum = Integer.MIN_VALUE;
+			int max_sum = Integer.MIN_VALUE;
 
-		  public int max_gain(TreeNode node) {
-		    if (node == null) return 0;
+			public int max_gain(TreeNode node) {
+			    if (node == null) return 0;
 
-		    // max sum on the left and right sub-trees of node
-		    int left_gain = Math.max(max_gain(node.left), 0);
-		    int right_gain = Math.max(max_gain(node.right), 0);
+			    // max sum on the left and right sub-trees of node
+			    int left_gain = Math.max(max_gain(node.left), 0);
+			    int right_gain = Math.max(max_gain(node.right), 0);
 
-		    // the price to start a new path where `node` is a highest node
-		    int price_newpath = node.val + left_gain + right_gain;
+			    // the price to start a new path where `node` is a highest node
+			    int price_newpath = node.val + left_gain + right_gain;
 
-		    // update max_sum if its better to start a new path
-		    max_sum = Math.max(max_sum, price_newpath);
+			    // update max_sum if its better to start a new path
+			    max_sum = Math.max(max_sum, price_newpath);
 
-		    // for recursion :
-		    // return the max gain if continue the same path
-		    return node.val + Math.max(left_gain, right_gain);
-		  }
+			    // for recursion :
+			    // return the max gain if continue the same path
+			    return node.val + Math.max(left_gain, right_gain);
+			}
 
-		  public int maxPathSum(TreeNode root) {
-		    max_gain(root);
-		    return max_sum;
-		  }
+			public int maxPathSum(TreeNode root) {
+				max_gain(root);
+				return max_sum;
+			}
 		}
 
 	4. Clone a graph: Given a reference of a node in a connected undirected graph, return a deep copy (clone) of the graph. Each node in the graph contains a val (int) and a list (List[Node]) of its neighbors.
@@ -2693,118 +2692,118 @@ Recursion:
 			}
 
 	3. Permutations II
-	Given a collection of numbers that might contain duplicates, return all possible unique permutations.
+		Given a collection of numbers that might contain duplicates, return all possible unique permutations.
 
-	Example:
+		Example:
 
-	Input: [1,1,2]
-	Output:
-	[
-	  [1,1,2],
-	  [1,2,1],
-	  [2,1,1]
-	]
+		Input: [1,1,2]
+		Output:
+		[
+		  [1,1,2],
+		  [1,2,1],
+		  [2,1,1]
+		]
 
-	Approach: use a set
+		Approach: use a set
 
 	4. Remove Invalid Parentheses
 	
-	Remove the minimum number of invalid parentheses in order to make the input string valid. Return all possible results.
+		Remove the minimum number of invalid parentheses in order to make the input string valid. Return all possible results.
 
-	Note: The input string may contain letters other than the parentheses ( and ).
+		Note: The input string may contain letters other than the parentheses ( and ).
 
-	Example 1:
+		Example 1:
 
-	Input: "()())()"
-	Output: ["()()()", "(())()"]
-	Example 2:
+		Input: "()())()"
+		Output: ["()()()", "(())()"]
+		Example 2:
 
-	Input: "(a)())()"
-	Output: ["(a)()()", "(a())()"]
-	Example 3:
+		Input: "(a)())()"
+		Output: ["(a)()()", "(a())()"]
+		Example 3:
 
-	Input: ")("
-	Output: [""]
+		Input: ")("
+		Output: [""]
 
-	Approach: try keeping and removing each bracket then verifying if everything is fine. An optimization: However, for a closing bracket, if we decide to keep it as a part of our final expression (remember for every bracket we have two options, either to keep it or to remove it and recurse further) and there is no corresponding opening bracket to match it in the expression till now, then it will definitely lead to an invalid expression no matter what we do afterwards.
+		Approach: try keeping and removing each bracket then verifying if everything is fine. An optimization: However, for a closing bracket, if we decide to keep it as a part of our final expression (remember for every bracket we have two options, either to keep it or to remove it and recurse further) and there is no corresponding opening bracket to match it in the expression till now, then it will definitely lead to an invalid expression no matter what we do afterwards.
 
-	class Solution {
+		class Solution {
 
-	  private Set<String> validExpressions = new HashSet<String>();
-	  private int minimumRemoved;
+		  private Set<String> validExpressions = new HashSet<String>();
+		  private int minimumRemoved;
 
-	  private void reset() {
-	    this.validExpressions.clear();
-	    this.minimumRemoved = Integer.MAX_VALUE;
-	  }
+		  private void reset() {
+		    this.validExpressions.clear();
+		    this.minimumRemoved = Integer.MAX_VALUE;
+		  }
 
-	  private void recurse(
-	      String s,
-	      int index,
-	      int leftCount,
-	      int rightCount,
-	      StringBuilder expression,
-	      int removedCount) {
+		  private void recurse(
+		      String s,
+		      int index,
+		      int leftCount,
+		      int rightCount,
+		      StringBuilder expression,
+		      int removedCount) {
 
-	    // If we have reached the end of string.
-	    if (index == s.length()) {
+		    // If we have reached the end of string.
+		    if (index == s.length()) {
 
-	      // If the current expression is valid.
-	      if (leftCount == rightCount) {
+		      // If the current expression is valid.
+		      if (leftCount == rightCount) {
 
-	        // If the current count of removed parentheses is <= the current minimum count
-	        if (removedCount <= this.minimumRemoved) {
+		        // If the current count of removed parentheses is <= the current minimum count
+		        if (removedCount <= this.minimumRemoved) {
 
-	          // Convert StringBuilder to a String. This is an expensive operation.
-	          // So we only perform this when needed.
-	          String possibleAnswer = expression.toString();
+		          // Convert StringBuilder to a String. This is an expensive operation.
+		          // So we only perform this when needed.
+		          String possibleAnswer = expression.toString();
 
-	          // If the current count beats the overall minimum we have till now
-	          if (removedCount < this.minimumRemoved) {
-	            this.validExpressions.clear();
-	            this.minimumRemoved = removedCount;
-	          }
-	          this.validExpressions.add(possibleAnswer);
-	        }
-	      }
-	    } else {
+		          // If the current count beats the overall minimum we have till now
+		          if (removedCount < this.minimumRemoved) {
+		            this.validExpressions.clear();
+		            this.minimumRemoved = removedCount;
+		          }
+		          this.validExpressions.add(possibleAnswer);
+		        }
+		      }
+		    } else {
 
-	      char currentCharacter = s.charAt(index);
-	      int length = expression.length();
+		      char currentCharacter = s.charAt(index);
+		      int length = expression.length();
 
-	      // If the current character is neither an opening bracket nor a closing one,
-	      // simply recurse further by adding it to the expression StringBuilder
-	      if (currentCharacter != ( && currentCharacter != )) {
-	        expression.append(currentCharacter);
-	        this.recurse(s, index + 1, leftCount, rightCount, expression, removedCount);
-	        expression.deleteCharAt(length);
-	      } else {
+		      // If the current character is neither an opening bracket nor a closing one,
+		      // simply recurse further by adding it to the expression StringBuilder
+		      if (currentCharacter != ( && currentCharacter != )) {
+		        expression.append(currentCharacter);
+		        this.recurse(s, index + 1, leftCount, rightCount, expression, removedCount);
+		        expression.deleteCharAt(length);
+		      } else {
 
-	        // Recursion where we delete the current character and move forward
-	        this.recurse(s, index + 1, leftCount, rightCount, expression, removedCount + 1);
-	        expression.append(currentCharacter);
+		        // Recursion where we delete the current character and move forward
+		        this.recurse(s, index + 1, leftCount, rightCount, expression, removedCount + 1);
+		        expression.append(currentCharacter);
 
-	        // If its an opening parenthesis, consider it and recurse
-	        if (currentCharacter == () {
-	          this.recurse(s, index + 1, leftCount + 1, rightCount, expression, removedCount);
-	        } else if (rightCount < leftCount) {
-	          // For a closing parenthesis, only recurse if right < left
-	          this.recurse(s, index + 1, leftCount, rightCount + 1, expression, removedCount);
-	        }
+		        // If its an opening parenthesis, consider it and recurse
+		        if (currentCharacter == ( ) {
+		          this.recurse(s, index + 1, leftCount + 1, rightCount, expression, removedCount);
+		        } else if (rightCount < leftCount) {
+		          // For a closing parenthesis, only recurse if right < left
+		          this.recurse(s, index + 1, leftCount, rightCount + 1, expression, removedCount);
+		        }
 
-	        // Undoing the append operation for other recursions.
-	        expression.deleteCharAt(length);
-	      }
-	    }
-	  }
+		        // Undoing the append operation for other recursions.
+		        expression.deleteCharAt(length);
+		      }
+		    }
+		  }
 
-	  public List<String> removeInvalidParentheses(String s) {
+		  public List<String> removeInvalidParentheses(String s) {
 
-	    this.reset();
-	    this.recurse(s, 0, 0, 0, new StringBuilder(), 0);
-	    return new ArrayList(this.validExpressions);
-	  }
-	}
+		    this.reset();
+		    this.recurse(s, 0, 0, 0, new StringBuilder(), 0);
+		    return new ArrayList(this.validExpressions);
+		  }
+		}
 
 	5.  Regular Expression Matching
 
@@ -2905,6 +2904,7 @@ Recursion:
 			        return ans;
 			    }
 			}
+	
 	6.  Subsets
 			Given a set of distinct integers, nums, return all possible subsets (the power set).
 
@@ -2968,6 +2968,7 @@ Recursion:
 				} 
 
 				// see solution in intellij, above is wrong
+
 	7. Strobogrammatic Number II
 		A strobogrammatic number is a number that looks the same when rotated 180 degrees (looked at upside down).
 
@@ -3009,18 +3010,17 @@ Recursion:
 
 Dynamic Programming:
 	1. Longest Palindromic Substring
+		Given a string s, find the longest palindromic substring in s. You may assume that the maximum length of s is 1000.
 
-	Given a string s, find the longest palindromic substring in s. You may assume that the maximum length of s is 1000.
+		Example 1:
 
-	Example 1:
+		Input: "babad"
+		Output: "bab"
+		Note: "aba" is also a valid answer.
+		Example 2:
 
-	Input: "babad"
-	Output: "bab"
-	Note: "aba" is also a valid answer.
-	Example 2:
-
-	Input: "cbbd"
-	Output: "bb"
+		Input: "cbbd"
+		Output: "bb"
 			Solution:
 			dp(i, j) represents whether s(i ... j) can form a palindromic substring, dp(i, j) is true when s(i) equals to s(j) and s(i+1 ... j-1) is a palindromic substring. When we found a palindrome, check if its the longest one. Time complexity O(n^2).
 
@@ -3073,7 +3073,6 @@ Dynamic Programming:
 				}
 
 	2. Longest Valid Parentheses
-		
 		Given a string containing just the characters ( and ), find the length of the longest valid (well-formed) parentheses substring.
 
 		Example 1:
@@ -3155,7 +3154,6 @@ Dynamic Programming:
 			        return maxans;
 			    }
 			}
-
 
 	3. Decode Ways
 		A message containing letters from A-Z is being encoded to numbers using the following mapping:
@@ -3387,7 +3385,6 @@ Dynamic Programming:
 			public int sumRegion(int row1, int col1, int row2, int col2) {
 			    return dp[row2 + 1][col2 + 1] - dp[row1][col2 + 1] - dp[row2 + 1][col1] + dp[row1][col1];
 			}
-
 
 	7. Continuous Subarray Sum
 		
@@ -3637,6 +3634,7 @@ Searching and sorting
 				    return search(0, rotate_index);
 				  }
 				}
+
 	3. Find First and Last Position of Element in Sorted Array:
 		Given an array of integers nums sorted in ascending order, find the starting and ending position of a given target value.
 
@@ -3739,9 +3737,7 @@ Searching and sorting
 			    }
 			}
 
-
-
-			4.Pow(x, n) 
+	4.Pow(x, n) 
 				Implement pow(x, n), which calculates x raised to the power n (xn).
 
 				Example 1:
@@ -3793,8 +3789,8 @@ Searching and sorting
 
 					        return fastPow(x, N);
 					    }
-					};
-			Iterative:
+					}
+				Iterative:
 					class Solution {
 					    public double myPow(double x, int n) {
 					        long N = n;
@@ -3814,7 +3810,7 @@ Searching and sorting
 					    }
 					};
 
-			5.Merge Intervals
+	5.Merge Intervals
 				Given a collection of intervals, merge all overlapping intervals.
 
 				Example 1:
@@ -3829,7 +3825,10 @@ Searching and sorting
 				Explanation: Intervals [1,4] and [4,5] are considered overlapping.
 				NOTE: input types have been changed on April 15, 2019. Please reset to default code definition to get new method signature.
 
-			Approach: Intuition
+				
+
+
+				Approach: Intuition
 
 				If we sort the intervals by their start value, then each set of intervals that can be merged will appear as a contiguous "run" in the sorted list.
 
@@ -3865,7 +3864,8 @@ Searching and sorting
 				        return merged;
 				    }
 				}
-			6. Find Peak Element
+	
+	6. Find Peak Element
 
 			A peak element is an element that is greater than its neighbors.
 
@@ -3942,8 +3942,7 @@ Searching and sorting
 			    }
 			}
 
-
-		7. First Bad Version
+	7. First Bad Version
 
 			You are a product manager and currently leading a team to develop a new product. Unfortunately, the latest version of your product fails the quality check. Since each version is developed based on the previous version, all the versions after a bad version are also bad.
 
@@ -3982,7 +3981,7 @@ Searching and sorting
 
 			}
 
-		8. Intersection of Two Arrays
+	8. Intersection of Two Arrays
 			Given two arrays, write a function to compute their intersection.
 
 			Example 1:
@@ -4023,9 +4022,7 @@ Searching and sorting
 			  }
 			}
 
-
-
-		9. Intersection of Two Arrays II
+	9. Intersection of Two Arrays II
 
 			Given two arrays, write a function to compute their intersection.
 
@@ -4186,8 +4183,8 @@ Others:
 			  }
 		}
 
-		2. Find All Anagrams in a String
-			Given a string s and a non-empty string p, find all the start indices of p's anagrams in s.
+	2. Find All Anagrams in a String
+			Given a string s and a non-empty string p, find all the start indices of ps anagrams in s.
 
 			Strings consists of lowercase English letters only and the length of both strings s and p will not be larger than 20,100.
 
@@ -4217,7 +4214,7 @@ Others:
 			The substring with start index = 2 is "ab", which is an anagram of "ab".
 
 			Solution: 
-			Approach: Initialize counter = p.length. Have two pointers, b (for beginning) and e (for ending). They both start at 0'th index. we check if e is a character that exists in p, if it does, then we subtract one from counter and increase e by one. If counter equals zero, then this means that we have found an anagram. We store b as it holds the beginning index of the anagram. Then, if b - e is equal to p.length, we increment b by one and if it was pointing to a character that was in the patter, we need to increment counter by one. 
+			Approach: Initialize counter = p.length. Have two pointers, b (for beginning) and e (for ending). They both start at 0th index. we check if e is a character that exists in p, if it does, then we subtract one from counter and increase e by one. If counter equals zero, then this means that we have found an anagram. We store b as it holds the beginning index of the anagram. Then, if b - e is equal to p.length, we increment b by one and if it was pointing to a character that was in the patter, we need to increment counter by one. 
 
 			public List<Integer> findAnagrams(String s, String p) {
 			    List<Integer> list = new ArrayList<>();
@@ -4247,9 +4244,9 @@ Others:
 			    return list;
 			}
 
-			3. Permutation in String
+	3. Permutation in String
 				Solution
-				Given two strings s1 and s2, write a function to return true if s2 contains the permutation of s1. In other words, one of the first string's permutations is the substring of the second string.
+				Given two strings s1 and s2, write a function to return true if s2 contains the permutation of s1. In other words, one of the first strings permutations is the substring of the second string.
 
 				Example 1:
 
@@ -4269,39 +4266,39 @@ Others:
 
 
 			
-			Solution from leet code:
-				Explanation: Basically use an array of 26 items to store the count of each character in sMap1.
-				To acces an index use smap1[char - a] Then, we will iterate through s2 with a window size of s1.length. until the beginnin of the window reaches s2.length - s1.length. everytime you move the window, one letter from the taken out and one new letter will be added to the smap2. smap2 is basicallyy a mapping of each 26 chars to their frequency. each time smap2 is updated, we compare the arrays smap1 and smap2.
+						Solution from leet code:
+							Explanation: Basically use an array of 26 items to store the count of each character in sMap1.
+							To acces an index use smap1[char - a] Then, we will iterate through s2 with a window size of s1.length. until the beginnin of the window reaches s2.length - s1.length. everytime you move the window, one letter from the taken out and one new letter will be added to the smap2. smap2 is basicallyy a mapping of each 26 chars to their frequency. each time smap2 is updated, we compare the arrays smap1 and smap2.
 
-			// i don't think solution will work if there are duplicates
-			public class Solution {
-		    public boolean checkInclusion(String s1, String s2) {
-		        if (s1.length() > s2.length())
-		            return false;
-		        int[] s1map = new int[26];
-		        int[] s2map = new int[26];
-		        for (int i = 0; i < s1.length(); i++) {
-		            s1map[s1.charAt(i) - a]++;
-		            s2map[s2.charAt(i) - a]++;
-		        }
-		        for (int i = 0; i < s2.length() - s1.length(); i++) {
-		            if (matches(s1map, s2map))
-		                return true;
-		            s2map[s2.charAt(i + s1.length()) - a]++;
-		            s2map[s2.charAt(i) - a]--;
-		        }
-		        return matches(s1map, s2map);
-		    }
-		    public boolean matches(int[] s1map, int[] s2map) {
-		        for (int i = 0; i < 26; i++) {
-		            if (s1map[i] != s2map[i])
-		                return false;
-		        }
-		        return true;
-		    }
-		}
+						// i don't think solution will work if there are duplicates
+						public class Solution {
+					    public boolean checkInclusion(String s1, String s2) {
+					        if (s1.length() > s2.length())
+					            return false;
+					        int[] s1map = new int[26];
+					        int[] s2map = new int[26];
+					        for (int i = 0; i < s1.length(); i++) {
+					            s1map[s1.charAt(i) - a]++;
+					            s2map[s2.charAt(i) - a]++;
+					        }
+					        for (int i = 0; i < s2.length() - s1.length(); i++) {
+					            if (matches(s1map, s2map))
+					                return true;
+					            s2map[s2.charAt(i + s1.length()) - a]++;
+					            s2map[s2.charAt(i) - a]--;
+					        }
+					        return matches(s1map, s2map);
+					    }
+					    public boolean matches(int[] s1map, int[] s2map) {
+					        for (int i = 0; i < 26; i++) {
+					            if (s1map[i] != s2map[i])
+					                return false;
+					        }
+					        return true;
+					    }
+					}
 
-		4. Verify Alien dictionary:
+	4. Verify Alien dictionary:
 		  Verifying an Alien Dictionary
 
 			In an alien language, surprisingly they also use english lowercase letters, but possibly in a different order. The order of the alphabet is some permutation of lowercase letters.
@@ -4328,37 +4325,37 @@ Others:
 			 Also, the characts in the order list are stored in an array int[26] where the value denotes the actual order in the alien dictionary. When comparing two words, we skip over all of the equal letters and just compare the first non-equal letter.
 
 
-		class Solution {
-		    public boolean isAlienSorted(String[] words, String order) {
-		        int[] index = new int[26];
-		        for (int i = 0; i < order.length(); ++i)
-		            index[order.charAt(i) - a] = i;
+					class Solution {
+					    public boolean isAlienSorted(String[] words, String order) {
+					        int[] index = new int[26];
+					        for (int i = 0; i < order.length(); ++i)
+					            index[order.charAt(i) - a] = i;
 
-		        search: for (int i = 0; i < words.length - 1; ++i) {
-		            String word1 = words[i];
-		            String word2 = words[i+1];
+					        search: for (int i = 0; i < words.length - 1; ++i) {
+					            String word1 = words[i];
+					            String word2 = words[i+1];
 
-		            // Find the first difference word1[k] != word2[k].
-		            for (int k = 0; k < Math.min(word1.length(), word2.length()); ++k) {
-		                if (word1.charAt(k) != word2.charAt(k)) {
-		                    // If they compare badly, its not sorted.
-		                    if (index[word1.charAt(k) - a] > index[word2.charAt(k) - a])
-		                        return false;
-		                    continue search;
-		                }
-		            }
+					            // Find the first difference word1[k] != word2[k].
+					            for (int k = 0; k < Math.min(word1.length(), word2.length()); ++k) {
+					                if (word1.charAt(k) != word2.charAt(k)) {
+					                    // If they compare badly, its not sorted.
+					                    if (index[word1.charAt(k) - a] > index[word2.charAt(k) - a])
+					                        return false;
+					                    continue search;
+					                }
+					            }
 
-		            // If we didnt find a first difference, the
-		            // words are like ("app", "apple").
-		            if (word1.length() > word2.length())
-		                return false;
-		        }
+					            // If we didnt find a first difference, the
+					            // words are like ("app", "apple").
+					            if (word1.length() > word2.length())
+					                return false;
+					        }
 
-		        return true;
-		    }
-		}
+					        return true;
+					    }
+					}
 
-		5. Interval List Intersections
+	5. Interval List Intersections
 
 			Given two lists of closed intervals, each list of intervals is pairwise disjoint and in sorted order.
 
@@ -4379,7 +4376,7 @@ Others:
 			0 <= A[i].start, A[i].end, B[i].start, B[i].end < 10^9
 			NOTE: input types have been changed on April 15, 2019. Please reset to default code definition to get new method signature.
 
-		Approach: Note that intervals in the same set do not intersect. Also note, that the when comparing, we can gradually get rid of intervals that need to be compared. For example, we start from the beginning of both lists A and B. Which ever one has the earlier stat date, we look at that first. Then we compare it with the first element in B, if 'a' has an endpoint less than b's, then we get the intersecion from b's start point to a's and point and add that to the list. Now we can discard 'a' because it won't intersect with anything else. What if 'a' endpoint is more than bs? then this means all of b is an intersection, so we can add b to the list and don't have to consider it with any other interval in A.
+			Approach: Note that intervals in the same set do not intersect. Also note, that the when comparing, we can gradually get rid of intervals that need to be compared. For example, we start from the beginning of both lists A and B. Which ever one has the earlier stat date, we look at that first. Then we compare it with the first element in B, if 'a' has an endpoint less than b's, then we get the intersecion from b's start point to a's and point and add that to the list. Now we can discard 'a' because it won't intersect with anything else. What if 'a' endpoint is more than bs? then this means all of b is an intersection, so we can add b to the list and don't have to consider it with any other interval in A.
 			1. compare both intervals
 			2. for the earlier beginning point, check is that interval is less than ending point of other
 				- if yes, include b.beginning to a.ending in interval list, discard a
@@ -4394,31 +4391,31 @@ Others:
 
 			}
 
-		Soltion from LeetCode:
-			class Solution {
-		    public Interval[] intervalIntersection(Interval[] A, Interval[] B) {
-		        List<Interval> ans = new ArrayList();
-		        int i = 0, j = 0;
+				Soltion from LeetCode:
+					class Solution {
+				    public Interval[] intervalIntersection(Interval[] A, Interval[] B) {
+				        List<Interval> ans = new ArrayList();
+				        int i = 0, j = 0;
 
-		        while (i < A.length && j < B.length) {
-		            // Letith check if A[i] intersects B[j].
-		            // lo - the startpoint of the intersection
-		            // hi - the endpoint of the intersection
-		            int lo = Math.max(A[i].start, B[j].start);
-		            int hi = Math.min(A[i].end, B[j].end);
-		            if (lo <= hi)
-		                ans.add(new Interval(lo, hi));
+				        while (i < A.length && j < B.length) {
+				            // Letith check if A[i] intersects B[j].
+				            // lo - the startpoint of the intersection
+				            // hi - the endpoint of the intersection
+				            int lo = Math.max(A[i].start, B[j].start);
+				            int hi = Math.min(A[i].end, B[j].end);
+				            if (lo <= hi)
+				                ans.add(new Interval(lo, hi));
 
-		            // Remove the interval with the smallest endpoint
-		            if (A[i].end < B[j].end)
-		                i++;
-		            else
-		                j++;
-		        }
+				            // Remove the interval with the smallest endpoint
+				            if (A[i].end < B[j].end)
+				                i++;
+				            else
+				                j++;
+				        }
 
-		        return ans.toArray(new Interval[ans.size()]);
-		    }
-		}
+				        return ans.toArray(new Interval[ans.size()]);
+				    }
+				}
 
 Question form youtube:
 		1. Kadanes algorithm (subarray with the largest sum):
