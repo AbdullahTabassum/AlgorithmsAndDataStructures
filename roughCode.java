@@ -560,7 +560,7 @@ Trie implmentation:
 		int longestWindow = Integer.MIN_VALUE;
 		int start, end = 0;
 
-		int distinctCount = 0;
+		int distinctCount = 0; // <--- can use the linkedHashmap size instead of creating an extra variable
 		Map<Character, Integer> window = new LinkedHashMap<>();
 		// while
 		while(end < pattern.length) {
@@ -590,4 +590,62 @@ Trie implmentation:
 		}
 		return longestWindow;
 	}
+
+// validate IP address IPV6 o IPV4 from a string
+	// use the split method to split the items up into parts for ipv6 and ipv4
+	// ipv6 is split using ':' and ipv4 is split using '.'
+	// checks
+		// 1. the number of components is correct: ipv6: 8, ipv4: 4
+		// 2. each component contains valid chracters: ipv4: only digits 0-256, and no starting zeros ipv6: ?
+		// 3. each component contains
+	public boolean validateIP() {
+
+	}
+// Subarray Sum Equals K: Given an array of integers and an integer k, you need to find the total number of continuous subarrays whose sum equals to k.
+	// Approach: iterate through array; and accumulate sum
+		// at each iteration, see if (currentSum - k) exists in the set
+		// add accumulated sum to a set
+		// carry on till end of arry
+		public int countOfDesiredContinuousSum(int[] arr, int k) {
+			Set<Integer> accumulatedSums = new Set<>();
+			int currentSum = 0;
+			int count = 0;
+
+			for(int i = 0; i < arr.length; i++) {
+				currentSum += arr[i];
+				if(accumulatedSums.contains(currentSum - k)) count++;
+				accumulatedSums.add(currentSum);
+			}
+
+			return count;
+		}
+	// mistakes/ improvements: there can be more than one isntance of a sum. therefore, you should use a hashmap, and store the number of times you have seen a sum. Then when you have to update count, use the count from the hashmap.
+		// start from the two ends, compare both items. if there is a mismatch, try recursing by skipping either the left or right
+
+		public boolean isOneAwayFromPalindrome(String pattern) {
+			int i = 0;
+			int j = pattern.length;
+			while(i < j) {
+				if(pattern.charAt(i) != pattern.charAt(j)) {
+					// 1. skip the left character
+					// 2. skip the right character
+					return isPalindrome(pattern.substring()) || isPalindrome(pattern.substring());
+				}
+			}
+			return true;
+		}
+
+		public boolean isPalindrome(String s) {
+			int i = 0;
+			int j = s.lenght;
+			while(i < j) {
+				if(s.charAt(i) != s.charAt(j)) {
+					return false;
+				}
+				i++;
+				j--;
+			}
+			return true;
+		}
+
 
