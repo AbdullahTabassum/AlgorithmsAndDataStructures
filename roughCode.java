@@ -648,4 +648,49 @@ Trie implmentation:
 			return true;
 		}
 
+// Alien dicitonary
+	// given a dictionary of words, create a adjacency graph
+	// go through all of the words, 2 at a time
+		// for each pair, while the letters are equal, go through them until you find an unequal letter, 
+			// for that pair, create an entry in adjacency matrix for the second letter, having a 1 in the column of first letter
+		int[][] mat = new int[26][26];
+		public void createGraph(String[] dict) {
+			for(int i = 1; i < dict.length; i++) {
+				// compare the current and previous character
+				int j = 0;
+				while(/*check bounds*/ && dict[i].charAt(j) == dict[i].charAt(i-1) ) {
+					j++;
+				}
+				// create a dependency: for the letter at dict[i].charAt(j) to the character dict[i-1].charAt(j)
+				mat[dict[i].charAt(j) - 'a'][dict[i-1].charAt(j) - 'a'] = 1;
+			}
+		}
+
+		// code to go through each letter in the adjacency graph and perform a depth first search
+		// note, a character will be in either non-visited state (doesn't exist in map), the visisted state or visiting state
+		Map<Chracter, Integer> visited = new HashMap<>();
+		public void order() {
+
+			for(int letter = 0; letter < mat.length; letter++) {
+				if(visited.get(letter) == null) { // only if the current letter hasn't already been touched
+					if(!dfs(letter)) return false;
+				} 
+			}
+		}
+
+		public boolean dfs(char letter) {
+			// check if this isn't already being visited, in that case we are trying to visit something twice, a cycle!!
+			if(visted.get(letter) == 1) {
+				return false;
+			}
+
+			visited.put(letter, 1); // visiting
+			// check all of its dependencies
+			for(int i = 0 ) {
+
+			}
+		}	
+
+// shortest distance from all buildingds
+
 

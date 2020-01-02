@@ -1481,34 +1481,36 @@ Trees/Graphs
 
 			//Output: 42
 		
-		class Solution {
-			int max_sum = Integer.MIN_VALUE;
+			class Solution {
+				int max_sum = Integer.MIN_VALUE;
 
-			public int max_gain(TreeNode node) {
-			    if (node == null) return 0;
+				public int max_gain(TreeNode node) {
+				    if (node == null) return 0;
 
-			    // max sum on the left and right sub-trees of node
-			    int left_gain = Math.max(max_gain(node.left), 0);
-			    int right_gain = Math.max(max_gain(node.right), 0);
+				    // max sum on the left and right sub-trees of node
+				    int left_gain = Math.max(max_gain(node.left), 0);
+				    int right_gain = Math.max(max_gain(node.right), 0);
 
-			    // the price to start a new path where `node` is a highest node
-			    int price_newpath = node.val + left_gain + right_gain;
+				    // the price to start a new path where `node` is a highest node
+				    int price_newpath = node.val + left_gain + right_gain;
 
-			    // update max_sum if its better to start a new path
-			    max_sum = Math.max(max_sum, price_newpath);
+				    // update max_sum if its better to start a new path
+				    max_sum = Math.max(max_sum, price_newpath);
 
-			    // for recursion :
-			    // return the max gain if continue the same path
-			    return node.val + Math.max(left_gain, right_gain);
+				    // for recursion :
+				    // return the max gain if continue the same path
+				    return node.val + Math.max(left_gain, right_gain);
+				}
+
+				public int maxPathSum(TreeNode root) {
+					max_gain(root);
+					return max_sum;
+				}
 			}
-
-			public int maxPathSum(TreeNode root) {
-				max_gain(root);
-				return max_sum;
-			}
-		}
 
 	4. Clone a graph: Given a reference of a node in a connected undirected graph, return a deep copy (clone) of the graph. Each node in the graph contains a val (int) and a list (List[Node]) of its neighbors.
+
+
 
 
 		Note:
@@ -1564,6 +1566,7 @@ Trees/Graphs
 			public Node
 
 			/// TODO: complete this later
+	
 	5. Binary Tree Right view: Given a binary tree, imagine yourself standing on the right side of it, return the values of the nodes you can see ordered from top to bottom.
 
 		Example:
@@ -1805,6 +1808,7 @@ Trees/Graphs
 		        return this.ans;
 		    }
 		}
+	
 	8. Given a binary tree, return all root-to-leaf paths.
 
 		Note: A leaf is a node with no children.
@@ -1878,7 +1882,7 @@ Trees/Graphs
 		  "z"
 		] 
 
-		Output: "" 
+			Output: "" 
 
 		Explanation: The order is invalid, so return "". 
 		Approach: There are two problems to this problem. First we need to find the orderings (i.e. which letter comes before which other letter). The end result of the orderings is a graph and a set of nodes. The other problem is that we need a way to go through the words to create the above mentioned orderings. In order to make an ordering between two letter (from a 2 different words); we need to have two words which are not the same (obviously). We need a set of words with the same prefix. Then the letters in the words after the prefix will give us the orderings (top to bottom). So we must collect words of the same prefix. The first most obvious collection of words is when we consider the zero prefix. From this we can deduce that all first letters are in order. We make a tree from this going from the bottom to top. Next, we scan the list of words, we prefix of size 1 (and the letter after the prefix of size one is not the same). The we look at this set of words and go from bottom to top to create a graph of dependency by looking at the 1th letter. We keep doing this for all prefix lengths. This will give us a bunch of dependency graphs.
