@@ -2708,7 +2708,7 @@ Recursion:
 
 		Approach: use a set
 
-	4. Remove Invalid Parentheses
+	4.  Remove Invalid Parentheses
 	
 		Remove the minimum number of invalid parentheses in order to make the input string valid. Return all possible results.
 
@@ -4750,7 +4750,8 @@ Question form youtube:
 
 				  return false;
 				}
-		 8. Generate all palindromic decompositions of a string:
+		
+		8. Generate all palindromic decompositions of a string:
 		 		i.e. str = "aab"
 		 			ret = [
 		 					[a, a, b]
@@ -4829,8 +4830,7 @@ Question form youtube:
 						  return true;
 						}
 
-
-		 	9. Max sum in a 2d array:
+		9. Max sum in a 2d array:
 		 		Approach: to solve this problem we will use kadanes algorithm. we will have two pointers L and R.
 		 		L is the value of the left column and R is the value of thr right column. We will start L at 0 and R at 0. Then we will iterate R till the last column. Each iteration of R, we update the running sum of each row i.e. we have a seperate 1d array that holds the current sum for each row. After updating all of the current sums for each row, we run kadanes algorithm to find the max contiguous sum in the currentSumforRow arrays. We store the max sum and update it when a larger value is encountered.
 

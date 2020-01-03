@@ -692,5 +692,166 @@ Trie implmentation:
 		}	
 
 // shortest distance from all buildingds
+	// run through the grid with a double for loop
+	// will have two meta data matrices
+		// 1. one for showing if its possible to reach a position by how many buildings
+		// 2. one for tracking the distance sum from each building to each position
+	// for each building run a BFS, and for each level update the reachability metrix and distance matrix with the level
+	// at the end, go through the reachability matrix and and for each element that can is building number reachable,
+		// store the minimum distance
 
+// diameter of binary tree, -> longest path between any two nodes
+	// approach: go through each node and compute the lenght of the longest left path and the longest riht path
+	// we can either return the longest left path of longest right path
+	// also need to check, if current node is the pivot for longest path
+		int diameter = Integer.MIN_VALUE;
+		public int longestPath(Node node) {
+			if(node == null) {
+				return 0;
+			}
+
+			// get the longest path from the left and right
+			int leftPath = longestPath(node.left);
+			int rightPath = longestPath(node.right);
+
+			diameter = Math.max(leftPath + rightPath + 1, diameter);
+
+			return Math.max(leftPath + 1, rightPath + 1);
+		}
+		
+// merge accounts
+	// iterate through the accounts
+		// for each account hold the first email (root email)
+		// for each email in account, add it to root email's list
+		// for each email, make a reference to the root email
+	// now we have a dependency graph
+
+	// then we go through each email, and if unvisited we perform a DFS on it while maintining a set and adding to the set
+	// the trick here is also that we can perform the DFS iteratively instead of using recursion to make it inline
+
+		// create a graph
+		public void createGraph() {
+
+		}
+
+// Convert Binary Search Tree to Sorted Doubly Linked List
+
+	// with in order traversal, we print the left most sub tree first, then the current node, then the right subtree
+	// update the first pointer the first time that we see left is null, i.e. return from the left subtree recursion
+		// this doesn't change afterwards
+	// now, we are done with the left subtree and the first node is set
+	// but what about when we return to the current node.
+		// we need to add it to the end of the left subtree
+		// how do we get the last node in the left subtree (after its been converted to a DLL)?
+		// notice, that when we have completed the left subtree for a node, then that means there is no node before the current node that hasn't already been touched
+		// this implies, that the current node, will always be the last node of the linked list
+		// so when the left subtree is done, we need to attach the current node to the end of the linked list (and last will be pointint to it)
+		// then we update last to the current node
+	// now current is the last node
+	// what about the right subtree
+	// we just need to do the same recursion on it, to transform it into a DLL (we don't need to worry about the first node)
+		// then use the current node to connect it to the end
+
+	// in order traversal
+	Node first = null;
+	Node last = null;
+	public Node toDLL(Node node) {
+		if(node == null) {
+			return null;
+		}
+
+		toDLL(node.left);
+		if(first == null) {
+			first = node;
+		} else {
+			// otherwise get the last node and point it to current, and current's left to it
+			last.right = current;
+			current.left = last;
+		}
+
+		// the left subtree is done, that means that the current node is the last node of the DLL so far
+		last = current;
+		toDLL(node.right); // last is already connected to the right tree
+	}
+
+	// how to do it iteratively as above
+	public Node toDLL(Node node) {
+		Stack<Node> stack = new Stack<>();
+		stack.push(node);
+		Node current = node;
+
+		Node first = null;//= current;
+		Node last = null;//= current;
+		while(!stack.isEmpty()) {
+			while(current != null) {
+				stack.push(current);
+				current = current.left;
+			}
+
+			Node temp = stack.pop();
+			current = temp.right;
+			// System.out.println("it is this nodes turn: " + temp.value);
+			// it is temp's turn to get added to the DLL
+			if(first == null) {
+				first = temp;
+			} else {
+				// otherwise just add this node to the end of the list
+				last.right = temp;
+				temp.left = last;
+			}
+
+			last = temp;
+		}
+
+		// now connect the last and the first nodes
+		first.left = last;
+		last.right = first;
+
+		return first;
+	}
+
+// is graph bi-partite
+	// node colouring
+	// for each node, need to perform DFS
+	// for each neighbour, we need to make sure the node is the opposite colour
+	// basically, we will need to colour each adjacent node, and also mark if it has been visited or not
+	// do we need a visited map? when do we check if its visited or not? 
+
+// remove least number of brackets to make brackets valid
+	//basically, we will try to leave in, and remove each bracket
+	// but to make it more efficient we will also keep track of open and closed bracket count
+	// we will also have a count of how many removed
+	// also when we finish considering each bracket, we will to closed and open bracket count to see if its valud
+	// we will never add a closed bracket if the count of open brackets is less
+
+	public int leastRemoval(String expression) {
+
+	}
+
+	int minRemoval = Integer.MAX_VALUE;
+	public void helper(String expression, int index, int openCount, int closedCount, StringBuilder current, int removedCount) {
+		if(index == expression.length) {
+			// check if the counts are equal
+			if(openCount == closedCount) {
+				// see if removedCount is less than global min
+				minRemoval = Math.min(removedCount, minRemoval);
+				// do something with the created expression
+			}
+		} else {
+			// otherwise we need to try keeping and removing the current bracket
+			// but first, make sure there are no non-bracket character
+			if(expression.charAt(index) != '(' || ')') {
+				current.append(expression.charAt(index));
+				helper(expression, ++index,  openCount, closedCount, current, removedCount);
+			} else {
+				// now try removing the current char
+				helper(expression, ++index,  openCount, closedCount, current, ++removedCount);
+
+				// now we will try adding the current bracket
+				current.append(expression.charAt(index))
+				helper(expression, ++index,  openCount, closedCount, current, removedCount);
+				current.removeLast()
+			}
+		}
+	}
 
