@@ -67,6 +67,35 @@ Trie implmentation:
 	// if the current item is null 
 	// root-leftSubtree-rightSubtree
 
+	public void serialize(Node node, List<Character> list) {
+		if(node == null) {
+			list.add('#');
+			return;
+		}
+
+		// place current item in the list, 
+		list.add(node.value);
+		// then the left subtree
+		serialize(node.left, list);
+		// then the right subtree
+		serialize(node.right, list);
+	}
+
+	public Node deserialize(List<Chracter> list) {
+		if(list.remove(0) == '#' || list.isEmpty()) {
+			return null;
+		}
+
+		// create the current node from the top of the list
+		Node temp = new Node(list.get(0));
+		// now append the left subtree
+		temp.left = deserialize(list, node.left);
+		// and right
+		temp.right = deserialize(list, node.right);
+
+		return temp;
+	}
+
 
 
 
@@ -850,8 +879,32 @@ Trie implmentation:
 				// now we will try adding the current bracket
 				current.append(expression.charAt(index))
 				helper(expression, ++index,  openCount, closedCount, current, removedCount);
-				current.removeLast()
+				current.removeLast(expression.charAt(index))
 			}
+		}
+	}
+
+// binary search tree iterator
+	// what is the interface, getNext(), init(Node head)
+	class BSTIterator {
+		Stack<Node> stack = new Stack<Node>();
+		public init(Node head) {
+			while(head != null) {
+				stack.push(head);
+				head = head.next;
+			}
+		}
+
+		public Node getNext() {
+			// get the top most node, then add its right tree to the stack
+			// then return the top most node you had got before
+			Node ret = stack.pop()
+			Node current = ret.right;
+			while(current != null) {
+				this.stack.push(current);
+				current = current.left;
+			}
+			return ret;
 		}
 	}
 

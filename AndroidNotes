@@ -1,0 +1,17 @@
+Android Notes
+
+Background processing
+	Work Manager:
+		- great for running defereable work (work that doesn't impact the user's app expereince (uploading logs))
+		- offers backward compatibility
+	Download Manager:
+	 	- long running http download
+	ForegroundService:
+	 	- need to do work immediately
+	 	- Using a foreground service tells the system that the app is doing something important and it shouldn’t be killed.
+	 Run at precise time:
+	 	- Alarm Manager
+
+	Sending operations to multiple threads:
+		- The speed and efficiency of a long-running, data-intensive operation often improves when you split it into smaller operations running on multiple threads
+		- Use Runnable to define tasks

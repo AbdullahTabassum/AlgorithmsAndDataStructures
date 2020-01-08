@@ -5061,8 +5061,63 @@ Question form youtube:
 			At each index we do 2K adds to a heap (that equls k*logk). And we do this for each item in the array. So our runtime is (k*logk*n). this is much better than nlogn given that k would be small.
 
 		11. Merge k sorted arrays.
+			// for this, we need to use a Heap/ Priority queue. We will use a helper class, to wrap items from the list. 
+			// the helper class is to help us identify the list from which an item came from, so we know which list to take from when an item is remove from heap
+			// then we will add the first item from each list into the heap.
+			// then we will remove the top most item from the heap, and whatever list that item belogned to, we will add a new item to the heap from that list
+			// thereafter, we will continue this process until all lists are empty (perhaps we can track this with a counter and compare the result list with the size of all lists combined)
+
+			class Solution {
+				class Helper {
+					public Integer item;
+					public int listId;
+				}
+
+				public List<Integer> mergeKLists(List<List<Integer>> lists) {
+					// result
+					List<Integer> result = new ArrayList<>();
+
+					// create the comparator
+					Comparator comp = new Comparator(
+							@Override
+							public void compare(Integer first, Integer second) {
+								return Integer.compare(first, second);
+							}
+						);
+					// create the heap
+					PriorityQueue heap = new PrioirityQueue(comp);
+
+					// add all of the first items to the heap
+					// also compute total size
+					int index = 0;
+					int totalSize = 0;
+					for(List list: lists) {
+						heap.offer(Helper(index++, list.get(0)));
+						totalSize += list.size();
+					}
+
+					while(result.size() < totalSize) {
+						// grab the top most item 
+						Helper h = heap.poll;
+						result.add(h.item);
+
+						// add a new item from the list we just removed from 
+						if(lists.get(h.listId).size() > 0) {
+							heap.offer(lists.get(h.listId).get(0));
+						}
+
+						// 
+					}
+
+					return result;
+				}
+			}
 
 		12. Find the k most frequent items in the list
+				- basically go through the list and put each item in a hashmap with the value being the frequency
+				- then create an array of Lists
+					- the index of the array will be frequency and the list will hold all of the items at that frequency
+				- then just go through the array from the highest frequency and collect the first k items you encounter during the traversal
 
 Design questions LeetCode:
  	1. LRU Cache:
