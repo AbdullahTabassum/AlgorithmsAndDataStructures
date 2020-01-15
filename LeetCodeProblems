@@ -3414,7 +3414,7 @@ Dynamic Programming:
 
 			We traverse over the given array, and keep on calculating the sum%ksum values upto the current index. Whenever we find a new sum%ksum value, which isnt present in the HashMap already, we make an entry in the HashMap of the form, (sum%k, i)(sum.
 
-			Now, assume that the given sum%ksum value at the ith index be equal to remrem. Now, if any subarray follows the ith element, which has a sum equal to the integer multiple of kk, say extending upto the jth index, the sum value to be stored in the HashMap for the jth index will be: (rem + n*k)%k(rem+n∗k), where nn is some integer > 0. We can observe that (rem + n*k)%k = rem(rem+n∗k), which is the same value as stored corresponding to the ith index.
+			Now, assume that the given sum%ksum value at the ith index be equal to rem. Now, if any subarray follows the ith element, which has a sum equal to the integer multiple of kk, say extending upto the jth index, the sum value to be stored in the HashMap for the jth index will be: (rem + n*k)%k(rem+n∗k), where nn is some integer > 0. We can observe that (rem + n*k)%k = rem(rem+n∗k), which is the same value as stored corresponding to the ith index.
 
 			From this observation, we come to the conclusion that whenever the same sum%ksum value is obtained corresponding to two indices ii and jj, it implies that sum of elements betweeen those indices is an integer multiple of kk. Thus, if the same sum%ksum value is encountered again during the traversal, we return a True directly.
 
@@ -4363,6 +4363,9 @@ Others:
 			Return the intersection of these two interval lists.
 
 			(Formally, a closed interval [a, b] (with a <= b) denotes the set of real numbers x with a <= x <= b.  The intersection of two closed intervals is a set of real numbers that is either empty, or can be represented as a closed interval.  For example, the intersection of [1, 3] and [2, 4] is [2, 3].)
+
+			Note: an itersection will happen between two intervals if one of the intervals beginning time is before the other others end time.
+				So all we need to check if that if the latest beginning time interval is before the earliest end time interval	
 
 			Example 1:
 

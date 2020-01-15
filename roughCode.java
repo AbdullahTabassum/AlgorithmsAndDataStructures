@@ -908,3 +908,215 @@ Trie implmentation:
 		}
 	}
 
+// merge sort
+
+	public int mergeSortInversionCount(int[] arr, int left, int right) {
+		if(left >= right) {
+			return;
+		}
+		int mid = left + (r - l)/2;
+
+		// get the left array sorted
+		mergeSortInversionCount(arr, left, mid);
+
+		// get the right array sorted
+		mergeSortInversionCount(arr, mid + 1, right);
+
+		// merge the two array
+		return mergeCount(arr, left, right);
+	}
+
+	// merge the halves of the array
+	private int mergeCount(int[] arr, int left, int right) {
+		int mid = left + (right - left)/2;
+		// create two temporary copies of the left and right array
+		int[] arrLeft = new int[mid - left];
+		int[] arrRight = new int[right - mid];
+
+		// copy the left array into left and right into right
+		for(int i = left; i < mid; i++) {
+			arrLeft[] = arr[i];
+		}	
+
+		for(int i = mid; i < right; i++) {
+			arrRight[i] = arr[i];
+		}
+
+		int first, second = 0;
+		int last = left;
+
+		while(first < arrLeft.l) {
+
+		}
+	}
+
+
+// permtations in a string
+	// start with two pointers in the beginning of the string
+
+	/**
+	 * return true if s2 contains the permutation of s1
+	*/
+	public boolean containsPermutation(String s1, String s2) {
+		int i,j = 0;
+
+		//Map<Character, Integer> map = new HAshMap<>
+		int[] charCount = new int[26];
+		int[] windowCount = new int[26];
+		// 
+		int required = 0;
+		for(Character c: s1) {
+			charCount[c - 'a']++;
+			required++;
+		}
+
+		// now go through the array and just make sure
+		while(j < s1.length) {
+
+			if(windowCount[s1.charAt(j)]++ < charCount[s1.charAt(j)]) { // we also need to do an increment
+				required--;
+			}	
+
+			if(required == 0) {
+				return true;
+			} 
+
+			// check if the window is too big
+			if(j - 1 > s2.length) {
+				// need to remove a character and possible increment required count
+				if(windowCount[s1.charAt(i)] <= charCount[s1.charAt(i)]) {
+					required--;
+				}
+				i++;
+			}
+			j++;
+		}
+	}
+
+// add expression
+	// Given a string that contains only digits 0-9 and a target value, return all possibilities to add binary operators (not unary) +, -, or * between the digits so they evaluate to the target value.
+
+
+	public boolean evaluteToTarget(int target, String givenExpression, int currentExpression, String lastExpression, int currentResult) {
+
+
+		// 4 branches we can make
+		// 1. no-op: in order to increase currentExpression
+		// 2. add
+		// 3. subtract
+		// 4. multiply
+			// for this we will need to undo the last operation (if it was not multiplication), and then apply the multiplication
+
+		// return when there are no more givenExpression characters we can look at
+		if(givenExpression == null || givenExpression.equals("")) {
+			if(currentResult == target) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		// add to the current expression
+		int currentDigit = Integer.valueOf(givenExpression.charAt(0));
+		evaluteToTarget(target, givenExpression.substring(1), (currentExpression*10) + currentDigit, lastExpression, currentResult);
+
+		// we will add the current expression to the currentResult
+		evaluteToTarget(target, givenExpression, 0, -1*currentExpression, currentResult + currentResult);
+
+		// subtract
+		evaluteToTarget(target, givenExpression, 0, 1*currentExpression, currentResult - currentResult);
+
+		// multiply 
+			// first we need to undo the last operation
+		currentResult = currentResult + lastExpression;
+		evaluteToTarget(target, givenExpression, 0, 0, (currentResult*currentExpression) - lastExpression);
+	}
+
+// find bad version
+	public int firstBadVersion(int n) {
+		int left = 0;
+		int right = n;
+
+		while(left < right) {
+			int mid = left + (right - left)/2;
+			boolean current = isBad(mid);
+			boolean prev = !isBad(mid - 1);
+			if(current && prev) {
+				return mid;
+			} else if(!current) {
+				left = mid + 1;
+			} else {
+				right = mid;
+			}
+		}
+	}
+
+// peak element
+	// at the curren element, you can either be increasing or decreasing
+		// incresing: if the element after it is greater
+		// if the element before it is greater
+	// if we are increasing, then that means we are headed to a peak and should search right
+	// if decreasing then we should head left, to find the peak
+
+// merge intervals
+	// Merge Intervals
+				// Given a collection of intervals, merge all overlapping intervals
+
+				// Example 1:
+
+				// Input: [[1,3],[2,6],[8,10],[15,18]]
+				// Output: [[1,6],[8,10],[15,18]]
+
+	public List<int[]> mergeIntervals(int[] intervals) {
+		// assert null/ empty checks
+
+		List<int[]> result = new ArrayList<>();
+		Arrays.sort(intervals, (a,b) -> a[0] - b[0]);
+		result.add(intervals[0]);
+		for(int i = 1; i < intervals.length; i++) {
+			int[] interval = intervals[i];
+			int[] current = result.getLast();
+
+			if(current[1] > interval[0]) {
+				result.removeLast();
+				result.add(new int[])
+			}
+		}
+	}
+
+// pow
+	public int pow(int base, int exp) {
+		if(exp == 0) 
+			return 1;
+
+		int halfPow = pow(base, exp/2);
+		int money;
+		if(exp%2 == 0) {
+			money = halfPow*halfPow;
+		} else {
+			money = halfPow*halfPow*base;
+		}
+		return money;
+	}
+
+// divide two integers
+	// actors: dividend, divisor, quotient
+	public int divide(int dividend, int divisor) {
+		if(dividend < divisor) {
+			return 0;
+		}
+
+		int quotient = 1;
+		int sum = divisor;
+		while(sum < (dividend - sum)) {
+			sum += sum;
+			quotient += quotient;
+		}
+
+		return quotient + divide(dividend - sum, divisor);
+	}
+
+
+
+
+
