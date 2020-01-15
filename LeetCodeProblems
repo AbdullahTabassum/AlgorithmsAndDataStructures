@@ -2724,7 +2724,7 @@ Recursion:
 		Output: ["(a)()()", "(a())()"]
 		Example 3:
 
-		Input: ")("
+		Input: )(
 		Output: [""]
 
 		Approach: try keeping and removing each bracket then verifying if everything is fine. An optimization: However, for a closing bracket, if we decide to keep it as a part of our final expression (remember for every bracket we have two options, either to keep it or to remove it and recurse further) and there is no corresponding opening bracket to match it in the expression till now, then it will definitely lead to an invalid expression no matter what we do afterwards.
@@ -4377,7 +4377,7 @@ Others:
 			0 <= A[i].start, A[i].end, B[i].start, B[i].end < 10^9
 			NOTE: input types have been changed on April 15, 2019. Please reset to default code definition to get new method signature.
 
-			Approach: Note that intervals in the same set do not intersect. Also note, that the when comparing, we can gradually get rid of intervals that need to be compared. For example, we start from the beginning of both lists A and B. Which ever one has the earlier stat date, we look at that first. Then we compare it with the first element in B, if 'a' has an endpoint less than b's, then we get the intersecion from b's start point to a's and point and add that to the list. Now we can discard 'a' because it won't intersect with anything else. What if 'a' endpoint is more than bs? then this means all of b is an intersection, so we can add b to the list and don't have to consider it with any other interval in A.
+			Approach: Note that intervals in the same set do not intersect. Also note, that the when comparing, we can gradually get rid of intervals that need to be compared. For example, we start from the beginning of both lists A and B. Which ever one has the earlier stat date, we look at that first. Then we compare it with the first element in B, if 'a' has an endpoint less than bs, then we get the intersecion from bs start point to as and point and add that to the list. Now we can discard 'a' because it wont intersect with anything else. What if 'a' endpoint is more than bs? then this means all of b is an intersection, so we can add b to the list and dont have to consider it with any other interval in A.
 			1. compare both intervals
 			2. for the earlier beginning point, check is that interval is less than ending point of other
 				- if yes, include b.beginning to a.ending in interval list, discard a
