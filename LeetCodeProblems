@@ -45,7 +45,8 @@ Arrays and Strings
 		        return ans;
 		    }
 		} 		
-		Roman to Integer: Roman numerals are represented by seven different symbols: I, V, X, L, C, D and M.
+	
+	2. Roman to Integer: Roman numerals are represented by seven different symbols: I, V, X, L, C, D and M.
 
 					Symbol       Value
 					I             1
@@ -250,7 +251,7 @@ Arrays and Strings
 					    return i + 1;
 					}
 
-	4. next permutation: get the next greater number <--- return to this to understand it better
+	4. Next Permutation: get the next greater number <--- return to this to understand it better
 			1,2,3 → 1,3,2
 			3,2,1 → 1,2,3
 			1,1,5 → 1,5,1
@@ -545,7 +546,8 @@ Arrays and Strings
 				}
 
 				// in place
-				- note, one may imagine that the there may be a case where the items in arr1 may get overriden; but this cant happen. Say all of the free space after the last valid element in arr1 is taken up, then that means, every item from arr2 was exhausted. thus, arr1 could not be override\			class Solution {
+				- note, one may imagine that the there may be a case where the items in arr1 may get overriden; but this cant happen. Say all of the free space after the last valid element in arr1 is taken up, then that means, every item from arr2 was exhausted. thus, arr1 could not be override\			
+						class Solution {
 						  public void merge(int[] nums1, int m, int[] nums2, int n) {
 						    // two get pointers for nums1 and nums2
 						    int p1 = m - 1;
@@ -564,7 +566,7 @@ Arrays and Strings
 						  }
 						}
 
-	10 .  Valid Palindrome: Given a string, determine if it is a palindrome, considering only alphanumeric characters and ignoring cases.
+	10. Valid Palindrome: Given a string, determine if it is a palindrome, considering only alphanumeric characters and ignoring cases.
 
 				Note: For the purpose of this problem, we define empty string as valid palindrome.
 
@@ -899,7 +901,7 @@ Arrays and Strings
 				    }
 				}
 
-	16.  Longest Substring with At Most K Distinct Characters: Given a string, find the length of the longest substring T that contains at most k distinct characters.
+	16. Longest Substring with At Most K Distinct Characters: Given a string, find the length of the longest substring T that contains at most k distinct characters.
 
 				Example 1:
 
@@ -987,7 +989,6 @@ Arrays and Strings
 				    return max_len;
 				  }
 				}
-
 
 	17. Validate IP Address: Write a function to check whether an input string is a valid IPv4 address or IPv6 address or neither.
 				Approach: Use String.split, Integer.parseInt, Character.isDigit, String.toCharArray
@@ -1100,7 +1101,7 @@ Arrays and Strings
 Linked Lists:
 	1. You are given two non-empty linked lists representing two non-negative integers. The digits are stored in reverse order and each of their nodes contain a single digit. Add the two numbers and return it as a linked list.
 
-	You may assume the two numbers do not contain any leading zero, except the number 0 itself.
+		You may assume the two numbers do not contain any leading zero, except the number 0 itself.
 
 		Example:
 
@@ -1108,7 +1109,7 @@ Linked Lists:
 		Output: 7 -> 0 -> 8
 		Explanation: 342 + 465 = 807.
 
-	Approach: just go through the linked list till the end. each iteration keep track of the carry
+		Approach: just go through the linked list till the end. each iteration keep track of the carry
 
 
 		public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
@@ -1131,7 +1132,6 @@ Linked Lists:
 		    return dummyHead.next;
 		}
 			
-
 	2. Merge two sorted linked lists and return it as a new list. The new list should be made by splicing together the nodes of the first two lists.
 
 		Example:
@@ -1416,43 +1416,20 @@ Trees/Graphs
 		          6
 		Approach: We will tackle this recursively. At each node what we need to do, is get the flattened left subtree of that node, append the flattened right subtree to the end of the flattened left subtree, then add the flattened left subtree to the tail of the current node. Base case is if the current node is null, return null.
 
-		public Node flatten(Node head) {
-			if(head == null) {	
-				retuen null;
-			}
-
-			Node leftList = flatten(head.left);
-			// the left list has been flattened, but now we traverse to the end of the left list so that we can attach the flatenned right list to it.
-			Node temp = head.left;
-			while(temp.right != null)
-				temp = temp.right;
-
-			// now flatten the right side of the current node
-			Node rightList = flatten(head.irght)
-
-			// add right to the left
-			leftList.right = rightList;
-			head.right = leftList;
-			head.left = null;
-
-			return head;
-
-		}
-
 		// Answer from LeetCode:
 		public void flatten(TreeNode root) {
-		    if (root != null) {
-		        flatten(root.right);
-		        if (root.left != null) {
-		            flatten(root.left);
-		            TreeNode node = root.left;
-		            while (node.right != null) {
-		                node = node.right;
-		            }
-		            node.right = root.right;
-		            root.right = root.left;
-		            root.left = null;
+		    if (root != null) 
+		    	return;
+		    flatten(root.right);
+		    if (root.left != null) {
+		        flatten(root.left);
+		        TreeNode node = root.left;
+		        while (node.right != null) {
+		            node = node.right;
 		        }
+		        node.right = root.right;
+		        root.right = root.left;
+		        root.left = null;
 		    }
 		}
 
@@ -1509,9 +1486,6 @@ Trees/Graphs
 			}
 
 	4. Clone a graph: Given a reference of a node in a connected undirected graph, return a deep copy (clone) of the graph. Each node in the graph contains a val (int) and a list (List[Node]) of its neighbors.
-
-
-
 
 		Note:
 
@@ -3134,6 +3108,8 @@ Dynamic Programming:
 
 				For every ‘)’ encountered, we pop the topmost element and subtract the current elementith index from the top element of the stack, which gives the length of the currently encountered valid string of parentheses. If while popping the element, the stack becomes empty, we push the current elementith index onto the stack. In this way, we keep on calculating the lengths of the valid substrings, and return the length of the longest valid string at the end.
 
+				Simpler terms: basically, intilize the stack with a -1. then, for each bracket, add its index to the stack. If the current bracket is a closing bracket, then check what type of bracket is on the top of the stack. If it is an opening bracket, then pop it off, then subtract look at what is now on the top of the stack. Subtract the current index with the index at the top of the stack (compare this for max).
+
 			// go over this later
 			public class Solution {
 
@@ -3155,6 +3131,27 @@ Dynamic Programming:
 			        }
 			        return maxans;
 			    }
+			}
+
+			public int longestValidParanthesis(String parens) {
+				Stack<integer> stack = new Stack<>();
+				stack.push(-1);
+				int max = Integer.MIN_VALUE;
+				for(int i = 0; i < parens.length; i++) {
+					if(parens.charAt(i) == ( )) {
+						stack.push(i);
+					} else {
+						// check the last item on the stack if it is an open bracket, then pop if it is
+						if(parens.charAt(stack.peek()) == ) )  {
+			            	// pop it off, 
+			            	stack.pop();
+			            	int last = stack.peek();
+			            	max = Math.max(max, i - last);
+						} else {
+							stack.push(i);
+						}
+					}
+				}
 			}
 
 	3. Decode Ways

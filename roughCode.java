@@ -1116,6 +1116,275 @@ Trie implmentation:
 		return quotient + divide(dividend - sum, divisor);
 	}
 
+// root leaf paths
+
+	public void paths(Node node, List<List<Node>> paths, List<Node> path) {
+		if(node == null) {
+			// add the current path to the paths
+			paths.add(path);
+			return;
+		}
+
+		path.add(node);
+		paths(node.left. paths, path);
+		paths(node.right, paths, path);
+		path.remove(0);
+	}
+
+// alien dicitonary
+	// create a graph from the array of words
+		// - go two at a time form the second to the last
+			// - compare each letter till you get a mismatch, make an edge from the second to the first letter
+
+	public int[][] buildGraph(int[][] deps, String[] dict) {
+		for(int i = 1; i < dict.length; i++) {
+			String wrd1 = dict[i-1];
+			String wrd2 = dict[i];
+			int j = 0;
+			while(wrd1.charAt(j) == wrd2.charAt(j)) {
+				j++;
+			}
+			// now we have the index of mismatch, create an edge
+			deps[wrd2.charAt(j)][wrd1.charAt(j)] = 1;
+		}
+
+		return deps;
+	}
+
+	// now go through the dep graph with DFS,
+	// for each letter you can be either, unvisited, visiting or visited
+	// if you run into another visiting while visiting another letter, then we have a circular dependency
+	public String alien(int[][] deps) {
+		int[] visited = new int[26];
+
+		// go through each character
+		for(int i = 1; i < deps.lenght; i++) {
+			if(visited[i] == 0) { // unvisited
+				dfs(deps, i);
+			}
+		}
+
+	}
+
+	public boolean dfs(int[][] deps, int current) {
+		// mark as visiting
+		visited[current] = 1;
+
+		// now go through all of currents neighbours
+		for(int i = 0; i < deps[0].length; i++) {
+			// skip my self
+			if(i == current) {
+				continue;
+			}
+
+			if(deps[current][i] == 1) { // we have an edge
+				// just make sure its not being visited also
+				if(visited[i] == 1) {
+					return false;
+				} else if( dfs(deps, i)) {
+					continue;
+				}
+			}
+		}
+
+		// visited all of its neighbours, mark it as done, and add to the string builder
+		visited[current] = 2;
+		builder.append(Character.valueOf(current));
+	}
+
+// shortest distance from all buildings
+	// get count of all buildings
+	// double for loop to go through the map
+	// if element equals 1, perform bfs layer and update distance meta matric, reachability meta matrix also
+	// at the end, search the reachability matrix and choose the highest value 
+	// note, for each bfs starting from a building, we need to have a new visited matrix
+
+// accounts merge
+	// creating a graph
+		// - can be accomplished using a hasmap
+			// map each email to its root email, i..e the first email in the group
+
+	// then perform DFS on each item in the hashmap and using a visited set to mark the ones we already visited
+		// for each DFS traversal, we have a list/set that where we will add all encountered emails to
+	// return all such sets
+
+// Quick sort
+	public void quickSort(int[] arr, int left, int right){
+		// partition
+		int partIndex = partition(arr, left, right);
+
+		// recurse left 
+		quickSort(arr, left, partIndex);
+
+		// recurse right
+		quickSort(arr, partIndex + 1, right);
+
+	}
+
+	public int partition(int[] arr, int left, int right) {
+		// use the last element in the array as the pivot
+		int pivot = arr[right];
+
+		// start one before the array
+		int beg = (left - 1);
+
+		for(int i = left; i < right; i++) {
+			if(arr[i] < pivot) {
+				beg++;
+				swap(arr, i, beg);
+			}
+		}
+
+		// at the end we want to swap the pivot and the ending list
+		beg++;
+		swap(arr, beg, right);
+
+		return beg;
+	}
+
+// merge sort
+	public void mergeSort(int[] arr, int left, int right) {
+		if(left == right) { 
+			return arr;
+		}
+
+		int mid = left + (right - left)/2;
+		// sort the left side, 
+		mergeSort(arr, left, mid);
+		// and the right
+		mergeSort(arr, mid+1, right);
+
+		// now merge them
+		merge(arr, left, right);
+	}
+
+	public void merge(int[] arr, int left, int right) {
+		int mid = left + (right - left)/2;
+		// copy both halves into an array
+		int[] leftSide = new int[mid - left + 1];
+		int[] rightSide = ned int[right - mid];
+
+		// initialize both arrays
+		for(int i = left; i <= mid; i++) {
+			leftSide[i] = arr[i];
+		}
+
+		for(int i = mid + 1; i < right; i++) {
+			rightSide[i] = arr[i];
+		}
+
+		int i, j = 0;
+		int k = left;
+		while(i < leftSide.lenght && j < rightSide.length) {
+			// for the inversion count stuff, need to perfrom the calculation here
+			// so if right < left, then it is also smaller than everything after current left
+				// so increment count with size of left from i to its end
+				// i.e. inversions += left.length - i
+			if(leftSide[i] <= rightSide[j]) {	
+				arr[k] = leftSide[i];
+				i++;
+			} else {
+				arr[k] = rightSide[j];
+				j++;
+			}
+			k++;
+		}
+
+		// if any of the arrays are still remaining add them to the end of the list
+
+
+	}
+
+
+
+// 3 sum
+	// sort the array
+	// for each item in the sorted array
+
+	public boolean 3Sum(int[] arr) {
+		Arrays.sort(arr);
+		for(int i = 0; i < arr.length - 2; i++) {
+			int left = i + 1;
+			int right = arr.length;
+			int target = arr[i];
+			int sum = arr[left] + arr[right];
+			while(left < right) {
+				if (sum == target) {
+					return true;
+				} else if(sum < target) {
+					// then make number bigger by moving left up
+					left++;
+				} else {
+					right--;
+				}
+			}
+		}
+
+		return false;
+
+	}
+// remove dupliucate from sorted array
+	// pointer at beginning 
+	// runner pointer also
+	// if runner doesn't equal arr[beg], increment beginning and make that value equal to arr[runner]
+	// return index of end of non-dup array 
+
+	public int removeDups(int[] arr) {
+		int endOfNonDupsArra = 0;
+		for(int i = 1; i < arr.length; i++) {	
+			if(arr[endOfNonDupsArra] != arr[i]) {
+				endOfNonDupsArra++;
+				arr[endOfNonDupsArra] = arr[i];
+			}
+		}
+
+		return endOfNonDupsArra+1;
+	}
+
+// next permutation
+	// a slot must go from the smallest number to the highest number incrmentally
+	// there is always one slot that is at its highest number
+	// to find that slot, start from the end of the array and run backwards until we find a non decreasing point
+	// that point we need to increment
+		// to increment, we look to the right for the next larger element, and swap 
+		// then, we reverse the array from the pivot
+
+	public void reverese(int[] arr, int from) {
+		int i = from;
+		int j = arr.length;
+		while(i > j) {
+			swap(arr, i, j);
+		}
+	}
+
+	public void swap(int arr[], int first, int second) {
+		int temp = arr[first];
+		arr[first] = arr[second];
+		arr[second] = temp;
+	}
+
+	public void incrementNextPermutation(int arr[]) {
+		// find the slot to increment
+		int pivot = -1;
+		for(int i = arr.length - 2; i >= 0; i--) {
+			if(arr[i] < arr[i+1]) {
+				pivot = i;	
+			}
+		}
+		// do check if pivot is valid
+
+		// now find the next item greater than the pivot
+		int greater;
+		for(int i = arr.length - 1; i > pivot; i++) {
+			if(arr[i] > pivot)
+				greater = i;
+		}
+		swap(arr, pivot, greater);
+
+		// now reverse the array after pivot
+		reverse(arr, pivot+1);
+	}
+
 
 
 
