@@ -1,30 +1,30 @@
-LeetCode problems:
+//LeetCode problems:
 
-Arrays and Strings
-	1. Longest Substring Without Repeating Characters
-		Given a string, find the length of the longest substring without repeating characters.
+//Arrays and Strings
+// 	1. Longest Substring Without Repeating Characters
+// 		Given a string, find the length of the longest substring without repeating characters.
 
-		Example 1:
+// 		Example 1:
 
-		Input: "abcabcbb"
-		Output: 3 
-		Explanation: The answer is "abc", with the length of 3. 
-		Example 2:
+// 		Input: "abcabcbb"
+// 		Output: 3 
+// 		Explanation: The answer is "abc", with the length of 3. 
+// 		Example 2:
 
-		Input: "bbbbb"
-		Output: 1
-		Explanation: The answer is "b", with the length of 1.
-		Example 3:
+// 		Input: "bbbbb"
+// 		Output: 1
+// 		Explanation: The answer is "b", with the length of 1.
+// 		Example 3:
 
-		Input: "pwwkew"
-		Output: 3
-		Explanation: The answer is "wke", with the length of 3. 
-		             Note that the answer must be a substring, "pwke" is a subsequence and not a substring.
+// 		Input: "pwwkew"
+// 		Output: 3
+// 		Explanation: The answer is "wke", with the length of 3. 
+// 		             Note that the answer must be a substring, "pwke" is a subsequence and not a substring.
 
-		Approach: Use the sliding window approach. Have a beginning pointer and an ending pointer. Beginning starts from 0 and End starts from 0. Grow the window by moving the ending by one. if a new character is found increase the size, else if a repeated character is found record the max height and increase beginning pointer; the current array will have the invariant of being having unique characters. If a new character is added and it already exists in the current window then we move the left index up one which basically remove the left item from the current window and adds the new item on the right to the window. But what if the new item is not the same as the left most one i.e.
-			"adcrd"
-			in this case we have a problem. when the left pointer is at a and we increase right pointer to the second d, then moving the left pointer up by one does not solve the issue of duplicate, as there is still duplicates d and d
-		- For this problem, note, that when we find that the new item is a duplicate of some item in the array, we dont increase the right window pointer, only the left pointer. we will continue to move the left pointer and remove characters from the set until we dont have a duplicate with the new character
+// 		Approach: Use the sliding window approach. Have a beginning pointer and an ending pointer. Beginning starts from 0 and End starts from 0. Grow the window by moving the ending by one. if a new character is found increase the size, else if a repeated character is found record the max height and increase beginning pointer; the current array will have the invariant of being having unique characters. If a new character is added and it already exists in the current window then we move the left index up one which basically remove the left item from the current window and adds the new item on the right to the window. But what if the new item is not the same as the left most one i.e.
+// 			"adcrd"
+// 			in this case we have a problem. when the left pointer is at a and we increase right pointer to the second d, then moving the left pointer up by one does not solve the issue of duplicate, as there is still duplicates d and d
+// 		- For this problem, note, that when we find that the new item is a duplicate of some item in the array, we dont increase the right window pointer, only the left pointer. we will continue to move the left pointer and remove characters from the set until we dont have a duplicate with the new character
 
 		public class Solution {
 		    public int lengthOfLongestSubstring(String s) {
@@ -46,43 +46,43 @@ Arrays and Strings
 		    }
 		} 		
 	
-	2. Roman to Integer: Roman numerals are represented by seven different symbols: I, V, X, L, C, D and M.
+// 	2. Roman to Integer: Roman numerals are represented by seven different symbols: I, V, X, L, C, D and M.
 
-					Symbol       Value
-					I             1
-					V             5
-					X             10
-					L             50
-					C             100
-					D             500
-					M             1000
-					For example, two is written as II in Roman numeral, just two ones added together. Twelve is written as, XII, which is simply X + II. The number twenty seven is written as XXVII, which is XX + V + II.
+// 					Symbol       Value
+// 					I             1
+// 					V             5
+// 					X             10
+// 					L             50
+// 					C             100
+// 					D             500
+// 					M             1000
+// 					For example, two is written as II in Roman numeral, just two ones added together. Twelve is written as, XII, which is simply X + II. The number twenty seven is written as XXVII, which is XX + V + II.
 
-					Roman numerals are usually written largest to smallest from left to right. However, the numeral for four is not IIII. Instead, the number four is written as IV. Because the one is before the five we subtract it making four. The same principle applies to the number nine, which is written as IX. There are six instances where subtraction is used:
+// 					Roman numerals are usually written largest to smallest from left to right. However, the numeral for four is not IIII. Instead, the number four is written as IV. Because the one is before the five we subtract it making four. The same principle applies to the number nine, which is written as IX. There are six instances where subtraction is used:
 
-					I can be placed before V (5) and X (10) to make 4 and 9. 
-					X can be placed before L (50) and C (100) to make 40 and 90. 
-					C can be placed before D (500) and M (1000) to make 400 and 900.
-					Given a roman numeral, convert it to an integer. Input is guaranteed to be within the range from 1 to 3999.
+// 					I can be placed before V (5) and X (10) to make 4 and 9. 
+// 					X can be placed before L (50) and C (100) to make 40 and 90. 
+// 					C can be placed before D (500) and M (1000) to make 400 and 900.
+// 					Given a roman numeral, convert it to an integer. Input is guaranteed to be within the range from 1 to 3999.
 
-					Example 1:
+// 					Example 1:
 
-					Input: "III"
-					Output: 3
-					Example 2:
+// 					Input: "III"
+// 					Output: 3
+// 					Example 2:
 
-					Input: "IV"
-					Output: 4
-					Example 3:
+// 					Input: "IV"
+// 					Output: 4
+// 					Example 3:
 
-					Input: "IX"
-					Output: 9
-					Example 4:
+// 					Input: "IX"
+// 					Output: 9
+// 					Example 4:
 
-					Input: "LVIII"
-					Output: 58
-					Explanation: L = 50, V= 5, III = 3.
-					Approach: 	
+// 					Input: "LVIII"
+// 					Output: 58
+// 					Explanation: L = 50, V= 5, III = 3.
+// 					Approach: 	
 					public static int romanToInt(String s) *{
 						if (s == null || s.length() == 0)
 							return -1;
@@ -104,7 +104,7 @@ Arrays and Strings
 						return result;
 					}
 
-					Another possibly cleaner solution:
+// 					Another possibly cleaner solution:
 					class Solution 
 					{
 					    public int romanToInt(String s)
@@ -133,18 +133,16 @@ Arrays and Strings
 					    }
 					}
 
-	1. Atoi: convert a string to an integer
-			-> - remove white spaces, ".trim()"
-		       - first check the first position for its sign str.charAt(0)
-		       		- store it in an int as -1 or +1
-		       - then go throught the rest, letter by letter
-		       - at each letter, check if its a valid digit
-		       		-> Character.isDigit()
-		       		-> convert digit to number if possible: int digit = (int)(str.charAt(i) - 0)
-		       		-> check for overflow (num < Integer.MAX_VALUE - digit)
-		       		-> if alls good, then add it to the current number -> num = num*10 + digit
-
-
+// 	1. Atoi: convert a string to an integer
+// 			-> - remove white spaces, ".trim()"
+// 		       - first check the first position for its sign str.charAt(0)
+// 		       		- store it in an int as -1 or +1
+// 		       - then go throught the rest, letter by letter
+// 		       - at each letter, check if its a valid digit
+// 		       		-> Character.isDigit()
+// 		       		-> convert digit to number if possible: int digit = (int)(str.charAt(i) - 0)
+// 		       		-> check for overflow (num < Integer.MAX_VALUE - digit)
+// 		       		-> if alls good, then add it to the current number -> num = num*10 + digit
 
 				public int myAtoi(String str) {
 				    str = str.trim();
@@ -175,23 +173,23 @@ Arrays and Strings
 				    return sign * n;
 				}
 	
-	2. 3 sum - find three numbers in the array which add to give you zero
-			- iterate through the array with variable i from 0 - arr.length - 2
-				- this is because for each iteration we have three vars, one is i, one is b = i+1 (starts at) and one starts at i+2
-			- the other two variables are low = i+1 and hi = arr.length - 1
-			- sort the array
+// 	2. 3 sum - find three numbers in the array which add to give you zero
+// 			- iterate through the array with variable i from 0 - arr.length - 2
+// 				- this is because for each iteration we have three vars, one is i, one is b = i+1 (starts at) and one starts at i+2
+// 			- the other two variables are low = i+1 and hi = arr.length - 1
+// 			- sort the array
 
-			Approach: iterate with i thorugh the array. 2 extra indices for each iteration m,n. m starts right after i and n starts at end of array. if the sum of all positions is equal to zero, return the 3 indices. if too big decrease n by one. if too small increase m by one. now inorder to avoid duplicates you need to skip iteration of m and n by increasing or decreasing them and not checking sum.
+// 			Approach: iterate with i thorugh the array. 2 extra indices for each iteration m,n. m starts right after i and n starts at end of array. if the sum of all positions is equal to zero, return the 3 indices. if too big decrease n by one. if too small increase m by one. now inorder to avoid duplicates you need to skip iteration of m and n by increasing or decreasing them and not checking sum.
 
-			- while(lo < hi) <--- this is in an outer for loop
-				if(-1*arr[i] = arr[lo] + arr[hi])
-					- lo++, hi--
-					- add the three numbers to the return set
-					- then keep incrementing and decrrementing hi and lo till all duplicates are skipped
-						i.e while(arr[lo+1] == arr[lo] && lo < hi) lo++
+// 			- while(lo < hi) <--- this is in an outer for loop
+// 				if(-1*arr[i] = arr[lo] + arr[hi])
+// 					- lo++, hi--
+// 					- add the three numbers to the return set
+// 					- then keep incrementing and decrrementing hi and lo till all duplicates are skipped
+// 						i.e while(arr[lo+1] == arr[lo] && lo < hi) lo++
 
-				- if the 2 numbers are too big then decrement hi
-				- if they are too small then incrmenent lo
+// 				- if the 2 numbers are too big then decrement hi
+// 				- if they are too small then incrmenent lo
 				public List<List<Integer>> threeSum(int[] nums) {
 				    List<List<Integer>> res = new ArrayList<>();
 				    Arrays.sort(nums);
@@ -218,11 +216,11 @@ Arrays and Strings
 				    return res;
 				}
 	
-	3. Remove duplicates from sorted array
-			- go through the array and hold 2 indices
-				- one that holds the last position of the final array (i.e. all elements before it are non-duplicate): End-of-non-dup array = eond
-				- the other index scans (scanner )the array for unique elements one by until the end of the array
-				- increment eond only when there is a non-duplicate (i.e. when arr[eond] != arr[scanner])
+// 	3. Remove duplicates from sorted array
+// 			- go through the array and hold 2 indices
+// 				- one that holds the last position of the final array (i.e. all elements before it are non-duplicate): End-of-non-dup array = eond
+// 				- the other index scans (scanner )the array for unique elements one by until the end of the array
+// 				- increment eond only when there is a non-duplicate (i.e. when arr[eond] != arr[scanner])
 					int set = 0;
 					while(j < arr.length) {
 					
@@ -251,13 +249,13 @@ Arrays and Strings
 					    return i + 1;
 					}
 
-	4. Next Permutation: get the next greater number <--- return to this to understand it better
-			1,2,3 → 1,3,2
-			3,2,1 → 1,2,3
-			1,1,5 → 1,5,1
-			Approach: A Permutation is like a recursive problem. The first permutation for a slot will have all available items after it in ascending order (1,2,3,4).The last permutation for a slot will have all items after it in descending order (4,3,2,1). There is always a slot i.e. sub array, that is at its last permutation (this is a very important this to understand), i.e. all elements after that element are in decreasing order. So in order to find this slot, all we need to do is start from the right and iterate until we find the item that is not increasing from the left (..,..,..,3,4,2,1). In this case it is 3. So this means that the item 3 is at its last permutation. So we hold the position of 3, i.e. its index. Then find the next element that would come after 3; this would be the right most element (looking to the right from 3) whose value is more than 3. That is 4 in this case. Then we would swap the 3 and 4(..,..,..,4,3,2,1). Then we would simply reverse the array after the 4 i.e. ->  ..,..,..,4,1,2,3. And viola, we are done
+// 	4. Next Permutation: get the next greater number <--- return to this to understand it better
+// 			1,2,3 → 1,3,2
+// 			3,2,1 → 1,2,3
+// 			1,1,5 → 1,5,1
+// 			Approach: A Permutation is like a recursive problem. The first permutation for a slot will have all available items after it in ascending order (1,2,3,4).The last permutation for a slot will have all items after it in descending order (4,3,2,1). There is always a slot i.e. sub array, that is at its last permutation (this is a very important this to understand), i.e. all elements after that element are in decreasing order. So in order to find this slot, all we need to do is start from the right and iterate until we find the item that is not increasing from the left (..,..,..,3,4,2,1). In this case it is 3. So this means that the item 3 is at its last permutation. So we hold the position of 3, i.e. its index. Then find the next element that would come after 3; this would be the right most element (looking to the right from 3) whose value is more than 3. That is 4 in this case. Then we would swap the 3 and 4(..,..,..,4,3,2,1). Then we would simply reverse the array after the 4 i.e. ->  ..,..,..,4,1,2,3. And viola, we are done
 
-			0,1,2,5,3,3,0
+// 			0,1,2,5,3,3,0
 
 			public class Solution {
 
@@ -300,22 +298,22 @@ Arrays and Strings
 				}
 			}
 
-	5. Multiply Strings - Given two non-negative integers num1 and num2 represented as strings, return the product of num1 and num2, also represented as a string.
+// 	5. Multiply Strings - Given two non-negative integers num1 and num2 represented as strings, return the product of num1 and num2, also represented as a string.
 
-				Example 1:
+// 				Example 1:
 
-				Input: num1 = "2", num2 = "3"
-				Output: "6"
-				Example 2:
+// 				Input: num1 = "2", num2 = "3"
+// 				Output: "6"
+// 				Example 2:
 
-				Input: num1 = "123", num2 = "456"
-				Output: "56088"
-				Note:
+// 				Input: num1 = "123", num2 = "456"
+// 				Output: "56088"
+// 				Note:
 
-				The length of both num1 and num2 is < 110.
-				Both num1 and num2 contain only digits 0-9.
-				Both num1 and num2 do not contain any leading zero, except the number 0 itself.
-				You must not use any built-in BigInteger library or convert the inputs to integer directly.
+// 				The length of both num1 and num2 is < 110.
+// 				Both num1 and num2 contain only digits 0-9.
+// 				Both num1 and num2 do not contain any leading zero, except the number 0 itself.
+// 				You must not use any built-in BigInteger library or convert the inputs to integer directly.
 
 				public String multiply(String num1, String num2) {
 				    int m = num1.length(), n = num2.length();
@@ -337,15 +335,15 @@ Arrays and Strings
 				    return sb.length() == 0 ? "0" : sb.toString();
 				}
 
-	6. Group Anagrams: Given an array of strings, group anagrams together.
-			Input: ["eat", "tea", "tan", "ate", "nat", "bat"],
-			Output:
-			[
-			  ["ate","eat","tea"],
-			  ["nat","tan"],
-			  ["bat"]
-			]
-			- create an array of 26 items where each item represents the number of the ith alphabet
+// 	6. Group Anagrams: Given an array of strings, group anagrams together.
+// 			Input: ["eat", "tea", "tan", "ate", "nat", "bat"],
+// 			Output:
+// 			[
+// 			  ["ate","eat","tea"],
+// 			  ["nat","tan"],
+// 			  ["bat"]
+// 			]
+// 			- create an array of 26 items where each item represents the number of the ith alphabet
 				getSerialization(String s) {
 					int[] arr = new int[26];
 					for(char c: s.toCharArray()) {
@@ -373,9 +371,9 @@ Arrays and Strings
 					}
 
 					reutrn map;
-				}
-			- then, serialize the array into a string where each element is seperated by #, i.e. abbd = 1#2#0#1
-			- then put thi=e array into a Map like this: HashMap<String, List<String>>
+ 				}
+// 			- then, serialize the array into a string where each element is seperated by #, i.e. abbd = 1#2#0#1
+// 			- then put thi=e array into a Map like this: HashMap<String, List<String>>
 			class Solution {
 			    public List<List<String>> groupAnagrams(String[] strs) {
 			        if (strs.length == 0) return new ArrayList();
@@ -398,17 +396,17 @@ Arrays and Strings
 			    }
 			}
 	
-	7. Add Binary: Given two binary strings, return their sum (also a binary string). - come back to this one
+// 	7. Add Binary: Given two binary strings, return their sum (also a binary string). - come back to this one
 
-			Input: a = "11", b = "1"
-			Output: "100"
+// 			Input: a = "11", b = "1"
+// 			Output: "100"
 
-			Input: a = "1010", b = "1011"
-			Output: "10101"
-			Method 1: can convert to Binary and Decimal using built in fincitons
-					Integer.toBinaryString and Integer.parseInt(string, 2)
-				- once you have the binary representaion of the string,
-				- then go through each item
+// 			Input: a = "1010", b = "1011"
+// 			Output: "10101"
+// 			Method 1: can convert to Binary and Decimal using built in fincitons
+// 					Integer.toBinaryString and Integer.parseInt(string, 2)
+// 				- once you have the binary representaion of the string,
+// 				- then go through each item
 					class Solution {
 					  public String addBinary(String a, String b) {
 					    BigInteger x = new BigInteger(a, 2);
@@ -425,18 +423,18 @@ Arrays and Strings
 					  }
 					}
 
-	8.  Minimum Window Substring: Given a string S and a string T, find the minimum window in S which will contain all the characters in T in complexity O(n).
-				- use sliding window technique
-				- start with 2 indices both at the beginning, b,e
-				- keep expanding the right index until we have all of the elements accounted for
-				- save this window
-				- then move the left window more right, if this is no longer a valid window repeat second step
-				- how to keep track of window -> 2 indices
-				- tracking the items weve weve added, use a set, when move the left item right, if the new left is not the same as the old one, we remove the item from the set
-				- check the size of the set 
-				- actually, instead of keeping a set we can keep a map, the map keeps track of the count of all found numbers, so when we move left or right, we update the count, if the count for something is zero we remove it from the map
-				Input: S = "ADOBECODEBANC", T = "ABC"
-				Output: "BANC"
+// 	8.  Minimum Window Substring: Given a string S and a string T, find the minimum window in S which will contain all the characters in T in complexity O(n).
+// 				- use sliding window technique
+// 				- start with 2 indices both at the beginning, b,e
+// 				- keep expanding the right index until we have all of the elements accounted for
+// 				- save this window
+// 				- then move the left window more right, if this is no longer a valid window repeat second step
+// 				- how to keep track of window -> 2 indices
+// 				- tracking the items weve weve added, use a set, when move the left item right, if the new left is not the same as the old one, we remove the item from the set
+// 				- check the size of the set 
+// 				- actually, instead of keeping a set we can keep a map, the map keeps track of the count of all found numbers, so when we move left or right, we update the count, if the count for something is zero we remove it from the map
+// 				Input: S = "ADOBECODEBANC", T = "ABC"
+// 				Output: "BANC"
 				class Solution {
 					  public String minWindow(String s, String t) {
 
@@ -510,14 +508,14 @@ Arrays and Strings
 					  }
 					}
 
-	9. Merge Sorted arrays: Given two sorted integer arrays nums1 and nums2, merge nums2 into nums1 as one sorted array.
+// 	9. Merge Sorted arrays: Given two sorted integer arrays nums1 and nums2, merge nums2 into nums1 as one sorted array.
 
-				Input:
-				nums1 = [1,2,3,0,0,0], m = 3
-				nums2 = [2,5,6],       n = 3
+// 				Input:
+// 				nums1 = [1,2,3,0,0,0], m = 3
+// 				nums2 = [2,5,6],       n = 3
 
-				Output: [1,2,2,3,5,6]elements from nums2.
-				- one index in nums1 one in nums2
+// 				Output: [1,2,2,3,5,6]elements from nums2.
+// 				- one index in nums1 one in nums2
 
 				class Solution {
 				  public void merge(int[] nums1, int m, int[] nums2, int n) {
@@ -545,8 +543,8 @@ Arrays and Strings
 				  }
 				}
 
-				// in place
-				- note, one may imagine that the there may be a case where the items in arr1 may get overriden; but this cant happen. Say all of the free space after the last valid element in arr1 is taken up, then that means, every item from arr2 was exhausted. thus, arr1 could not be override\			
+// 				// in place
+// 				- note, one may imagine that the there may be a case where the items in arr1 may get overriden; but this cant happen. Say all of the free space after the last valid element in arr1 is taken up, then that means, every item from arr2 was exhausted. thus, arr1 could not be override\			
 						class Solution {
 						  public void merge(int[] nums1, int m, int[] nums2, int n) {
 						    // two get pointers for nums1 and nums2
@@ -566,40 +564,42 @@ Arrays and Strings
 						  }
 						}
 
-	10. Valid Palindrome: Given a string, determine if it is a palindrome, considering only alphanumeric characters and ignoring cases.
+// 	10. Valid Palindrome: Given a string, determine if it is a palindrome, considering only alphanumeric characters and ignoring cases.
 
-				Note: For the purpose of this problem, we define empty string as valid palindrome.
+// 				Note: For the purpose of this problem, we define empty string as valid palindrome.
 
-				Example 1:
+// 				Example 1:
 
-				Input: "A man, a plan, a canal: Panama"
-				Output: true
-				Example 2:
+// 				Input: "A man, a plan, a canal: Panama"
+// 				Output: true
+// 				Example 2:
 
-				Input: "race a car"
-				Output: false
+// 				Input: "race a car"
+// 				Output: false
 
-				while (low < high) {
-					while (low < high && !Character.isLetterOrDigit(s.charAt(low)))
+				class Solution {
+					while (low < high) {
+						while (low < high && !Character.isLetterOrDigit(s.charAt(low)))
+							low++;
+
+						while (low < high && !Character.isLetterOrDigit(s.charAt(high)))
+							high--;
+
+						if (s.charAt(low) != s.charAt(high))
+							return false;
 						low++;
-
-					while (low < high && !Character.isLetterOrDigit(s.charAt(high)))
 						high--;
-
-					if (s.charAt(low) != s.charAt(high))
-						return false;
-					low++;
-					high--;
+					}
+					return true;
 				}
-				return true;
 
-	11. Given a method read4(), create a method read(char[] buf, int n), that fills an array with n items from a file
-				- basically call read4 repeatedly, each time stoer in a temp char[4]
-				- see how much you have left to read; leftToRead
-				d	- if it is more than 4, then subtract 4 from leftToRead and copu temp buffer into return buff
-					- if read4 returned less than 4 you need to exit as that means you are at the end of the file
-					- keep reading till you dont need to read anymore
-						- if you read more than what is required i.e. you need to read 3 and not 4, then copy the first three items into the return buffer
+// 	11. Given a method read4(), create a method read(char[] buf, int n), that fills an array with n items from a file
+// 				- basically call read4 repeatedly, each time stoer in a temp char[4]
+// 				- see how much you have left to read; leftToRead
+// 				d	- if it is more than 4, then subtract 4 from leftToRead and copu temp buffer into return buff
+// 					- if read4 returned less than 4 you need to exit as that means you are at the end of the file
+// 					- keep reading till you dont need to read anymore
+// 						- if you read more than what is required i.e. you need to read 3 and not 4, then copy the first three items into the return buffer
 
 				public class Solution extends Reader4 {
 				    /**
@@ -623,22 +623,22 @@ Arrays and Strings
 				    }
 				}
 
-	12. One Edit Distance: Given two strings s and t, determine if they are both one edit distance apart.
-				Note: 
+// 	12. One Edit Distance: Given two strings s and t, determine if they are both one edit distance apart.
+// 				Note: 
 
-				There are 3 possiblities to satisify one edit distance apart:
+// 				There are 3 possiblities to satisify one edit distance apart:
 
-					Insert a character into s to get t
-					Delete a character from s to get t
-					Replace a character of s to get t
+// 					Insert a character into s to get t
+// 					Delete a character from s to get t
+// 					Replace a character of s to get t
 
-				Approach:
-					bunch of if statements
-						- first check the sizes are of by at most one
-						- then, from this we can determine if its a deletion or an insertion or a letter is wrong
-						- then based on the above,
-							- if it is a deletion go through the words letter by letter (comparing each)
-								- at the first mismatch, we will assume its a deletion, then move one of the pointer up by one (of the word which is not deleted). then up till the end of the strings,k they should be the same
+// 				Approach:
+// 					bunch of if statements
+// 						- first check the sizes are of by at most one
+// 						- then, from this we can determine if its a deletion or an insertion or a letter is wrong
+// 						- then based on the above,
+// 							- if it is a deletion go through the words letter by letter (comparing each)
+// 								- at the first mismatch, we will assume its a deletion, then move one of the pointer up by one (of the word which is not deleted). then up till the end of the strings,k they should be the same
 
 								class Solution {
 								  public boolean isOneEditDistance(String s, String t) {
@@ -670,17 +670,17 @@ Arrays and Strings
 								  }
 								}
 
-	13. Product of Array Except Self: Given an array nums of n integers where n > 1,  return an array output such that output[i] is equal to the product of all the elements of nums except nums[i].
+// 	13. Product of Array Except Self: Given an array nums of n integers where n > 1,  return an array output such that output[i] is equal to the product of all the elements of nums except nums[i].
 
-				Example:
-					Input:  [1,2,3,4]
-					Output: [24,12,8,6]
-					Note: Please solve it without division and in O(n).
+// 				Example:
+// 					Input:  [1,2,3,4]
+// 					Output: [24,12,8,6]
+// 					Note: Please solve it without division and in O(n).
 
-					Follow up:
-					Could you solve it with constant space complexity? (The output array does not count as extra space for the purpose of space complexity analysis.).
-					Approach- Basically, keep two arrays, LeftProduct and RightProduct. Then basically fill up the LeftArray with the product of all the numbers to the left of the ith position. And do the same for the RightProduct but from the right.
-					Then run through the original array, and to calculate the ith product, simply find the product of LeftProduct[i] and RightProduct[i]. This is basically multiplying all of the numbers to the left and right of the ith item (i.e. every item except i)
+// 					Follow up:
+// 					Could you solve it with constant space complexity? (The output array does not count as extra space for the purpose of space complexity analysis.).
+// 					Approach- Basically, keep two arrays, LeftProduct and RightProduct. Then basically fill up the LeftArray with the product of all the numbers to the left of the ith position. And do the same for the RightProduct but from the right.
+// 					Then run through the original array, and to calculate the ith product, simply find the product of LeftProduct[i] and RightProduct[i]. This is basically multiplying all of the numbers to the left and right of the ith item (i.e. every item except i)
 						class Solution {
 						    public int[] productExceptSelf(int[] nums) {
 
@@ -730,40 +730,40 @@ Arrays and Strings
 						    }
 						}
 
-	14. Integer to english word: Convert a non-negative integer to its english words representation. Given input is guaranteed to be less than 231 - 1.
+// 	14. Integer to english word: Convert a non-negative integer to its english words representation. Given input is guaranteed to be less than 231 - 1.
 				
-				Example 1:
-				Input: 123
-				Output: "One Hundred Twenty Three"
+// 				Example 1:
+// 				Input: 123
+// 				Output: "One Hundred Twenty Three"
 				
-				Example 2:
-				Input: 12345
-				Output: "Twelve Thousand Three Hundred Forty Five"
+// 				Example 2:
+// 				Input: 12345
+// 				Output: "Twelve Thousand Three Hundred Forty Five"
 				
-				Example 3:
-				Input: 1234567
-				Output: "One Million Two Hundred Thirty Four Thousand Five Hundred Sixty Seven"
+// 				Example 3:
+// 				Input: 1234567
+// 				Output: "One Million Two Hundred Thirty Four Thousand Five Hundred Sixty Seven"
 				
-				Example 4:
-				Input: 1234567891
-				Output: "One Billion Two Hundred Thirty Four Million Five Hundred Sixty Seven Thousand Eight Hundred Ninety One"
+// 				Example 4:
+// 				Input: 1234567891
+// 				Output: "One Billion Two Hundred Thirty Four Million Five Hundred Sixty Seven Thousand Eight Hundred Ninety One"
 
-				Approach: there are multiple cases
-					- read upto three digits from the right at a time
-					- start at the right
-						- check the size
-							- if the size is 1, then just print out the number in english
-								String getSingleDigitWord(int i)
-							- if the size is two, then there get the numberith mapping from the 10s digits
-								- if the number is a 1, then you need to get the teens mapping
-									String getTeenMapping(int ones)
-								- if the number is a more than one, then you need to get
-									String getTensMapping(int tens, int ones)
-							- if the size is three, get the last digit, append hundred to it
-								String get Hundred
-					From leetcode:
+// 				Approach: there are multiple cases
+// 					- read upto three digits from the right at a time
+// 					- start at the right
+// 						- check the size
+// 							- if the size is 1, then just print out the number in english
+// 								String getSingleDigitWord(int i)
+// 							- if the size is two, then there get the numberith mapping from the 10s digits
+// 								- if the number is a 1, then you need to get the teens mapping
+// 									String getTeenMapping(int ones)
+// 								- if the number is a more than one, then you need to get
+// 									String getTensMapping(int tens, int ones)
+// 							- if the size is three, get the last digit, append hundred to it
+// 								String get Hundred
+// 					From leetcode:
 
-					Letith simplify the problem by representing it as a set of simple sub-problems. One could split the initial integer 1234567890 on the groups containing not more than three digits 1.234.567.890. That results in representation 1 Billion 234 Million 567 Thousand 890 and reduces the initial problem to how to convert 3-digit integer to English word. One could split further 234 -> 2 Hundred 34 into two sub-problems : convert 1-digit integer and convert 2-digit integer. The first one is trivial. The second one could be reduced to the first one for all 2-digit integers but the ones from 10 to 19 which should be considered separately.
+// 					Letith simplify the problem by representing it as a set of simple sub-problems. One could split the initial integer 1234567890 on the groups containing not more than three digits 1.234.567.890. That results in representation 1 Billion 234 Million 567 Thousand 890 and reduces the initial problem to how to convert 3-digit integer to English word. One could split further 234 -> 2 Hundred 34 into two sub-problems : convert 1-digit integer and convert 2-digit integer. The first one is trivial. The second one could be reduced to the first one for all 2-digit integers but the ones from 10 to 19 which should be considered separately.
 
 					class Solution {
 					  public String one(int num) {
@@ -872,8 +872,8 @@ Arrays and Strings
 					  }
 					}
 	
-	15. Move zeros: move all zeros to end of array
-				Approach: basically, have two pointers, one keeps track of the last non-zero number, the other keeps track of current number. If we find a non zero number we put put it in the place of last non-zero number.
+// 	15. Move zeros: move all zeros to end of array
+// 				Approach: basically, have two pointers, one keeps track of the last non-zero number, the other keeps track of current number. If we find a non zero number we put put it in the place of last non-zero number.
 
 				void moveZeroes(vector<int>& nums) {
 				    int lastNonZeroFoundAt = 0;
@@ -892,7 +892,7 @@ Arrays and Strings
 				    }
 				}
 
-				A slight imorvement would be something like this
+// 				A slight imorvement would be something like this
 				void moveZeroes(vector<int>& nums) {
 				    for (int lastNonZeroFoundAt = 0, cur = 0; cur < nums.size(); cur++) {
 				        if (nums[cur] != 0) {
@@ -901,21 +901,21 @@ Arrays and Strings
 				    }
 				}
 
-	16. Longest Substring with At Most K Distinct Characters: Given a string, find the length of the longest substring T that contains at most k distinct characters.
+// 	16. Longest Substring with At Most K Distinct Characters: Given a string, find the length of the longest substring T that contains at most k distinct characters.
 
-				Example 1:
+// 				Example 1:
 
-				Input: s = "eceba", k = 2
-				Output: 3
-				Explanation: T is "ece" which its length is 3.
-				Example 2:
+// 				Input: s = "eceba", k = 2
+// 				Output: 3
+// 				Explanation: T is "ece" which its length is 3.
+// 				Example 2:
 
-				Input: s = "aa", k = 1
-				Output: 2
-				Explanation: T is "aa" which its length is 2.
+// 				Input: s = "aa", k = 1
+// 				Output: 2
+// 				Explanation: T is "aa" which its length is 2.
 
-				Approach: use two pointer, and a set to keep track of already found items
-				The idea is to set both pointers in the position 0 and then move right pointer to the right while the window contains not more than k distinct characters. If at some point weve got k + 1 distinct characters, letith move left pointer to keep not more than k + 1 distinct characters in the window. Note: we would keep the right most index of an item in the hashmap. When we are done with an item, remove it from the map. Keep a variable with max_length
+// 				Approach: use two pointer, and a set to keep track of already found items
+// 				The idea is to set both pointers in the position 0 and then move right pointer to the right while the window contains not more than k distinct characters. If at some point weve got k + 1 distinct characters, letith move left pointer to keep not more than k + 1 distinct characters in the window. Note: we would keep the right most index of an item in the hashmap. When we are done with an item, remove it from the map. Keep a variable with max_length
 
 				class Solution {
 					  public int lengthOfLongestSubstringKDistinct(String s, int k) {
@@ -950,7 +950,7 @@ Arrays and Strings
 					  }
 					}
 
-				Improvement: To improve this, notice an issue. When we increase the right pointer and if this causes out set to have more than k distinct integers, then we have to move the left pointer up and consequently remove an item from the hashmap. But what if that left value exists somewhere else in the current window? In that case, as in the above code, we look at each item in the hashmap and find which item has the left most element, then we remove that element only (then update left to one after that guys position). So we have to iterate the hashmap to find the item with left most element, this can be improved. If we use a LinkedHashMap, instead of a normal HashMap, the oldest value added/updated will always be at the front, so instead of looking for the leftmost item, we can just pop the first one from the LinkedHashMap.
+// 				Improvement: To improve this, notice an issue. When we increase the right pointer and if this causes out set to have more than k distinct integers, then we have to move the left pointer up and consequently remove an item from the hashmap. But what if that left value exists somewhere else in the current window? In that case, as in the above code, we look at each item in the hashmap and find which item has the left most element, then we remove that element only (then update left to one after that guys position). So we have to iterate the hashmap to find the item with left most element, this can be improved. If we use a LinkedHashMap, instead of a normal HashMap, the oldest value added/updated will always be at the front, so instead of looking for the leftmost item, we can just pop the first one from the LinkedHashMap.
 
 				class Solution {
 				  public int lengthOfLongestSubstringKDistinct(String s, int k) {
@@ -990,8 +990,8 @@ Arrays and Strings
 				  }
 				}
 
-	17. Validate IP Address: Write a function to check whether an input string is a valid IPv4 address or IPv6 address or neither.
-				Approach: Use String.split, Integer.parseInt, Character.isDigit, String.toCharArray
+// 	17. Validate IP Address: Write a function to check whether an input string is a valid IPv4 address or IPv6 address or neither.
+// 				Approach: Use String.split, Integer.parseInt, Character.isDigit, String.toCharArray
 
 				class Solution {
 				    private boolean isValidHexa(char a) {
@@ -1022,17 +1022,17 @@ Arrays and Strings
 				    }
 				}
 
-	18.  Subarray Sum Equals K: Given an array of integers and an integer k, you need to find the total number of continuous subarrays whose sum equals to k.
+// 	18.  Subarray Sum Equals K: Given an array of integers and an integer k, you need to find the total number of continuous subarrays whose sum equals to k.
 
-				Example 1:
-				Input:nums = [1,1,1], k = 2
-				Output: 2
-				Note:
-				The length of the array is in range [1, 20,000].
-				The range of numbers in the array is [-1000, 1000] and the range of the integer k is [-1e7, 1e7].
+// 				Example 1:
+// 				Input:nums = [1,1,1], k = 2
+// 				Output: 2
+// 				Note:
+// 				The length of the array is in range [1, 20,000].
+// 				The range of numbers in the array is [-1000, 1000] and the range of the integer k is [-1e7, 1e7].
 
-				Approach 1:
-				- we can try to compute all beginning and end pairs(i.e. using a double for loop), but thats slow. Another trick is compute the cummulative sum for each i (the sum from 0-i in the array). then if we want to calculate the sum between i and j we can do something like cummSum[j+1] - cummSum[i]. Another improvement is to not use additional space. So for each beginning index, we start a sum from 0, and for each endIndex for that beginning index we add onto 0 or the last sum for the beginning index.
+// 				Approach 1:
+// 				- we can try to compute all beginning and end pairs(i.e. using a double for loop), but thats slow. Another trick is compute the cummulative sum for each i (the sum from 0-i in the array). then if we want to calculate the sum between i and j we can do something like cummSum[j+1] - cummSum[i]. Another improvement is to not use additional space. So for each beginning index, we start a sum from 0, and for each endIndex for that beginning index we add onto 0 or the last sum for the beginning index.
 					public class Solution {
 					    public int subarraySum(int[] nums, int k) {
 					        int count = 0;
@@ -1048,7 +1048,7 @@ Arrays and Strings
 					    }
 					}
 
-				An even better approach using a hashmap is the following. Note that if you are going through the array and keeping track of cumulative sum, if you run into the same sum that you calculated previously, that means that if you started from the first time you saw that sum and added the numbers up to the second time you saw that sum, the total sum will be zero. Using this idea, we can keep track of all different sums that we encounter in a hashmap and the index we saw them at. If you find there is a sum you previously encountered such that the (current sum - k) is equal to it, then that means that the current index to that index is a subarry whose elements sum to k.
+// 				An even better approach using a hashmap is the following. Note that if you are going through the array and keeping track of cumulative sum, if you run into the same sum that you calculated previously, that means that if you started from the first time you saw that sum and added the numbers up to the second time you saw that sum, the total sum will be zero. Using this idea, we can keep track of all different sums that we encounter in a hashmap and the index we saw them at. If you find there is a sum you previously encountered such that the (current sum - k) is equal to it, then that means that the current index to that index is a subarry whose elements sum to k.
 
 					public class Solution {
 					    public int subarraySum(int[] nums, int k) {
@@ -1065,19 +1065,19 @@ Arrays and Strings
 					    }
 					}
 
-	19.  Valid Palindrome II: Given a non-empty string s, you may delete at most one character. Judge whether you can make it a palindrome.
+// 	19.  Valid Palindrome II: Given a non-empty string s, you may delete at most one character. Judge whether you can make it a palindrome.
 
-				Example 1:
-				Input: "aba"
-				Output: True
-				Example 2:
-				Input: "abca"
-				Output: True
-				Explanation: You could delete the character c.
-				Note:
-				The string will only contain lowercase characters a-z. The maximum length of the string is 50000.
+// 				Example 1:
+// 				Input: "aba"
+// 				Output: True
+// 				Example 2:
+// 				Input: "abca"
+// 				Output: True
+// 				Explanation: You could delete the character c.
+// 				Note:
+// 				The string will only contain lowercase characters a-z. The maximum length of the string is 50000.
 
-				Approach: Suppose we want to know whether s[i], s[i+1], ..., s[j] form a palindrome. If i >= j then we are done. If s[i] == s[j] then we may take i++; j--. Otherwise, the palindrome must be either s[i+1], s[i+2], ..., s[j] or s[i], s[i+1], ..., s[j-1], and we should check both cases.
+// 				Approach: Suppose we want to know whether s[i], s[i+1], ..., s[j] form a palindrome. If i >= j then we are done. If s[i] == s[j] then we may take i++; j--. Otherwise, the palindrome must be either s[i+1], s[i+2], ..., s[j] or s[i], s[i+1], ..., s[j-1], and we should check both cases.
 
 				class Solution {
 				    public boolean isPalindromeRange(String s, int i, int j) {
